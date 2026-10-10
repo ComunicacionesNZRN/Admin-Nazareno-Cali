@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Encuentros | Gestión de Inscritos & Finanzas | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html"><i class="fa-solid fa-gauge"></i><span>Dashboard</span></a>
+          <a class="is-active" href="encuentros.html"><i class="fa-solid fa-users-between-lines"></i><span>Encuentros H/M</span></a>
+          <a href="eventos.html"><i class="fa-solid fa-calendar-days"></i><span>Eventos</span></a>
+          <a href="grupos.html"><i class="fa-solid fa-people-group"></i><span>Grupos</span></a>
+          <a href="devocionales.html"><i class="fa-solid fa-book-bible"></i><span>Devocionales</span></a>
+          <a href="perfil.html"><i class="fa-solid fa-user-shield"></i><span>Mi perfil</span></a>
+        </nav>
+        <p class="admin-sidebar-footer">Gestión de Retiros Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Retiros Espirituales</p>
+            <h1 class="admin-title">Encuentros H/M.</h1>
+            <p class="admin-lead">Supervisa las inscripciones de hombres y mujeres, valida pagos y descarga el reporte consolidado en Excel.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- Estadísticas -->
+        <section class="admin-stats">
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><i class="fa-solid fa-person"></i></span>
+            <div><p class="admin-stat-label">Inscritos Hombres</p><p class="admin-stat-value" data-count-hombres>0</p></div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><i class="fa-solid fa-person-dress"></i></span>
+            <div><p class="admin-stat-label">Inscritas Mujeres</p><p class="admin-stat-value" data-count-mujeres>0</p></div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><i class="fa-solid fa-money-check-dollar"></i></span>
+            <div><p class="admin-stat-label">Total Recaudado</p><p class="admin-stat-value" data-total-recaudado>$0</p></div>
+          </div>
+        </section>
+
+        <!-- Configuración de Próximos Retiros (Fechas & Precios) -->
+        <section class="admin-panel" style="margin-bottom: 24px;">
+          <p class="admin-eyebrow">Cartelera Oficial</p>
+          <h2>Configurar Fecha, Lema y Precio del Retiro</h2>
+          <form class="admin-form" id="form-config-encuentros">
+            <div class="admin-field">
+              <label>Seleccionar Encuentro a Modificar</label>
+              <select id="config-tipo" required>
+                <option value="hombres">Encuentro de Hombres</option>
+                <option value="mujeres">Encuentro de Mujeres</option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label>Lema o Temática</label>
+              <input id="config-lema" required placeholder="Ej: Hombres de Valor y Conquista" />
+            </div>
+            <div class="admin-field">
+              <label>Fecha Inicio</label>
+              <input type="date" id="config-inicio" required />
+            </div>
+            <div class="admin-field">
+              <label>Fecha Fin</label>
+              <input type="date" id="config-fin" required />
+            </div>
+            <div class="admin-field">
+              <label>Precio por persona ($ COP)</label>
+              <input type="number" id="config-precio" required min="0" step="1000" value="180000" />
+            </div>
+            <div class="admin-field">
+              <label>Lugar del Retiro</label>
+              <input id="config-lugar" value="Casa de Retiros Nazareno" />
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit">Actualizar Cartelera</button>
+              <span id="config-status" style="font-size:12px; color:var(--admin-violet);"></span>
+            </div>
+          </form>
+        </section>
+
+        <!-- Estado de Inscripciones y Galería de Encuentros -->
+        <section class="admin-panel" style="margin-bottom: 24px;">
+          <p class="admin-eyebrow">Contenido Público</p>
+          <h2>Inscripciones y Galería de Encuentros</h2>
+          <p class="admin-lead">Controla por separado la disponibilidad de cupos y las fotos de encuentros anteriores.</p>
+          <div id="configuracion-encuentros-admin" class="admin-permissions-grid encounter-settings-grid" aria-live="polite">
+            <p class="admin-empty">Cargando configuración...</p>
+          </div>
+          <p id="galeria-config-status" class="admin-status" role="status"></p>
+        </section>
+
+        <!-- Tabla de Inscripciones y Exportación a Excel -->
+        <section class="admin-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom: 20px;">
+            <div>
+              <p class="admin-eyebrow" style="margin:0;">Listado Oficial</p>
+              <h2 style="margin:4px 0 0;">Personas Inscritas</h2>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <input type="search" id="input-buscar-inscrito" placeholder="Buscar por nombre, cédula o ticket..." style="padding: 10px 14px; border: 1px solid var(--admin-line); border-radius: 8px; font-size:12px;" />
+              <select id="filter-tipo" style="padding: 10px 14px; border: 1px solid var(--admin-line); border-radius: 8px; font-size:12px;">
+                <option value="todos">Todos los retiros</option>
+                <option value="hombres">Solo Hombres</option>
+                <option value="mujeres">Solo Mujeres</option>
+              </select>
+              <button class="admin-button-success" id="btn-export-excel"><i class="fa-solid fa-file-excel"></i> Descargar Excel / CSV</button>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ticket</th>
+                  <th>Tipo</th>
+                  <th>Nombres y Apellidos</th>
+                  <th>Cédula</th>
+                  <th>Celular</th>
+                  <th>Red / Líder</th>
+                  <th>Medio Pago</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="inscripciones-table-body">
+                <tr><td colspan="9" class="admin-empty">Cargando inscripciones...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const client = window.supabaseAdmin.client;
+      let rowsData = [];
+      const encounterSettings = {};
+      const encounterSettingsRoot = document.querySelector("#configuracion-encuentros-admin");
+      const encounterSettingsStatus = document.querySelector("#galeria-config-status");
+      const encounterTypes = ["hombres", "mujeres"];
+
+      const escapeHtml = (value) => String(value).replace(/[&<>\"']/g, (character) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      })[character]);
+
+      const renderEncounterSettings = () => {
+        encounterSettingsRoot.innerHTML = encounterTypes.map((tipo) => {
+          const settings = encounterSettings[tipo] || { inscripciones_abiertas: true, galeria_urls: [] };
+          const title = tipo === "hombres" ? "Hombres" : "Mujeres";
+          const images = settings.galeria_urls.map((url, index) => `
+            <li class="encounter-image-item">
+              <img src="${escapeHtml(url)}" alt="" loading="lazy" />
+              <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>
+              <button type="button" class="admin-button" data-remove-image data-tipo="${tipo}" data-index="${index}" aria-label="Quitar imagen">Quitar</button>
+            </li>
+          `).join("");
+
+          return `
+            <article class="encounter-settings-card">
+              <h3>Encuentro de ${title}</h3>
+              <label class="admin-permission-card encounter-toggle-card">
+                <span class="admin-permission-info">
+                  <i class="fa-solid fa-ticket"></i>
+                  <span>Inscripciones <strong>${settings.inscripciones_abiertas ? "abiertas" : "cerradas"}</strong></span>
+                </span>
+                <span class="admin-switch">
+                  <input type="checkbox" data-enrollment-toggle data-tipo="${tipo}" ${settings.inscripciones_abiertas ? "checked" : ""} aria-label="Abrir inscripciones para ${title}" />
+                  <span class="admin-switch-slider"></span>
+                </span>
+              </label>
+              <form class="encounter-image-form" data-image-form data-tipo="${tipo}">
+                <label for="image-url-${tipo}">Agregar URL o subir imagen</label>
+                <div class="encounter-image-input-row">
+                  <input id="image-url-${tipo}" name="url" type="url" placeholder="https://…" />
+                  <button class="admin-button-primary" type="submit">Agregar</button>
+                </div>
+                <input class="encounter-image-file" name="image" type="file" accept="image/*" aria-label="Seleccionar imagen para ${title}" />
+                <small class="admin-file-note">Formatos de imagen; máximo 10 MB.</small>
+              </form>
+              <ul class="encounter-image-list">${images || '<li class="admin-empty">Aún no hay imágenes agregadas.</li>'}</ul>
+            </article>
+          `;
+        }).join("");
+      };
+
+      const saveEncounterSettings = async (tipo, changes) => {
+        encounterSettingsStatus.textContent = "Guardando configuración…";
+        const payload = { genero: tipo, ...encounterSettings[tipo], ...changes };
+        const { error } = await client.from("configuracion_encuentros").upsert(payload, { onConflict: "genero" });
+        if (error) {
+          encounterSettingsStatus.textContent = `No se pudo guardar: ${error.message}`;
+          renderEncounterSettings();
+          return false;
+        }
+        encounterSettings[tipo] = {
+          ...payload,
+          galeria_urls: Array.isArray(payload.galeria_urls) ? payload.galeria_urls : []
+        };
+        encounterSettingsStatus.textContent = "Configuración guardada correctamente.";
+        renderEncounterSettings();
+        return true;
+      };
+
+      const loadEncounterSettings = async () => {
+        const { data, error } = await client
+          .from("configuracion_encuentros")
+          .select("genero, inscripciones_abiertas, galeria_urls")
+          .in("genero", encounterTypes);
+
+        if (error) {
+          encounterSettingsRoot.innerHTML = `<p class="admin-empty">No se pudo cargar: ${escapeHtml(error.message)}</p>`;
+          return;
+        }
+
+        encounterTypes.forEach((tipo) => {
+          const row = data?.find((item) => item.genero === tipo);
+          encounterSettings[tipo] = {
+            inscripciones_abiertas: row?.inscripciones_abiertas ?? true,
+            galeria_urls: Array.isArray(row?.galeria_urls) ? row.galeria_urls : []
+          };
+        });
+        renderEncounterSettings();
+      };
+
+      encounterSettingsRoot.addEventListener("change", async (event) => {
+        const toggle = event.target.closest("[data-enrollment-toggle]");
+        if (!toggle) return;
+        const tipo = toggle.dataset.tipo;
+        const previousValue = encounterSettings[tipo].inscripciones_abiertas;
+        toggle.disabled = true;
+        const saved = await saveEncounterSettings(tipo, { inscripciones_abiertas: toggle.checked });
+        if (!saved) encounterSettings[tipo].inscripciones_abiertas = previousValue;
+      });
+
+      encounterSettingsRoot.addEventListener("submit", async (event) => {
+        const form = event.target.closest("[data-image-form]");
+        if (!form) return;
+        event.preventDefault();
+        const tipo = form.dataset.tipo;
+        const url = new FormData(form).get("url")?.toString().trim();
+        const imageFile = new FormData(form).get("image");
+        if (!url && !(imageFile instanceof File && imageFile.size)) {
+          encounterSettingsStatus.textContent = "Pega una URL o selecciona una imagen para agregar.";
+          return;
+        }
+        if (url) {
+          try {
+            const parsed = new URL(url);
+            if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("URL no válida");
+          } catch {
+            encounterSettingsStatus.textContent = "Ingresa una URL válida que comience con http:// o https://.";
+            return;
+          }
+        }
+        if (url && encounterSettings[tipo].galeria_urls.includes(url)) {
+          encounterSettingsStatus.textContent = "Esa imagen ya está en la galería.";
+          return;
+        }
+        let imageUrl = url;
+        let uploadedPath = null;
+        if (imageFile instanceof File && imageFile.size) {
+          if (!imageFile.type.startsWith("image/")) {
+            encounterSettingsStatus.textContent = "El archivo seleccionado no es una imagen.";
+            return;
+          }
+          if (imageFile.size > 10 * 1024 * 1024) {
+            encounterSettingsStatus.textContent = "La imagen supera el límite de 10 MB.";
+            return;
+          }
+
+          const extension = imageFile.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+          uploadedPath = `${tipo}/${crypto.randomUUID()}.${extension}`;
+          encounterSettingsStatus.textContent = "Subiendo imagen…";
+          const { error: uploadError } = await client.storage
+            .from("encuentros")
+            .upload(uploadedPath, imageFile, { contentType: imageFile.type, upsert: false });
+          if (uploadError) {
+            encounterSettingsStatus.textContent = `No se pudo subir la imagen: ${uploadError.message}`;
+            return;
+          }
+          imageUrl = client.storage.from("encuentros").getPublicUrl(uploadedPath).data.publicUrl;
+        }
+
+        const saved = await saveEncounterSettings(tipo, {
+          galeria_urls: [...encounterSettings[tipo].galeria_urls, imageUrl]
+        });
+        if (saved) form.reset();
+        else if (uploadedPath) await client.storage.from("encuentros").remove([uploadedPath]);
+      });
+
+      encounterSettingsRoot.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-remove-image]");
+        if (!button) return;
+        const tipo = button.dataset.tipo;
+        const removedUrl = encounterSettings[tipo].galeria_urls[Number(button.dataset.index)];
+        const urls = encounterSettings[tipo].galeria_urls.filter((_, index) => index !== Number(button.dataset.index));
+        const saved = await saveEncounterSettings(tipo, { galeria_urls: urls });
+        if (saved && removedUrl) {
+          try {
+            const imagePath = new URL(removedUrl).pathname.split("/storage/v1/object/public/encuentros/")[1];
+            if (imagePath) await client.storage.from("encuentros").remove([decodeURIComponent(imagePath)]);
+          } catch {
+            // Las imágenes externas solo se quitan de la lista, no del servidor externo.
+          }
+        }
+      });
+
+      const loadInscripciones = async () => {
+        const { data, error } = await client
+          .from("encuentros_inscripciones")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) return console.error(error);
+        rowsData = data || [];
+        renderTable(rowsData);
+      };
+
+      const renderTable = (items) => {
+        let countH = 0, countM = 0, recaudado = 0;
+        rowsData.forEach(r => {
+          if (r.tipo_encuentro === "hombres") countH++;
+          if (r.tipo_encuentro === "mujeres") countM++;
+          if (r.estado_pago === "pagado") recaudado += Number(r.valor_pagado || 0);
+        });
+
+        document.querySelector("[data-count-hombres]").textContent = countH;
+        document.querySelector("[data-count-mujeres]").textContent = countM;
+        document.querySelector("[data-total-recaudado]").textContent = `$${recaudado.toLocaleString("es-CO")}`;
+
+        const tbody = document.querySelector("#inscripciones-table-body");
+        tbody.innerHTML = items.length
+          ? items.map(r => `
+            <tr>
+              <td><strong>${r.codigo_ticket || '—'}</strong></td>
+              <td><span class="admin-badge ${r.tipo_encuentro === 'hombres' ? 'admin-badge-active' : 'admin-badge-violet'}">${r.tipo_encuentro.toUpperCase()}</span></td>
+              <td><strong>${r.nombres} ${r.apellidos}</strong><br><small>${r.correo}</small></td>
+              <td>${r.documento_identidad}</td>
+              <td>${r.celular}</td>
+              <td>${r.pertenece_red ? (r.red_nombre || 'Sí') : 'Primera vez'}</td>
+              <td>${r.medio_pago?.toUpperCase() || '—'}</td>
+              <td><span class="admin-badge ${r.estado_pago === 'pagado' ? 'admin-badge-active' : (r.estado_pago === 'cancelado' ? 'admin-badge-cancelled' : 'admin-badge-pending')}">${r.estado_pago.toUpperCase()}</span></td>
+              <td style="white-space:nowrap;">
+                ${r.estado_pago !== 'pagado' ? `<button class="admin-button admin-button-success" onclick="cambiarEstado('${r.id}', 'pagado')">Aprobar Pago</button>` : `<button class="admin-button" onclick="cambiarEstado('${r.id}', 'pendiente')">Marcar Pendiente</button>`}
+              </td>
+            </tr>
+          `).join("")
+          : '<tr><td colspan="9" class="admin-empty">No se encontraron inscritos con el filtro seleccionado.</td></tr>';
+      };
+
+      window.cambiarEstado = async (id, estado) => {
+        await client.from("encuentros_inscripciones").update({ estado_pago: estado }).eq("id", id);
+        await loadInscripciones();
+      };
+
+      // Búsqueda y Filtros
+      const searchInput = document.querySelector("#input-buscar-inscrito");
+      const filterSelect = document.querySelector("#filter-tipo");
+
+      const applyFilters = () => {
+        const query = searchInput.value.toLowerCase().trim();
+        const tipo = filterSelect.value;
+
+        const filtered = rowsData.filter(r => {
+          const matchType = tipo === "todos" || r.tipo_encuentro === tipo;
+          const matchQuery = `${r.nombres} ${r.apellidos} ${r.codigo_ticket} ${r.documento_identidad} ${r.correo}`.toLowerCase().includes(query);
+          return matchType && matchQuery;
+        });
+
+        renderTable(filtered);
+      };
+
+      searchInput.addEventListener("input", applyFilters);
+      filterSelect.addEventListener("change", applyFilters);
+
+      // Exportar a Excel / CSV
+      document.querySelector("#btn-export-excel").addEventListener("click", () => {
+        if (!rowsData.length) return alert("No hay datos para exportar.");
+
+        let csv = "Codigo Ticket,Tipo Encuentro,Nombres,Apellidos,Documento,Edad,Correo,Celular,Pertenece a Red,Nombre Red,Medio Pago,Valor,Estado Pago,Fecha Registro\n";
+        
+        rowsData.forEach(r => {
+          csv += `"${r.codigo_ticket}","${r.tipo_encuentro}","${r.nombres}","${r.apellidos}","${r.documento_identidad}","${r.edad}","${r.correo}","${r.celular}","${r.pertenece_red ? 'SI' : 'NO'}","${r.red_nombre || 'N/A'}","${r.medio_pago}","${r.valor_pagado}","${r.estado_pago}","${r.created_at}"\n`;
+        });
+
+        const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Inscritos_Encuentros_Nazareno_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+      });
+
+      // Configuración de Fechas y Precios
+      const configForm = document.querySelector("#form-config-encuentros");
+      const configStatus = document.querySelector("#config-status");
+
+      configForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        configStatus.textContent = "Guardando...";
+        const id = document.querySelector("#config-tipo").value;
+
+        const payload = {
+          id: id,
+          lema: document.querySelector("#config-lema").value,
+          fecha_inicio: document.querySelector("#config-inicio").value,
+          fecha_fin: document.querySelector("#config-fin").value,
+          precio: Number(document.querySelector("#config-precio").value),
+          lugar: document.querySelector("#config-lugar").value
+        };
+
+        const { error } = await client.from("encuentros_config").upsert(payload);
+        if (error) {
+          configStatus.textContent = "Error: " + error.message;
+        } else {
+          configStatus.textContent = "Configuración actualizada correctamente.";
+        }
+      });
+
+      (async () => {
+        await window.supabaseAdmin.requireAdminPermission("encuentros");
+        await Promise.all([loadInscripciones(), loadEncounterSettings()]);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Perfil | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="eventos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            <span>Eventos</span>
+          </a>
+          <a href="plan-maestro.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Plan del Maestro (DPM)</span>
+          </a>
+          <a href="grupos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+            <span>Grupos</span>
+          </a>
+          <a href="carrusel.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg>
+            <span>Carrusel</span>
+          </a>
+          <a href="devocionales.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+            <span>Devocionales</span>
+          </a>
+          <a href="configuracion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a class="is-active" href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Cuenta personal</p>
+            <h1 class="admin-title">Mi perfil.</h1>
+            <p class="admin-lead">Actualiza tu nombre, contraseña y administra los colaboradores autorizados.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- Formulario Mi Cuenta -->
+        <section class="admin-panel">
+          <p class="admin-eyebrow">Información de cuenta</p>
+          <h2>Tu acceso</h2>
+          <form class="admin-form" data-profile-form>
+            <div class="admin-field">
+              <label for="profile-email">Correo</label>
+              <input id="profile-email" type="email" readonly />
+            </div>
+            <div class="admin-field">
+              <label for="profile-name">Tu Nombre (Aparecerá en el saludo del Dashboard)</label>
+              <input id="profile-name" name="nombre" placeholder="Ej: David / Emanuel" required />
+            </div>
+            <div class="admin-field">
+              <label for="profile-password">Nueva contraseña</label>
+              <input id="profile-password" name="password" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres" />
+            </div>
+            <div class="admin-field">
+              <label for="profile-password-confirm">Confirmar contraseña</label>
+              <input id="profile-password-confirm" name="password_confirm" type="password" minlength="8" autocomplete="new-password" />
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit">Guardar perfil</button>
+            </div>
+            <p class="admin-status" data-profile-status role="status"></p>
+          </form>
+        </section>
+
+        <!-- Panel de Colaboradores (Visible para Administrador Principal y Director DPM) -->
+        <section class="admin-panel" data-collaborators-panel style="margin-top:24px" hidden>
+          <p class="admin-eyebrow">Gestión de Usuarios y Permisos</p>
+          <h2 data-collab-form-title>Agregar colaborador / Líder</h2>
+          <p class="admin-lead">Crea cuentas con sus respectivos roles y define a qué módulos tienen acceso.</p>
+
+          <form class="admin-form" data-collaborator-form>
+            <input type="hidden" name="collab_id" />
+
+            <div class="admin-field">
+              <label for="collaborator-email">Correo electrónico</label>
+              <input id="collaborator-email" name="email" type="email" required placeholder="correo@ejemplo.com" />
+            </div>
+            <div class="admin-field">
+              <label for="collaborator-name">Nombre completo</label>
+              <input id="collaborator-name" name="nombre" required placeholder="Nombre del líder o colaborador" />
+            </div>
+            
+            <div class="admin-field">
+              <label for="collaborator-role">Rol asignado</label>
+              <select id="collaborator-role" name="rol" required>
+                <option value="colaborador">Líder / Colaborador</option>
+                <option value="director plan del maestro">Director Plan del Maestro</option>
+                <option value="director creativo">Director Creativo</option>
+                <option value="director de producción">Director de Producción</option>
+                <option value="maestro">Maestro</option>
+              </select>
+            </div>
+
+            <div class="admin-field">
+              <label for="collaborator-password">Contraseña temporal</label>
+              <input id="collaborator-password" name="password" type="password" minlength="8" placeholder="Mínimo 8 caracteres" />
+            </div>
+
+            <!-- Switches con Todos los Permisos del Sistema -->
+            <div class="admin-field admin-field-full">
+              <label style="margin-bottom: 6px; font-size:12px; font-weight:800;">Permisos de módulos disponibles</label>
+              <div class="admin-permissions-grid">
+                
+                <!-- Eventos -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+                    <span>Eventos</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="eventos" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                    <span>Prédicas y Podcasts</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="sermones" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Grupos de Conexión -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+                    <span>Grupos</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="grupos" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Plan del Maestro -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Plan Maestro (DPM)</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="plan_maestro" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Encuentros Hombres & Mujeres -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Encuentros H/M</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="encuentros" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Bautismos -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>Bautismos</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="bautismos" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Carrusel -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg>
+                    <span>Carrusel</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="carrusel" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Devocionales -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+                    <span>Devocionales</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="devocionales" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+                <!-- Configuración -->
+                <label class="admin-permission-card">
+                  <div class="admin-permission-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg>
+                    <span>Configuración</span>
+                  </div>
+                  <div class="admin-switch">
+                    <input type="checkbox" name="configuracion" />
+                    <span class="admin-switch-slider"></span>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-submit-collab>Guardar colaborador</button>
+              <button class="admin-button" type="button" data-cancel-collab-edit hidden>Cancelar edición</button>
+            </div>
+            <p class="admin-status" data-collaborator-status role="status"></p>
+          </form>
+
+          <!-- Tabla de Colaboradores -->
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Correo</th>
+                  <th>Nombre</th>
+                  <th>Rol</th>
+                  <th>Permisos</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody data-collaborators-list>
+                <tr>
+                  <td colspan="6" class="admin-empty">Cargando colaboradores...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const userEmail = document.querySelector("[data-admin-email]");
+      const profileForm = document.querySelector("[data-profile-form]");
+      const profileStatus = document.querySelector("[data-profile-status]");
+      const collaboratorsPanel = document.querySelector("[data-collaborators-panel]");
+      const collaboratorForm = document.querySelector("[data-collaborator-form]");
+      const collabFormTitle = document.querySelector("[data-collab-form-title]");
+      const submitCollabBtn = document.querySelector("[data-submit-collab]");
+      const cancelCollabBtn = document.querySelector("[data-cancel-collab-edit]");
+      const collaboratorStatus = document.querySelector("[data-collaborator-status]");
+      const collaboratorsList = document.querySelector("[data-collaborators-list]");
+
+      const permissions = ["eventos", "grupos", "plan_maestro", "encuentros", "bautismos", "carrusel", "devocionales", "configuracion", "sermones"];
+      let collabRows = [];
+      let activeUserProfile = null;
+
+      const escapeHtml = (value = "") =>
+        String(value).replace(/[&<>'"]/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "'": "&#39;",
+          '"': "&quot;"
+        })[char]);
+
+      const fillCollabForm = (item) => {
+        collaboratorForm.elements.collab_id.value = item.usuario_id;
+        collaboratorForm.elements.email.value = item.correo || "";
+        collaboratorForm.elements.email.readOnly = true;
+        collaboratorForm.elements.nombre.value = item.nombre || "";
+        collaboratorForm.elements.rol.value = item.rol || "colaborador";
+        
+        const pwdInput = collaboratorForm.elements.password;
+        pwdInput.required = false;
+        pwdInput.placeholder = "Dejar en blanco para no cambiar";
+
+        permissions.forEach((perm) => {
+          const chk = collaboratorForm.elements[perm];
+          if (chk) chk.checked = Boolean(item.permisos?.[perm]);
+        });
+
+        collabFormTitle.textContent = "Editar colaborador";
+        submitCollabBtn.textContent = "Actualizar colaborador";
+        cancelCollabBtn.hidden = false;
+        collaboratorStatus.textContent = "";
+        collaboratorForm.scrollIntoView({ behavior: "smooth" });
+      };
+
+      const resetCollabForm = () => {
+        collaboratorForm.reset();
+        collaboratorForm.elements.collab_id.value = "";
+        collaboratorForm.elements.email.readOnly = false;
+        const pwdInput = collaboratorForm.elements.password;
+        pwdInput.required = true;
+        pwdInput.placeholder = "Mínimo 8 caracteres";
+        collabFormTitle.textContent = "Agregar colaborador / Líder";
+        submitCollabBtn.textContent = "Guardar colaborador";
+        cancelCollabBtn.hidden = true;
+        collaboratorStatus.textContent = "";
+      };
+
+      const loadCollaborators = async () => {
+        try {
+          const client = window.supabaseAdmin?.client;
+          if (!client) throw new Error("Cliente de base de datos no disponible.");
+
+          const { data, error } = await client
+            .from("admin_perfiles")
+            .select("usuario_id, correo, nombre, rol, permisos, activo")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          collabRows = data || [];
+
+          if (!collabRows.length) {
+            collaboratorsList.innerHTML = '<tr><td colspan="6" class="admin-empty">No hay colaboradores registrados.</td></tr>';
+            return;
+          }
+
+          collaboratorsList.innerHTML = collabRows
+            .map((item) => {
+              const isPrincipal = window.supabaseAdmin?.isSuperAdmin?.({ email: item.correo }, item) ??
+                (item.rol === "principal" || item.correo === "comunicaciones@nazarenocali.org");
+              const permsText = isPrincipal
+                ? "Todos"
+                : permissions.filter((key) => item.permisos?.[key]).join(", ") || "Ninguno";
+
+              const formattedRole = window.supabaseAdmin?.formatRole
+                ? window.supabaseAdmin.formatRole(item.rol)
+                : item.rol;
+
+              return `<tr>
+                <td><strong>${escapeHtml(item.correo || "")}</strong></td>
+                <td>${escapeHtml(item.nombre || "—")}</td>
+                <td><span class="admin-badge ${isPrincipal ? "admin-badge-violet" : ""}">${escapeHtml(formattedRole)}</span></td>
+                <td>${escapeHtml(permsText)}</td>
+                <td><span class="admin-badge ${item.activo !== false ? "admin-badge-active" : "admin-badge-inactive"}">${item.activo !== false ? "Activo" : "Inactivo"}</span></td>
+                <td style="white-space:nowrap;">
+                  <button class="admin-button" type="button" data-edit-collab="${escapeHtml(item.usuario_id)}">Editar</button>
+                  ${!isPrincipal ? `<button class="admin-button admin-button-danger" type="button" data-toggle-status="${escapeHtml(item.usuario_id)}">${item.activo !== false ? 'Desactivar' : 'Activar'}</button>` : ''}
+                </td>
+              </tr>`;
+            })
+            .join("");
+
+          collaboratorsList.querySelectorAll("[data-edit-collab]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const found = collabRows.find((c) => c.usuario_id === btn.dataset.editCollab);
+              if (found) fillCollabForm(found);
+            });
+          });
+
+          collaboratorsList.querySelectorAll("[data-toggle-status]").forEach((btn) => {
+            btn.addEventListener("click", () => toggleCollabStatus(btn.dataset.toggleStatus));
+          });
+        } catch (error) {
+          console.error("Error al cargar colaboradores:", error);
+          collaboratorsList.innerHTML = `<tr><td colspan="6" class="admin-empty">Error al cargar: ${escapeHtml(error.message)}</td></tr>`;
+        }
+      };
+
+      const toggleCollabStatus = async (userId) => {
+        const client = window.supabaseAdmin.client;
+        const target = collabRows.find((c) => c.usuario_id === userId);
+        if (!target) return;
+        const newStatus = target.activo === false;
+        const { error } = await client.from("admin_perfiles").update({ activo: newStatus }).eq("usuario_id", userId);
+        if (error) {
+          collaboratorStatus.textContent = error.message;
+          return;
+        }
+        await loadCollaborators();
+      };
+
+      // Guardar perfil propio (Nombre & Contraseña)
+      profileForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        profileStatus.textContent = "Guardando...";
+        const data = new FormData(profileForm);
+        const client = window.supabaseAdmin.client;
+
+        try {
+          const password = data.get("password");
+          if (password && password !== data.get("password_confirm")) {
+            throw new Error("Las contraseñas no coinciden.");
+          }
+
+          const user = (await client.auth.getUser()).data.user;
+          const currentProfile = await window.supabaseAdmin.getAdminProfile(user);
+
+          const { error: profileError } = await client.from("admin_perfiles").upsert({
+            usuario_id: user.id,
+            correo: user.email,
+            nombre: data.get("nombre") || null,
+            rol: currentProfile?.rol || "colaborador"
+          });
+
+          if (profileError) throw profileError;
+
+          if (password) {
+            const { error: pwdError } = await client.auth.updateUser({ password });
+            if (pwdError) throw pwdError;
+          }
+
+          profileStatus.textContent = "Perfil actualizado correctamente.";
+          profileForm.elements.password.value = "";
+          profileForm.elements.password_confirm.value = "";
+        } catch (error) {
+          profileStatus.textContent = error.message || "No fue posible actualizar el perfil.";
+        }
+      });
+
+      // Crear o Editar Colaborador
+      collaboratorForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        collaboratorStatus.textContent = "Guardando cambios...";
+        submitCollabBtn.disabled = true;
+
+        const data = new FormData(collaboratorForm);
+        const editingUserId = data.get("collab_id");
+        const permissionsData = Object.fromEntries(permissions.map((key) => [key, data.get(key) === "on"]));
+        const selectedRole = data.get("rol") || "colaborador";
+        const client = window.supabaseAdmin.client;
+
+        try {
+          if (editingUserId) {
+            const { error: updateError } = await client
+              .from("admin_perfiles")
+              .update({
+                nombre: data.get("nombre"),
+                rol: selectedRole,
+                permisos: permissionsData
+              })
+              .eq("usuario_id", editingUserId);
+
+            if (updateError) throw updateError;
+            collaboratorStatus.textContent = "Colaborador actualizado correctamente.";
+          } else {
+            const isolatedClient = window.supabase.createClient(client.supabaseUrl, client.supabaseKey, {
+              auth: { persistSession: false, autoRefreshToken: false }
+            });
+
+            const { data: signUpData, error: signUpError } = await isolatedClient.auth.signUp({
+              email: data.get("email"),
+              password: data.get("password")
+            });
+
+            if (signUpError) throw signUpError;
+            if (!signUpData.user) throw new Error("Supabase requiere confirmación de correo.");
+
+            const currentUser = (await client.auth.getUser()).data.user;
+            const { error: insertError } = await client.from("admin_perfiles").insert({
+              usuario_id: signUpData.user.id,
+              correo: data.get("email"),
+              nombre: data.get("nombre"),
+              rol: selectedRole,
+              permisos: permissionsData,
+              created_by: currentUser?.id || null
+            });
+
+            if (insertError) throw insertError;
+            collaboratorStatus.textContent = "Colaborador creado exitosamente.";
+          }
+
+          resetCollabForm();
+          await loadCollaborators();
+        } catch (error) {
+          collaboratorStatus.textContent = error.message || "No fue posible procesar la solicitud.";
+        } finally {
+          submitCollabBtn.disabled = false;
+        }
+      });
+
+      cancelCollabBtn.addEventListener("click", resetCollabForm);
+
+      (async () => {
+        try {
+          const user = await window.supabaseAdmin.requireAdminSession();
+          if (!user) return;
+
+          userEmail.textContent = user.email || "Usuario activo";
+          document.querySelector("#profile-email").value = user.email || "";
+
+          const profile = await window.supabaseAdmin.getAdminProfile(user);
+          activeUserProfile = profile;
+          if (profile?.nombre) {
+            document.querySelector("#profile-name").value = profile.nombre;
+          }
+
+          const isSuperAdmin = window.supabaseAdmin.isSuperAdmin(user, profile);
+          const isDirectorPlan = profile.rol === "director plan del maestro";
+
+          // Administrador Principal y Director DPM pueden gestionar colaboradores/líderes
+          if (isSuperAdmin || isDirectorPlan) {
+            collaboratorsPanel.hidden = false;
+            await loadCollaborators();
+          } else {
+            collaboratorsPanel.hidden = true;
+          }
+        } catch (error) {
+          profileStatus.textContent = error.message;
+        }
+      })();
+
+      document.querySelector("[data-sign-out]").addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
+    </script>
+  </body>
+</html>

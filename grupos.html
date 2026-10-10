@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Grupos | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="eventos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            <span>Eventos</span>
+          </a>
+          <a class="is-active" href="grupos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+            <span>Grupos</span>
+          </a>
+          <a href="carrusel.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg>
+            <span>Carrusel</span>
+          </a>
+          <a href="devocionales.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+            <span>Devocionales</span>
+          </a>
+          <a href="configuracion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">02 · Comunidad</p>
+            <h1 class="admin-title">Grupos.</h1>
+            <p class="admin-lead">Administra y edita los grupos de conexión que aparecen en el sitio público.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <section class="admin-panel" aria-labelledby="group-form-title">
+          <p class="admin-eyebrow">Gestión de grupos</p>
+          <h2 id="group-form-title" data-form-title>Agregar grupo</h2>
+          
+          <form class="admin-form" data-group-form>
+            <input type="hidden" name="id" />
+            <input type="hidden" name="lat" id="group-lat" value="3.435" />
+            <input type="hidden" name="lng" id="group-lng" value="-76.535" />
+
+            <div class="admin-field">
+              <label for="group-name">Nombre del grupo</label>
+              <input id="group-name" name="nombre" required placeholder="Ej: Grupo San Fernando" />
+            </div>
+            <div class="admin-field">
+              <label for="group-leader">Líder del grupo</label>
+              <input id="group-leader" name="lider" placeholder="Nombre del líder" />
+            </div>
+            <div class="admin-field">
+              <label for="group-day">Día</label>
+              <input id="group-day" name="dia" placeholder="Ej: Miércoles" />
+            </div>
+            <div class="admin-field">
+              <label for="group-time">Hora</label>
+              <input id="group-time" name="hora" type="time" />
+            </div>
+            <div class="admin-field">
+              <label for="group-zone">Barrio / Zona general</label>
+              <input id="group-zone" name="zona" placeholder="Ej: Capri / San Fernando / Norte" />
+            </div>
+            <div class="admin-field">
+              <label for="group-contact">Contacto</label>
+              <input id="group-contact" name="contacto" placeholder="Enlace WhatsApp o número de teléfono" />
+            </div>
+
+            <!-- Selector de punto en el mapa (Sin pedir dirección exacta) -->
+            <div class="admin-field admin-field-full">
+              <label>Ubicación aproximada en el mapa (Haz clic o arrastra el marcador cerca del lugar. Por seguridad, no se publican direcciones exactas).</label>
+              <div id="admin-map-picker" style="height: 280px; width: 100%; border-radius: 8px; border: 1px solid var(--admin-line); background: #e5e3df; overflow: hidden; position: relative;"></div>
+              <span class="admin-file-note" id="coords-preview" style="margin-top: 6px;">Punto asignado: 3.4350, -76.5350</span>
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label for="group-description">Descripción (opcional)</label>
+              <textarea id="group-description" name="descripcion" rows="2" placeholder="Breve invitación o detalle"></textarea>
+            </div>
+            <div class="admin-field">
+              <label for="group-status">Estado</label>
+              <select id="group-status" name="estado">
+                <option value="activo">Activo</option>
+                <option value="pausado">Pausado</option>
+              </select>
+            </div>
+
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-submit-group>Guardar grupo</button>
+              <button class="admin-button" type="button" data-cancel-edit hidden>Cancelar edición</button>
+            </div>
+            <p class="admin-status" data-group-status role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-panel" style="margin-top:24px" aria-labelledby="groups-list-title">
+          <p class="admin-eyebrow">Contenido publicado</p>
+          <h2 id="groups-list-title">Grupos actuales</h2>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Horario</th>
+                  <th>Zona</th>
+                  <th>Líder</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody data-groups-list>
+                <tr>
+                  <td colspan="6" class="admin-empty">Cargando grupos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="admin-status" data-list-status role="status"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const form = document.querySelector("[data-group-form]");
+      const formHeading = document.querySelector("[data-form-title]");
+      const list = document.querySelector("[data-groups-list]");
+      const status = document.querySelector("[data-group-status]");
+      const listStatus = document.querySelector("[data-list-status]");
+      const cancelButton = document.querySelector("[data-cancel-edit]");
+      const submitButton = document.querySelector("[data-submit-group]");
+      const latInput = document.querySelector("#group-lat");
+      const lngInput = document.querySelector("#group-lng");
+      const coordsPreview = document.querySelector("#coords-preview");
+      let rows = [];
+
+      // --- Minimapa selector en el Admin ---
+      let adminMap, adminMarker;
+      const initAdminMapPicker = () => {
+        const defaultLat = 3.435;
+        const defaultLng = -76.535;
+
+        adminMap = L.map("admin-map-picker", {
+          scrollWheelZoom: true,
+          zoomControl: true
+        }).setView([defaultLat, defaultLng], 12);
+
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19
+        }).addTo(adminMap);
+
+        adminMarker = L.marker([defaultLat, defaultLng], {
+          draggable: true
+        }).addTo(adminMap);
+
+        const updateCoords = (lat, lng) => {
+          latInput.value = lat.toFixed(6);
+          lngInput.value = lng.toFixed(6);
+          coordsPreview.textContent = `Punto asignado: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+        };
+
+        adminMarker.on("dragend", () => {
+          const pos = adminMarker.getLatLng();
+          updateCoords(pos.lat, pos.lng);
+        });
+
+        adminMap.on("click", (e) => {
+          adminMarker.setLatLng(e.latlng);
+          updateCoords(e.latlng.lat, e.latlng.lng);
+        });
+
+        setTimeout(() => adminMap.invalidateSize(), 300);
+      };
+
+      const setPickerPosition = (lat, lng) => {
+        const validLat = Number(lat) || 3.435;
+        const validLng = Number(lng) || -76.535;
+        if (adminMarker && adminMap) {
+          adminMarker.setLatLng([validLat, validLng]);
+          adminMap.setView([validLat, validLng], 14);
+          latInput.value = validLat;
+          lngInput.value = validLng;
+          coordsPreview.textContent = `Punto asignado: ${validLat.toFixed(4)}, ${validLng.toFixed(4)}`;
+          adminMap.invalidateSize();
+        }
+      };
+
+      const escapeHtml = (value = "") =>
+        String(value).replace(/[&<>'"]/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "'": "&#39;",
+          '"': "&quot;"
+        })[char]);
+
+      const fillForm = (group) => {
+        form.elements.id.value = group.id;
+        form.elements.nombre.value = group.nombre || group.nombre_grupo || "";
+        form.elements.lider.value = group.lider || "";
+        form.elements.dia.value = group.dia || "";
+        form.elements.hora.value = group.hora || "";
+        form.elements.zona.value = group.zona || "";
+        form.elements.contacto.value = group.contacto || "";
+        form.elements.descripcion.value = group.descripcion || "";
+        form.elements.estado.value = group.estado || "activo";
+
+        setPickerPosition(group.lat, group.lng);
+
+        formHeading.textContent = "Editar grupo";
+        submitButton.textContent = "Actualizar grupo";
+        cancelButton.hidden = false;
+        status.textContent = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const resetForm = () => {
+        form.reset();
+        form.elements.id.value = "";
+        setPickerPosition(3.435, -76.535);
+        formHeading.textContent = "Agregar grupo";
+        submitButton.textContent = "Guardar grupo";
+        cancelButton.hidden = true;
+        status.textContent = "";
+      };
+
+      const loadGroups = async () => {
+        try {
+          const client = window.supabaseAdmin?.client;
+          if (!client) throw new Error("Cliente de base de datos no disponible.");
+
+          const { data, error } = await client
+            .from("grupos_conexion")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+
+          rows = data || [];
+          list.innerHTML = rows.length
+            ? rows
+                .map((group) => {
+                  const name = group.nombre || group.nombre_grupo || "Sin nombre";
+                  const schedule = [group.dia, group.hora].filter(Boolean).join(" · ") || "Sin horario";
+
+                  return `<tr>
+                    <td><strong>${escapeHtml(name)}</strong><br /><small>${escapeHtml(group.descripcion || "")}</small></td>
+                    <td>${escapeHtml(schedule)}</td>
+                    <td>${escapeHtml(group.zona || "Sin zona")}</td>
+                    <td>${escapeHtml(group.lider || "Sin líder")}</td>
+                    <td><span class="admin-badge ${group.estado === 'activo' ? 'admin-badge-active' : 'admin-badge-inactive'}">${escapeHtml(group.estado || 'activo')}</span></td>
+                    <td style="white-space:nowrap;">
+                      <button class="admin-button" type="button" data-edit="${group.id}">Editar</button>
+                      <button class="admin-button admin-button-danger" type="button" data-delete="${group.id}">Eliminar</button>
+                    </td>
+                  </tr>`;
+                })
+                .join("")
+            : '<tr><td colspan="6" class="admin-empty">Todavía no hay grupos registrados.</td></tr>';
+
+          list.querySelectorAll("[data-edit]").forEach((button) =>
+            button.addEventListener("click", () => {
+              const found = rows.find((g) => g.id === button.dataset.edit);
+              if (found) fillForm(found);
+            })
+          );
+
+          list.querySelectorAll("[data-delete]").forEach((button) =>
+            button.addEventListener("click", () => deleteGroup(button.dataset.delete))
+          );
+        } catch (error) {
+          console.error("Error al cargar grupos:", error);
+          listStatus.textContent = error.message;
+          list.innerHTML = `<tr><td colspan="6" class="admin-empty">Error cargando grupos: ${escapeHtml(error.message)}</td></tr>`;
+        }
+      };
+
+      const deleteGroup = async (id) => {
+        if (!window.confirm("¿Seguro que deseas eliminar este grupo?")) return;
+        try {
+          const client = window.supabaseAdmin.client;
+          const { error } = await client.from("grupos_conexion").delete().eq("id", id);
+          if (error) throw error;
+          listStatus.textContent = "Grupo eliminado.";
+          await loadGroups();
+        } catch (error) {
+          listStatus.textContent = error.message || "No se pudo eliminar el grupo.";
+        }
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.textContent = "Guardando...";
+        submitButton.disabled = true;
+
+        const client = window.supabaseAdmin.client;
+        const formData = new FormData(form);
+        const id = formData.get("id");
+        const nombreVal = formData.get("nombre");
+
+        const record = {
+          nombre: nombreVal,
+          nombre_grupo: nombreVal,
+          lider: formData.get("lider") || null,
+          dia: formData.get("dia") || null,
+          hora: formData.get("hora") || null,
+          zona: formData.get("zona") || null,
+          contacto: formData.get("contacto") || null,
+          descripcion: formData.get("descripcion") || null,
+          estado: formData.get("estado") || "activo",
+          lat: formData.get("lat") ? Number(formData.get("lat")) : 3.435,
+          lng: formData.get("lng") ? Number(formData.get("lng")) : -76.535
+        };
+
+        try {
+          if (id) {
+            const { error } = await client.from("grupos_conexion").update(record).eq("id", id);
+            if (error) throw error;
+            status.textContent = "Grupo actualizado correctamente.";
+          } else {
+            const user = (await client.auth.getUser()).data.user;
+            record.created_by = user?.id || null;
+            const { error } = await client.from("grupos_conexion").insert(record);
+            if (error) throw error;
+            status.textContent = "Grupo guardado correctamente.";
+          }
+
+          resetForm();
+          await loadGroups();
+        } catch (error) {
+          console.error("Error al guardar grupo:", error);
+          status.textContent = error.message || "No fue posible guardar el grupo.";
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      cancelButton.addEventListener("click", resetForm);
+
+      (async () => {
+        try {
+          initAdminMapPicker();
+          const access = await window.supabaseAdmin.requireAdminPermission("grupos");
+          if (!access) return;
+          document.querySelector("[data-admin-email]").textContent = access.user.email;
+          await loadGroups();
+        } catch (error) {
+          window.supabaseAdmin.showAuthError(listStatus, error);
+        }
+      })();
+
+      document.querySelector("[data-sign-out]").addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
+    </script>
+  </body>
+</html>

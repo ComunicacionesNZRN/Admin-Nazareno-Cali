@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Mi Grupo de Conexión | Panel del Líder</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a class="is-active" href="mi-grupo.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Mi Grupo (Líder)</span>
+          </a>
+          <a href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Portal de Líderes Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Liderazgo en Acción</p>
+            <h1 class="admin-title">Mi Grupo de Conexión.</h1>
+            <p class="admin-lead">Descarga la enseñanza mensual del Plan del Maestro, gestiona la lista de asistentes y entrega tu informe semanal.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- 1. Descarga del Manual del Mes Actual -->
+        <section class="admin-panel" style="border-left: 4px solid var(--admin-violet);">
+          <p class="admin-eyebrow">Enseñanza Oficial</p>
+          <h2>Manual de Grupos de Conexión</h2>
+          <div data-current-manual-box>
+            <p class="admin-empty">Buscando manual del mes...</p>
+          </div>
+        </section>
+
+        <!-- 2. Formulario de Entrega de Informe Semanal -->
+        <section class="admin-panel" style="margin-top:24px;">
+          <p class="admin-eyebrow">Reporte Semanal</p>
+          <h2>Entregar Informe de Reunión</h2>
+          <p class="admin-lead">Envía los datos de la reunión de esta semana para que el Director del Plan del Maestro reciba los resultados.</p>
+
+          <form class="admin-form" data-report-form>
+            <div class="admin-field">
+              <label for="report-date">Fecha de la Reunión</label>
+              <input id="report-date" name="fecha_reunion" type="date" required />
+            </div>
+            <div class="admin-field">
+              <label for="report-topic">Tema Impartido</label>
+              <input id="report-topic" name="tema_impartido" required placeholder="Título de la lección del manual" />
+            </div>
+            <div class="admin-field">
+              <label for="report-members">Número de Miembros Asistentes</label>
+              <input id="report-members" name="asistencia_miembros" type="number" min="0" value="0" required />
+            </div>
+            <div class="admin-field">
+              <label for="report-new">Personas Nuevas / Invitados</label>
+              <input id="report-new" name="asistencia_nuevos" type="number" min="0" value="0" required />
+            </div>
+            <div class="admin-field admin-field-full">
+              <label for="report-notes">Peticiones de Oración y Observaciones</label>
+              <textarea id="report-notes" name="observaciones" rows="3" placeholder="Comentarios, necesidades o testimonios del grupo..."></textarea>
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit">Enviar Informe Semanal</button>
+            </div>
+            <p class="admin-status" data-report-status role="status"></p>
+          </form>
+        </section>
+
+        <!-- 3. Lista de Integrantes del Grupo (Añadir / Retirar) -->
+        <section class="admin-panel" style="margin-top:24px;">
+          <p class="admin-eyebrow">Cuidado Pastoral</p>
+          <h2>Integrantes del Grupo</h2>
+          
+          <form class="admin-form" data-member-form style="margin-bottom: 20px;">
+            <div class="admin-field">
+              <label for="member-name">Nombre Completo</label>
+              <input id="member-name" name="nombre_completo" required placeholder="Nombre del integrante" />
+            </div>
+            <div class="admin-field">
+              <label for="member-phone">Teléfono / WhatsApp</label>
+              <input id="member-phone" name="telefono" placeholder="Número de contacto" />
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button" type="submit">+ Registrar Integrante</button>
+            </div>
+          </form>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Nombre</th><th>Teléfono</th><th>Estado</th><th>Acción</th></tr></thead>
+              <tbody data-members-list><tr><td colspan="4" class="admin-empty">Cargando integrantes...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      let activeUserGroup = null;
+      const manualBox = document.querySelector("[data-current-manual-box]");
+      const reportForm = document.querySelector("[data-report-form]");
+      const reportStatus = document.querySelector("[data-report-status]");
+      const memberForm = document.querySelector("[data-member-form]");
+      const membersList = document.querySelector("[data-members-list]");
+
+      const loadLeaderPortal = async () => {
+        const client = window.supabaseAdmin.client;
+        const user = (await client.auth.getUser()).data.user;
+
+        // 1. Obtener el grupo asignado al líder (o el primero disponible)
+        const { data: group } = await client.from("grupos_conexion").select("*").limit(1).maybeSingle();
+        activeUserGroup = group;
+
+        // 2. Obtener Manual del mes
+        const currentMonth = new Date().getMonth() + 1;
+        const { data: manual } = await client.from("plan_maestro_manuales").select("*").eq("mes", currentMonth).maybeSingle();
+
+        if (manual) {
+          manualBox.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h3 style="margin:0 0 6px;">${manual.titulo}</h3>
+                <p style="margin:0; color:var(--admin-muted); font-size:13px;">Manual correspondiente al mes actual.</p>
+              </div>
+              <a href="${manual.archivo_url}" target="_blank" class="admin-button-primary">Descargar Manual (PDF) ↗</a>
+            </div>
+          `;
+        } else {
+          manualBox.innerHTML = '<p class="admin-empty">El Director del Plan del Maestro aún no ha subido el manual de este mes.</p>';
+        }
+
+        // 3. Cargar Integrantes
+        if (activeUserGroup) {
+          const { data: members } = await client.from("grupos_integrantes").select("*").eq("grupo_id", activeUserGroup.id);
+          membersList.innerHTML = members?.length
+            ? members.map((m) => `
+              <tr>
+                <td><strong>${m.nombre_completo}</strong></td>
+                <td>${m.telefono || "—"}</td>
+                <td><span class="admin-badge ${m.estado === 'activo' ? 'admin-badge-active' : 'admin-badge-inactive'}">${m.estado}</span></td>
+                <td><button class="admin-button admin-button-danger" onclick="toggleMember('${m.id}', '${m.estado}')">${m.estado === 'activo' ? 'Retirar' : 'Reactivar'}</button></td>
+              </tr>
+            `).join("")
+            : '<tr><td colspan="4" class="admin-empty">No hay integrantes registrados en tu lista.</td></tr>';
+        }
+      };
+
+      // Guardar Informe
+      reportForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        reportStatus.textContent = "Enviando informe...";
+        const client = window.supabaseAdmin.client;
+        const formData = new FormData(reportForm);
+
+        try {
+          const { error } = await client.from("grupos_reportes").insert({
+            grupo_id: activeUserGroup?.id || null,
+            fecha_reunion: formData.get("fecha_reunion"),
+            tema_impartido: formData.get("tema_impartido"),
+            asistencia_miembros: Number(formData.get("asistencia_miembros")),
+            asistencia_nuevos: Number(formData.get("asistencia_nuevos")),
+            observaciones: formData.get("observaciones")
+          });
+          if (error) throw error;
+
+          reportForm.reset();
+          reportStatus.textContent = "Informe entregado exitosamente al Director.";
+        } catch (err) {
+          reportStatus.textContent = err.message || "Error al enviar informe.";
+        }
+      });
+
+      // Añadir Integrante
+      memberForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const client = window.supabaseAdmin.client;
+        const formData = new FormData(memberForm);
+
+        if (!activeUserGroup) return alert("No tienes un grupo asignado.");
+
+        await client.from("grupos_integrantes").insert({
+          grupo_id: activeUserGroup.id,
+          nombre_completo: formData.get("nombre_completo"),
+          telefono: formData.get("telefono"),
+          estado: "activo"
+        });
+
+        memberForm.reset();
+        await loadLeaderPortal();
+      });
+
+      window.toggleMember = async (id, currentStatus) => {
+        const client = window.supabaseAdmin.client;
+        const newStatus = currentStatus === "activo" ? "inactivo" : "activo";
+        await client.from("grupos_integrantes").update({ estado: newStatus }).eq("id", id);
+        await loadLeaderPortal();
+      };
+
+      (async () => {
+        await window.supabaseAdmin.requireAdminSession();
+        document.querySelector("#report-date").value = new Date().toISOString().slice(0, 10);
+        await loadLeaderPortal();
+      })();
+    </script>
+  </body>
+</html>

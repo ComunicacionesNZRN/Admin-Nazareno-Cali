@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Carrusel | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración"><a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></a><a href="eventos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg><span>Eventos</span></a><a href="grupos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg><span>Grupos</span></a><a class="is-active" href="carrusel.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg><span>Carrusel</span></a><a href="devocionales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg><span>Devocionales</span></a><a href="configuracion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg><span>Configuración</span></a><a href="perfil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg><span>Mi perfil</span></a></nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+      <main class="admin-main">
+        <header class="admin-topbar"><div><p class="admin-eyebrow">03 · Portada</p><h1 class="admin-title">Carrusel.</h1><p class="admin-lead">Decide qué actividades aparecen en “Descubre más maneras de conectar”.</p></div><div class="admin-user"><span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span><button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button></div></header>
+        <section class="admin-panel" aria-labelledby="carousel-form-title"><p class="admin-eyebrow">Nuevo contenido</p><h2 id="carousel-form-title">Agregar pieza</h2><form class="admin-form" data-carousel-form><input type="hidden" name="id" /><div class="admin-field"><label for="carousel-title">Título</label><input id="carousel-title" name="titulo" required placeholder="Encuentro de mujeres" /></div><div class="admin-field"><label for="carousel-eyebrow">Etiqueta</label><input id="carousel-eyebrow" name="eyebrow" placeholder="Actividad del mes" /></div><div class="admin-field admin-field-full"><label for="carousel-description">Descripción</label><textarea id="carousel-description" name="descripcion" rows="3" required placeholder="Una frase breve para invitar a conectar"></textarea></div><div class="admin-field"><label for="carousel-type">Frecuencia</label><select id="carousel-type" name="tipo"><option value="fijo">Fijo: aparece todos los meses</option><option value="mensual">Mensual: solo aparece el mes elegido</option></select></div><div class="admin-field"><label for="carousel-month">Mes</label><select id="carousel-month" name="mes"><option value="">Todos / no aplica</option><option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option><option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option><option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option></select></div><div class="admin-field"><label for="carousel-order">Orden</label><input id="carousel-order" name="orden" type="number" value="0" min="0" /></div><div class="admin-field"><label for="carousel-link">Enlace</label><input id="carousel-link" name="link_url" type="text" placeholder="https://... o grupos.html" /></div><div class="admin-field admin-field-full"><label for="carousel-image">Imagen</label><input id="carousel-image" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" /><span class="admin-file-note">Recomendado: imagen horizontal de alta resolución.</span></div><div class="admin-field"><label for="carousel-image-url">URL de imagen</label><input id="carousel-image-url" name="image_url" type="url" placeholder="Opcional si no subes archivo" /></div><div class="admin-field"><label for="carousel-image-alt">Texto alternativo</label><input id="carousel-image-alt" name="image_alt" placeholder="Descripción de la imagen" /></div><div class="admin-field"><label><input name="activo" type="checkbox" checked /> Publicar en la portada</label></div><div class="admin-form-actions"><button class="admin-button-primary" type="submit">Guardar pieza</button><button class="admin-button" type="button" data-cancel-edit hidden>Cancelar edición</button></div><p class="admin-status" data-carousel-status role="status"></p></form></section>
+        <section class="admin-panel" style="margin-top:24px" aria-labelledby="carousel-list-title"><p class="admin-eyebrow">Contenido administrable</p><h2 id="carousel-list-title">Piezas del carrusel</h2><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Imagen</th><th>Título</th><th>Tipo</th><th>Mes</th><th>Orden</th><th>Estado</th><th>Acción</th></tr></thead><tbody data-carousel-list><tr><td colspan="7" class="admin-empty">Cargando contenido...</td></tr></tbody></table></div><p class="admin-status" data-list-status role="status"></p></section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const getClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
+      const form = document.querySelector("[data-carousel-form]");
+      const list = document.querySelector("[data-carousel-list]");
+      const status = document.querySelector("[data-carousel-status]");
+      const listStatus = document.querySelector("[data-list-status]");
+      const cancelButton = document.querySelector("[data-cancel-edit]");
+      const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+      const monthNames = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+      let rows = [];
+
+      const loadRows = async () => {
+        const client = getClient();
+        if (!client) return;
+        const { data, error } = await client.from("carrusel_conexion").select("*").order("orden").order("created_at");
+        if (error) { listStatus.textContent = error.message; return; }
+        rows = data || [];
+        list.innerHTML = rows.length
+          ? rows.map((item) => `
+            <tr>
+              <td>${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="" />` : "Sin imagen"}</td>
+              <td><strong>${escapeHtml(item.titulo)}</strong><br /><small>${escapeHtml(item.descripcion || "")}</small></td>
+              <td>${escapeHtml(item.tipo)}</td>
+              <td>${item.mes ? monthNames[item.mes] : "Todos"}</td>
+              <td>${item.orden}</td>
+              <td><span class="admin-badge ${item.activo ? 'admin-badge-active' : 'admin-badge-inactive'}">${item.activo ? "Publicado" : "Oculto"}</span></td>
+              <td style="white-space:nowrap;">
+                <button class="admin-button" type="button" data-edit="${item.id}">Editar</button>
+                <button class="admin-button admin-button-danger" type="button" data-delete="${item.id}">Eliminar</button>
+              </td>
+            </tr>`).join("")
+          : '<tr><td colspan="7" class="admin-empty">Todavía no hay piezas registradas.</td></tr>';
+
+        list.querySelectorAll("[data-edit]").forEach((btn) => btn.addEventListener("click", () => fillForm(rows.find((i) => i.id === btn.dataset.edit))));
+        list.querySelectorAll("[data-delete]").forEach((btn) => btn.addEventListener("click", () => deleteRow(btn.dataset.delete)));
+      };
+
+      const fillForm = (item) => {
+        Object.entries(item).forEach(([key, value]) => {
+          const field = form.elements[key];
+          if (field && key !== "activo") field.value = value ?? "";
+        });
+        form.elements.activo.checked = item.activo;
+        form.elements.id.value = item.id;
+        document.querySelector("#carousel-form-title").textContent = "Editar pieza";
+        cancelButton.hidden = false;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const resetForm = () => {
+        form.reset();
+        form.elements.id.value = "";
+        form.elements.activo.checked = true;
+        document.querySelector("#carousel-form-title").textContent = "Agregar pieza";
+        cancelButton.hidden = true;
+        status.textContent = "";
+      };
+
+      const uploadImage = async (file) => {
+        if (!file) return null;
+        const client = getClient();
+        const extension = file.name.split(".").pop().toLowerCase();
+        const path = `${crypto.randomUUID()}.${extension}`;
+        const { error } = await client.storage.from("carrusel").upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+        if (error) throw error;
+        return client.storage.from("carrusel").getPublicUrl(path).data.publicUrl;
+      };
+
+      const deleteRow = async (id) => {
+        if (!window.confirm("¿Eliminar esta pieza?")) return;
+        const client = getClient();
+        const { error } = await client.from("carrusel_conexion").delete().eq("id", id);
+        if (error) { listStatus.textContent = error.message; return; }
+        await loadRows();
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.textContent = "Guardando...";
+        try {
+          const client = getClient();
+          const values = Object.fromEntries(new FormData(form));
+          const imageUrl = await uploadImage(form.elements.imagen.files[0]);
+          const record = {
+            titulo: values.titulo,
+            eyebrow: values.eyebrow || null,
+            descripcion: values.descripcion,
+            tipo: values.tipo,
+            mes: values.mes ? Number(values.mes) : null,
+            orden: Number(values.orden || 0),
+            activo: form.elements.activo.checked,
+            link_url: values.link_url || null,
+            image_url: imageUrl || values.image_url || null,
+            image_alt: values.image_alt || values.titulo
+          };
+          const user = (await client.auth.getUser()).data.user;
+          record.created_by = user.id;
+          const query = values.id ? client.from("carrusel_conexion").update(record).eq("id", values.id) : client.from("carrusel_conexion").insert(record);
+          const { error } = await query;
+          if (error) throw error;
+          resetForm();
+          status.textContent = "Pieza guardada correctamente.";
+          await loadRows();
+        } catch (error) {
+          status.textContent = error.message || "No fue posible guardar la pieza.";
+        }
+      });
+
+      cancelButton.addEventListener("click", resetForm);
+      document.querySelector("[data-sign-out]")?.addEventListener("click", () => window.supabaseAdmin?.signOutAdmin());
+
+      (async () => {
+        try {
+          const access = await window.supabaseAdmin.requireAdminPermission("carrusel");
+          if (!access) return;
+          await loadRows();
+        } catch (error) {
+          window.supabaseAdmin.showAuthError(listStatus, error);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Prédicas y Podcasts | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html"><i class="fa-solid fa-gauge" aria-hidden="true"></i><span>Dashboard</span></a>
+          <a class="is-active" href="sermones.html"><i class="fa-brands fa-youtube" aria-hidden="true"></i><span>Prédicas y Podcasts</span></a>
+          <a href="eventos.html"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Eventos</span></a>
+          <a href="grupos.html"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Grupos</span></a>
+          <a href="perfil.html"><i class="fa-solid fa-user-shield" aria-hidden="true"></i><span>Mi perfil</span></a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Biblioteca audiovisual</p>
+            <h1 class="admin-title">Prédicas y Podcasts.</h1>
+            <p class="admin-lead">Publica enlaces de YouTube y elige qué transmisión debe aparecer como actual.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <section class="admin-panel" aria-labelledby="media-form-title">
+          <p class="admin-eyebrow">Nuevo contenido</p>
+          <h2 id="media-form-title">Agregar prédica</h2>
+          <form class="admin-form" data-media-form>
+            <div class="admin-field">
+              <label for="media-type">Tipo de contenido</label>
+              <select id="media-type" name="tipo" required>
+                <option value="predica">Prédica</option>
+                <option value="podcast">Podcast</option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label for="media-title">Título</label>
+              <input id="media-title" name="titulo" required maxlength="180" />
+            </div>
+            <div class="admin-field admin-field-full">
+              <label for="media-youtube-url">URL de YouTube</label>
+              <input id="media-youtube-url" name="youtube_url" type="url" required inputmode="url" placeholder="https://www.youtube.com/watch?v=..." />
+            </div>
+            <div class="admin-field">
+              <label for="media-speaker">Predicador o invitado</label>
+              <input id="media-speaker" name="predicador" required maxlength="120" />
+            </div>
+            <div class="admin-field">
+              <label for="media-date">Fecha de emisión</label>
+              <input id="media-date" name="fecha" type="date" required />
+            </div>
+            <div class="admin-field admin-field-full" data-live-field>
+              <label class="admin-permission-card">
+                <span class="admin-permission-info"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i><span>¿Es el En Vivo actual?</span></span>
+                <span class="admin-switch">
+                  <input type="checkbox" name="es_en_vivo" />
+                  <span class="admin-switch-slider"></span>
+                </span>
+              </label>
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-save-media>Publicar prédica</button>
+              <button class="admin-button" type="button" data-cancel-media-edit hidden>Cancelar edición</button>
+              <span class="admin-file-note">La miniatura se genera desde el ID del video.</span>
+            </div>
+            <p class="admin-status" data-media-status role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="admin-panel" style="margin-top:24px" aria-labelledby="media-list-title">
+          <div class="admin-topbar" style="margin-bottom:18px">
+            <div>
+              <p class="admin-eyebrow">Contenido guardado</p>
+              <h2 id="media-list-title">Publicaciones recientes</h2>
+            </div>
+            <label class="admin-field">
+              <span>Mostrar</span>
+              <select data-media-list-type aria-label="Filtrar por tipo">
+                <option value="predica">Prédicas</option>
+                <option value="podcast">Podcasts</option>
+              </select>
+            </label>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Título</th><th>Predicador / Invitado</th><th>Fecha</th><th>Estado</th><th>Acción</th></tr></thead>
+              <tbody data-media-list><tr><td colspan="5" class="admin-empty">Cargando publicaciones...</td></tr></tbody>
+            </table>
+          </div>
+          <p class="admin-status" data-media-list-status role="status"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const mediaAdminClient = window.supabaseAdmin?.client;
+      const mediaForm = document.querySelector("[data-media-form]");
+      const mediaFormStatus = document.querySelector("[data-media-status]");
+      const mediaListStatus = document.querySelector("[data-media-list-status]");
+      const mediaList = document.querySelector("[data-media-list]");
+      const mediaType = mediaForm.elements.tipo;
+      const mediaListType = document.querySelector("[data-media-list-type]");
+      const liveField = document.querySelector("[data-live-field]");
+      const saveButton = document.querySelector("[data-save-media]");
+      const cancelEditButton = document.querySelector("[data-cancel-media-edit]");
+      let authorizedUser = null;
+      let editingMedia = null;
+
+      const youtubeVideoId = (value) => {
+        try {
+          const url = new URL(value.trim());
+          const host = url.hostname.replace(/^www\./, "").toLowerCase();
+          let videoId = "";
+          if (host === "youtu.be") videoId = url.pathname.split("/").filter(Boolean)[0] || "";
+          else if (["youtube.com", "m.youtube.com", "youtube-nocookie.com"].includes(host)) {
+            videoId = url.searchParams.get("v") || url.pathname.match(/\/(?:embed|shorts|live)\/([\w-]{11})/)?.[1] || "";
+          }
+          return /^[\w-]{11}$/.test(videoId) ? videoId : "";
+        } catch {
+          return "";
+        }
+      };
+
+      const formatDate = (value) => {
+        if (!value) return "Sin fecha";
+        const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? new Date(`${value}T12:00:00`) : new Date(value);
+        return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("es-CO", { dateStyle: "medium" }).format(date);
+      };
+
+      const setMediaType = () => {
+        const isSermon = mediaType.value === "predica";
+        liveField.hidden = !isSermon;
+        mediaListType.value = mediaType.value;
+        const action = editingMedia ? "Editar" : "Agregar";
+        document.querySelector("#media-form-title").textContent = isSermon ? `${action} prédica` : `${action} podcast`;
+        saveButton.textContent = editingMedia ? "Guardar cambios" : (isSermon ? "Publicar prédica" : "Publicar podcast");
+        cancelEditButton.hidden = !editingMedia;
+        loadMediaRows();
+      };
+
+      const cancelEdit = () => {
+        editingMedia = null;
+        mediaForm.reset();
+        setMediaType();
+        mediaFormStatus.textContent = "";
+      };
+
+      const editMedia = (item) => {
+        editingMedia = { id: item.id, type: mediaListType.value };
+        mediaType.value = editingMedia.type;
+        mediaForm.elements.titulo.value = item.titulo || "";
+        mediaForm.elements.youtube_url.value = item.youtube_url || "";
+        mediaForm.elements.predicador.value = item.predicador || item.programa || "";
+        mediaForm.elements.fecha.value = item.fecha || "";
+        mediaForm.elements.es_en_vivo.checked = Boolean(item.en_vivo);
+        setMediaType();
+        mediaFormStatus.textContent = "Editando: corrige los datos y guarda los cambios.";
+        mediaForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      const renderMediaRows = (rows) => {
+        mediaList.replaceChildren();
+        if (!rows.length) {
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.colSpan = 5;
+          cell.className = "admin-empty";
+          cell.textContent = "Todavía no hay publicaciones de este tipo.";
+          row.append(cell);
+          mediaList.append(row);
+          return;
+        }
+
+        rows.forEach((item) => {
+          const row = document.createElement("tr");
+          const values = [item.titulo, item.predicador || item.programa, formatDate(item.fecha)];
+          values.forEach((value) => {
+            const cell = document.createElement("td");
+            cell.textContent = value || "Sin dato";
+            row.append(cell);
+          });
+
+          const stateCell = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.className = `admin-badge ${item.en_vivo ? "admin-badge-violet" : item.publicado ? "admin-badge-active" : "admin-badge-inactive"}`;
+          badge.textContent = item.en_vivo ? "EN VIVO" : item.publicado ? "Publicado" : "Oculto";
+          stateCell.append(badge);
+          row.append(stateCell);
+
+          const actionCell = document.createElement("td");
+          const editButton = document.createElement("button");
+          editButton.className = "admin-button";
+          editButton.type = "button";
+          editButton.textContent = "Editar";
+          editButton.addEventListener("click", () => editMedia(item));
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "admin-button admin-button-danger";
+          deleteButton.type = "button";
+          deleteButton.textContent = "Eliminar";
+          deleteButton.addEventListener("click", () => deleteMedia(item.id));
+          actionCell.append(editButton, document.createTextNode(" "), deleteButton);
+          row.append(actionCell);
+          mediaList.append(row);
+        });
+      };
+
+      const loadMediaRows = async () => {
+        const table = mediaListType.value === "predica" ? "sermones" : "podcasts";
+        const { data, error } = await mediaAdminClient
+          .from(table)
+          .select("*")
+          .order("fecha", { ascending: false })
+          .limit(100);
+        if (error) {
+          mediaListStatus.textContent = error.message;
+          return;
+        }
+        mediaListStatus.textContent = "";
+        renderMediaRows(data || []);
+      };
+
+      const deleteMedia = async (id) => {
+        if (!window.confirm("¿Eliminar esta publicación?")) return;
+        const table = mediaListType.value === "predica" ? "sermones" : "podcasts";
+        const { error } = await mediaAdminClient.from(table).delete().eq("id", id);
+        if (error) {
+          mediaListStatus.textContent = error.message;
+          return;
+        }
+        mediaListStatus.textContent = "Publicación eliminada.";
+        await loadMediaRows();
+      };
+
+      mediaType.addEventListener("change", setMediaType);
+      mediaListType.addEventListener("change", () => {
+        editingMedia = null;
+        mediaType.value = mediaListType.value;
+        setMediaType();
+      });
+      cancelEditButton.addEventListener("click", cancelEdit);
+
+      mediaForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        mediaFormStatus.textContent = "Guardando...";
+        saveButton.disabled = true;
+
+        try {
+          const values = Object.fromEntries(new FormData(mediaForm));
+          const videoId = youtubeVideoId(values.youtube_url);
+          if (!videoId) throw new Error("Ingresa una URL válida de un video de YouTube.");
+
+          const isSermon = values.tipo === "predica";
+          const payload = isSermon
+            ? {
+                titulo: values.titulo.trim(),
+                predicador: values.predicador.trim(),
+                fecha: values.fecha,
+                youtube_url: values.youtube_url.trim(),
+                youtube_video_id: videoId,
+                youtube_channel_id: "UCiYeT4_HfmnSEbtYjxPnRgg",
+                thumbnail_url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                en_vivo: mediaForm.elements.es_en_vivo.checked,
+                publicado: true,
+                created_by: authorizedUser.id,
+              }
+            : {
+                titulo: values.titulo.trim(),
+                programa: values.predicador.trim(),
+                fecha: values.fecha,
+                youtube_url: values.youtube_url.trim(),
+                thumbnail_url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                publicado: true,
+                created_by: authorizedUser.id,
+              };
+
+          const table = isSermon ? "sermones" : "podcasts";
+          if (editingMedia && editingMedia.type !== values.tipo) {
+            throw new Error("No se puede cambiar el tipo durante la edición. Cancela y crea una nueva publicación.");
+          }
+          if (isSermon && payload.en_vivo) {
+            const { error: clearLiveError } = await mediaAdminClient
+              .from("sermones")
+              .update({ en_vivo: false })
+              .eq("en_vivo", true);
+            if (clearLiveError) throw clearLiveError;
+          }
+
+          if (!editingMedia) payload.created_by = authorizedUser.id;
+          const query = editingMedia
+            ? mediaAdminClient.from(table).update(payload).eq("id", editingMedia.id)
+            : (isSermon
+              ? mediaAdminClient.from(table).upsert(payload, { onConflict: "youtube_video_id" })
+              : mediaAdminClient.from(table).insert(payload));
+          const { error } = await query;
+          if (error) throw error;
+
+          const savedMessage = editingMedia ? "Publicación actualizada correctamente." : (isSermon ? "Prédica publicada correctamente." : "Podcast publicado correctamente.");
+          editingMedia = null;
+          mediaForm.reset();
+          setMediaType();
+          mediaFormStatus.textContent = savedMessage;
+          await loadMediaRows();
+        } catch (error) {
+          mediaFormStatus.textContent = error.message || "No fue posible guardar el contenido.";
+        } finally {
+          saveButton.disabled = false;
+        }
+      });
+
+      document.querySelector("[data-sign-out]")?.addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
+
+      (async () => {
+        try {
+          const access = await window.supabaseAdmin.requireAdminPermission("sermones");
+          if (!access) return;
+          authorizedUser = access.user;
+          document.querySelector("[data-admin-email]").textContent = access.user.email;
+          await loadMediaRows();
+        } catch (error) {
+          window.supabaseAdmin.showAuthError(mediaFormStatus, error);
+          mediaForm.querySelectorAll("input, select, button").forEach((field) => { field.disabled = true; });
+        }
+      })();
+    </script>
+  </body>
+</html>

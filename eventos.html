@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Eventos | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoNegro.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a class="is-active" href="eventos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            <span>Eventos</span>
+          </a>
+          <a href="grupos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+            <span>Grupos</span>
+          </a>
+          <a href="carrusel.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg>
+            <span>Carrusel</span>
+          </a>
+          <a href="devocionales.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+            <span>Devocionales</span>
+          </a>
+          <a href="configuracion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">01 · Agenda</p>
+            <h1 class="admin-title">Eventos.</h1>
+            <p class="admin-lead">Agrega, edita y administra las actividades que aparecerán en la agenda pública.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <section class="admin-panel" aria-labelledby="form-event-heading">
+          <p class="admin-eyebrow">Registro y Edición</p>
+          <h2 id="form-event-heading" data-form-title>Agregar evento</h2>
+          
+          <form class="admin-form" data-event-form>
+            <input type="hidden" name="id" />
+            <input type="hidden" name="imagen_fondo_actual" />
+
+            <div class="admin-field">
+              <label for="event-title">Título del evento</label>
+              <input id="event-title" name="titulo" required placeholder="Ej: Invitado Flavio" />
+            </div>
+            <div class="admin-field">
+              <label for="event-location">Ubicación / Lugar</label>
+              <input id="event-location" name="ubicacion" placeholder="Ej: Sede Principal Cali" value="Sede Principal Cali" />
+            </div>
+
+            <div class="admin-field">
+              <label for="event-date">Fecha</label>
+              <input id="event-date" name="fecha" type="date" required />
+            </div>
+            <div class="admin-field">
+              <label for="event-time">Hora</label>
+              <input id="event-time" name="hora" type="time" required />
+            </div>
+
+            <div class="admin-field">
+              <label for="event-status">Estado</label>
+              <select id="event-status" name="estado" required>
+                <option value="proximo">Próximo</option>
+                <option value="agotado">Cupos agotados</option>
+                <option value="finalizado">Finalizado</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label for="event-reqs">Requisitos / Subtítulo</label>
+              <input id="event-reqs" name="requisitos" placeholder="Ej: Entrada libre · Traer libreta" />
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label for="event-desc">Descripción (opcional para el banner principal)</label>
+              <textarea id="event-desc" name="descripcion" rows="2" placeholder="Breve frase de invitación"></textarea>
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label for="event-image">Imagen del evento (16:9)</label>
+              <input id="event-image" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" />
+              <span class="admin-file-note">Si estás editando y no seleccionas otro archivo, se conservará la imagen actual.</span>
+            </div>
+            <div class="admin-field">
+              <label for="event-image-url">URL de imagen alternativa</label>
+              <input id="event-image-url" name="imagen_url" type="url" placeholder="Opcional si no subes archivo" />
+            </div>
+            <div class="admin-field">
+              <label for="event-registration">Link de registro o información</label>
+              <input id="event-registration" name="link_registro" type="url" placeholder="https://..." />
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label class="admin-permission-card" for="event-requires-registration">
+                <div class="admin-permission-info">
+                  <span>¿Requiere inscripción previa?</span>
+                </div>
+                <div class="admin-switch">
+                  <input type="checkbox" name="requiere_inscripcion" id="event-requires-registration" />
+                  <span class="admin-switch-slider"></span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Switch: Destacar Portada -->
+            <div class="admin-field admin-field-full">
+              <label class="admin-permission-card">
+                <div class="admin-permission-info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>Destacar como portada principal de la sección Eventos</span>
+                </div>
+                <div class="admin-switch">
+                  <input type="checkbox" name="es_destacado" id="event-featured" />
+                  <span class="admin-switch-slider"></span>
+                </div>
+              </label>
+            </div>
+
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-submit-event>Guardar evento</button>
+              <button class="admin-button" type="button" data-cancel-edit hidden>Cancelar edición</button>
+            </div>
+            <p class="admin-status" data-event-status role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-panel" aria-labelledby="events-list-title" style="margin-top: 24px">
+          <p class="admin-eyebrow">Contenido publicado</p>
+          <h2 id="events-list-title">Eventos actuales</h2>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th>Título</th>
+                  <th>Fecha y Hora</th>
+                  <th>Lugar</th>
+                  <th>Portada</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody data-events-list>
+                <tr>
+                  <td colspan="7" class="admin-empty">Cargando eventos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="admin-status" data-list-status role="status"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const eventsList = document.querySelector("[data-events-list]");
+      const eventForm = document.querySelector("[data-event-form]");
+      const formHeading = document.querySelector("[data-form-title]");
+      const eventStatus = document.querySelector("[data-event-status]");
+      const listStatus = document.querySelector("[data-list-status]");
+      const submitButton = document.querySelector("[data-submit-event]");
+      const cancelButton = document.querySelector("[data-cancel-edit]");
+      let activeUser = null;
+      let rows = [];
+
+      const escapeHtml = (value = "") =>
+        String(value).replace(/[&<>'"]/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "'": "&#39;",
+          '"': "&quot;"
+        })[char]);
+
+      const formatDate = (value) =>
+        value ? new Intl.DateTimeFormat("es-CO", { dateStyle: "medium" }).format(new Date(`${value}T12:00:00`)) : "Sin fecha";
+
+      const formatEstado = (estado = "") => {
+        const map = {
+          proximo: "Próximo",
+          "próximo": "Próximo",
+          agotado: "Agotado",
+          finalizado: "Finalizado",
+          cancelado: "Cancelado"
+        };
+        return map[String(estado).toLowerCase()] || estado;
+      };
+
+      const fillForm = (item) => {
+        eventForm.elements.id.value = item.id;
+        eventForm.elements.titulo.value = item.titulo || "";
+        eventForm.elements.ubicacion.value = item.ubicacion || "Sede Principal Cali";
+        eventForm.elements.fecha.value = item.fecha || "";
+        eventForm.elements.hora.value = item.hora || "";
+        eventForm.elements.estado.value = item.estado || "proximo";
+        eventForm.elements.requisitos.value = item.requisitos || "";
+        eventForm.elements.descripcion.value = item.descripcion || "";
+        eventForm.elements.imagen_url.value = item.imagen_fondo || "";
+        eventForm.elements.imagen_fondo_actual.value = item.imagen_fondo || "";
+        eventForm.elements.link_registro.value = item.link_registro || "";
+        eventForm.elements.requiere_inscripcion.checked = item.requiere_inscripcion === true;
+        eventForm.elements.es_destacado.checked = Boolean(item.es_destacado);
+
+        formHeading.textContent = "Editar evento";
+        submitButton.textContent = "Actualizar evento";
+        cancelButton.hidden = false;
+        eventStatus.textContent = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const resetForm = () => {
+        eventForm.reset();
+        eventForm.elements.id.value = "";
+        eventForm.elements.imagen_fondo_actual.value = "";
+        eventForm.elements.ubicacion.value = "Sede Principal Cali";
+        formHeading.textContent = "Agregar evento";
+        submitButton.textContent = "Guardar evento";
+        cancelButton.hidden = true;
+        eventStatus.textContent = "";
+      };
+
+      const renderEvents = (events) => {
+        rows = events || [];
+        if (!rows.length) {
+          eventsList.innerHTML = '<tr><td colspan="7" class="admin-empty">Todavía no hay eventos registrados.</td></tr>';
+          return;
+        }
+
+        eventsList.innerHTML = rows
+          .map((event) => {
+            const estadoLabel = formatEstado(event.estado);
+            const badgeClass =
+              event.estado === "proximo" || event.estado === "próximo"
+                ? "admin-badge-active"
+                : event.estado === "agotado" || event.estado === "cancelado"
+                ? "admin-badge-inactive"
+                : "";
+
+            return `<tr>
+              <td>${event.imagen_fondo ? `<img src="${escapeHtml(event.imagen_fondo)}" alt="" />` : "Sin imagen"}</td>
+              <td><strong>${escapeHtml(event.titulo)}</strong></td>
+              <td>${escapeHtml(formatDate(event.fecha))} · ${escapeHtml(event.hora || "—")}</td>
+              <td>${escapeHtml(event.ubicacion || "Sede Cali")}</td>
+              <td>${event.es_destacado ? '<span class="admin-badge admin-badge-violet">★ Portada</span>' : '—'}</td>
+              <td><span class="admin-badge ${badgeClass}">${escapeHtml(estadoLabel)}</span></td>
+              <td style="white-space: nowrap;">
+                <button class="admin-button" type="button" data-edit-event="${escapeHtml(event.id)}">Editar</button>
+                <button class="admin-button admin-button-danger" type="button" data-delete-event="${escapeHtml(event.id)}">Eliminar</button>
+              </td>
+            </tr>`;
+          })
+          .join("");
+
+        eventsList.querySelectorAll("[data-edit-event]").forEach((button) =>
+          button.addEventListener("click", () => {
+            const found = rows.find((r) => r.id === button.dataset.editEvent);
+            if (found) fillForm(found);
+          })
+        );
+
+        eventsList.querySelectorAll("[data-delete-event]").forEach((button) =>
+          button.addEventListener("click", () => deleteEvent(button.dataset.deleteEvent))
+        );
+      };
+
+      const loadEvents = async () => {
+        try {
+          const client = window.supabaseAdmin?.client;
+          if (!client) throw new Error("Cliente de base de datos no disponible.");
+
+          const { data, error } = await client
+            .from("eventos")
+            .select("*")
+            .order("fecha", { ascending: true });
+
+          if (error) throw error;
+          renderEvents(data || []);
+        } catch (error) {
+          console.error("Error al cargar eventos:", error);
+          listStatus.textContent = error.message;
+          eventsList.innerHTML = `<tr><td colspan="7" class="admin-empty">Error cargando eventos: ${escapeHtml(error.message)}</td></tr>`;
+        }
+      };
+
+      const uploadImage = async (file) => {
+        if (!file || !file.name) return null;
+        const client = window.supabaseAdmin.client;
+        const extension = file.name.split(".").pop().toLowerCase();
+        const path = `${crypto.randomUUID()}.${extension}`;
+        
+        const { error } = await client.storage
+          .from("eventos")
+          .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+
+        if (error) throw error;
+        const { data } = client.storage.from("eventos").getPublicUrl(path);
+        return data.publicUrl;
+      };
+
+      eventForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        eventStatus.textContent = "Guardando...";
+        submitButton.disabled = true;
+
+        try {
+          const client = window.supabaseAdmin.client;
+          const formData = new FormData(eventForm);
+          const editingId = formData.get("id");
+          const eventId = editingId || crypto.randomUUID();
+          const imageFile = formData.get("imagen");
+          const uploadedUrl = await uploadImage(imageFile);
+          const esDestacado = formData.get("es_destacado") === "on";
+          const requiereInscripcion = formData.get("requiere_inscripcion") === "on";
+
+          // Mantener la imagen previa si no se subió una nueva
+          const finalImage = uploadedUrl || formData.get("imagen_url") || formData.get("imagen_fondo_actual") || null;
+
+          if (esDestacado) {
+            await client.from("eventos").update({ es_destacado: false }).neq("id", editingId || "00000000-0000-0000-0000-000000000000");
+          }
+
+          const record = {
+            id: eventId,
+            titulo: formData.get("titulo"),
+            fecha: formData.get("fecha"),
+            hora: formData.get("hora"),
+            ubicacion: formData.get("ubicacion") || "Sede Principal Cali",
+            requisitos: formData.get("requisitos") || null,
+            descripcion: formData.get("descripcion") || null,
+            es_destacado: esDestacado,
+            requiere_inscripcion: requiereInscripcion,
+            estado: formData.get("estado"),
+            imagen_fondo: finalImage,
+            link_registro: formData.get("link_registro") || null,
+          };
+
+          if (editingId) {
+            const { error } = await client.from("eventos").update(record).eq("id", editingId);
+            if (error) throw error;
+          } else {
+            record.created_by = activeUser?.id || null;
+            const { error } = await client.from("eventos").insert(record);
+            if (error) throw error;
+          }
+
+          if (esDestacado) {
+            const { error } = await client
+              .from("events")
+              .update({ is_featured: false })
+              .neq("id", eventId);
+            if (error) throw error;
+          }
+
+          const publicRecord = {
+            id: eventId,
+            title: record.titulo,
+            description: record.descripcion,
+            date: record.fecha,
+            time: record.hora,
+            location: record.ubicacion,
+            image_url: record.imagen_fondo,
+            registration_url: record.link_registro,
+            status: ["finalizado", "cancelado"].includes(String(record.estado).toLowerCase())
+              ? "terminado"
+              : "activo",
+            requirements: record.requisitos,
+            is_featured: record.es_destacado,
+            requires_registration: record.requiere_inscripcion,
+            created_by: editingId
+              ? rows.find((item) => String(item.id) === String(eventId))?.created_by || activeUser?.id || null
+              : activeUser?.id || null,
+          };
+          const { error: publicEventError } = await client
+            .from("events")
+            .upsert(publicRecord, { onConflict: "id" });
+          if (publicEventError) throw publicEventError;
+
+          eventStatus.textContent = editingId
+            ? "Evento actualizado correctamente."
+            : "Evento guardado correctamente.";
+
+          resetForm();
+          await loadEvents();
+        } catch (error) {
+          console.error("Error al guardar:", error);
+          eventStatus.textContent = error.message || "No fue posible guardar el evento.";
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      cancelButton.addEventListener("click", resetForm);
+
+      const deleteEvent = async (id) => {
+        if (!window.confirm("¿Seguro que deseas eliminar este evento?")) return;
+        try {
+          const client = window.supabaseAdmin.client;
+          const { error } = await client.from("eventos").delete().eq("id", id);
+          if (error) throw error;
+
+          const { error: publicEventError } = await client.from("events").delete().eq("id", id);
+          if (publicEventError) throw publicEventError;
+
+          listStatus.textContent = "Evento eliminado.";
+          await loadEvents();
+        } catch (error) {
+          listStatus.textContent = error.message || "No fue posible eliminar el evento.";
+        }
+      };
+
+      (async () => {
+        try {
+          const access = await window.supabaseAdmin.requireAdminPermission("eventos");
+          if (!access) return;
+          activeUser = access.user;
+          document.querySelector("[data-admin-email]").textContent = activeUser.email;
+          await loadEvents();
+        } catch (error) {
+          window.supabaseAdmin.showAuthError(listStatus, error);
+        }
+      })();
+
+      document.querySelector("[data-sign-out]")?.addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
+    </script>
+  </body>
+</html>

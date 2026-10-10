@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Plan del Maestro | Supervisión & Redes de 12</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a class="is-active" href="plan-maestro.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Plan del Maestro</span>
+          </a>
+          <a href="grupos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+            <span>Grupos de Conexión</span>
+          </a>
+          <a href="devocionales.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+            <span>Devocionales</span>
+          </a>
+          <a href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Módulo Privado Plan del Maestro.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Dirección y Liderazgo</p>
+            <h1 class="admin-title">Plan del Maestro.</h1>
+            <p class="admin-lead">Supervisa las Redes de 12, sube el manual de enseñanza mensual y monitorea los informes de asistencia de cada grupo.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- 1. Estadísticas Consolidadas -->
+        <section class="admin-stats" aria-label="Estadísticas de Redes">
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/></svg></span>
+            <div>
+              <p class="admin-stat-label">Total Grupos</p>
+              <p class="admin-stat-value" data-stat-total-groups>0</p>
+            </div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+            <div>
+              <p class="admin-stat-label">Asistencia Esta Semana</p>
+              <p class="admin-stat-value" data-stat-total-attendance>0</p>
+            </div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            <div>
+              <p class="admin-stat-label">Nuevos Visitantes</p>
+              <p class="admin-stat-value" data-stat-new-people>0</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Carga del Manual Mensual para los Líderes -->
+        <section class="admin-panel">
+          <p class="admin-eyebrow">Material de Estudio</p>
+          <h2>Subir Manual Mensual para Líderes</h2>
+          <p class="admin-lead">Este documento estará disponible automáticamente para que todos los líderes de grupo lo descarguen desde su panel.</p>
+
+          <form class="admin-form" data-manual-form>
+            <div class="admin-field">
+              <label for="manual-title">Título del Manual / Temática</label>
+              <input id="manual-title" name="titulo" required placeholder="Ej: Manual de Grupos - Octubre: Fe Inquebrantable" />
+            </div>
+            <div class="admin-field">
+              <label for="manual-month">Mes correspondiente</label>
+              <select id="manual-month" name="mes" required>
+                <option value="1">Enero</option><option value="2">Febrero</option>
+                <option value="3">Marzo</option><option value="4">Abril</option>
+                <option value="5">Mayo</option><option value="6">Junio</option>
+                <option value="7">Julio</option><option value="8">Agosto</option>
+                <option value="9">Septiembre</option><option value="10">Octubre</option>
+                <option value="11">Noviembre</option><option value="12">Diciembre</option>
+              </select>
+            </div>
+            <div class="admin-field admin-field-full">
+              <label for="manual-file">Archivo del Manual (PDF o Word)</label>
+              <input id="manual-file" name="archivo" type="file" accept=".pdf,.doc,.docx" required />
+            </div>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-submit-manual>Publicar Manual</button>
+            </div>
+            <p class="admin-status" data-manual-status role="status"></p>
+          </form>
+
+          <!-- Listado de Manuales Activos -->
+          <div class="admin-table-wrap" style="margin-top:20px;">
+            <table class="admin-table">
+              <thead><tr><th>Mes</th><th>Título</th><th>Archivo</th><th>Acción</th></tr></thead>
+              <tbody data-manuals-list><tr><td colspan="4" class="admin-empty">Cargando manuales...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. Informes Semanales Enviados por los Líderes -->
+        <section class="admin-panel" style="margin-top:24px;">
+          <p class="admin-eyebrow">Seguimiento y Resultados</p>
+          <h2>Informes de Grupos de Conexión</h2>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Grupo</th>
+                  <th>Líder</th>
+                  <th>Tema Impartido</th>
+                  <th>Miembros</th>
+                  <th>Nuevos</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody data-reports-list>
+                <tr><td colspan="7" class="admin-empty">Cargando informes de grupos...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const manualForm = document.querySelector("[data-manual-form]");
+      const manualStatus = document.querySelector("[data-manual-status]");
+      const manualsList = document.querySelector("[data-manuals-list]");
+      const reportsList = document.querySelector("[data-reports-list]");
+      const monthNames = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+      const escapeHtml = (val = "") => String(val).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+
+      const loadDPMDashboard = async () => {
+        const client = window.supabaseAdmin.client;
+
+        // 1. Estadísticas
+        const { data: groups } = await client.from("grupos_conexion").select("id");
+        document.querySelector("[data-stat-total-groups]").textContent = groups?.length || 0;
+
+        const { data: reports } = await client.from("grupos_reportes").select("*, grupos_conexion(nombre, lider)").order("fecha_reunion", { ascending: false });
+
+        let totalAttendance = 0;
+        let totalNew = 0;
+        (reports || []).forEach((r) => {
+          totalAttendance += r.asistencia_total || 0;
+          totalNew += r.asistencia_nuevos || 0;
+        });
+
+        document.querySelector("[data-stat-total-attendance]").textContent = totalAttendance;
+        document.querySelector("[data-stat-new-people]").textContent = totalNew;
+
+        // 2. Tabla de Informes
+        reportsList.innerHTML = reports?.length
+          ? reports.map((r) => `
+            <tr>
+              <td><strong>${escapeHtml(r.fecha_reunion)}</strong></td>
+              <td>${escapeHtml(r.grupos_conexion?.nombre || "Grupo")}</td>
+              <td>${escapeHtml(r.grupos_conexion?.lider || "Líder")}</td>
+              <td>${escapeHtml(r.tema_impartido || "—")}</td>
+              <td>${r.asistencia_miembros || 0}</td>
+              <td><span class="admin-badge admin-badge-active">+${r.asistencia_nuevos || 0}</span></td>
+              <td><strong>${r.asistencia_total || 0}</strong></td>
+            </tr>
+          `).join("")
+          : '<tr><td colspan="7" class="admin-empty">Aún no se han recibido informes esta semana.</td></tr>';
+
+        // 3. Tabla de Manuales
+        const { data: manuals } = await client.from("plan_maestro_manuales").select("*").order("mes", { ascending: false });
+        manualsList.innerHTML = manuals?.length
+          ? manuals.map((m) => `
+            <tr>
+              <td><strong>${monthNames[m.mes]} ${m.anio}</strong></td>
+              <td>${escapeHtml(m.titulo)}</td>
+              <td><a href="${escapeHtml(m.archivo_url)}" target="_blank" class="admin-badge admin-badge-violet">Descargar PDF ↗</a></td>
+              <td><button class="admin-button admin-button-danger" onclick="deleteManual('${m.id}')">Eliminar</button></td>
+            </tr>
+          `).join("")
+          : '<tr><td colspan="4" class="admin-empty">No hay manuales publicados.</td></tr>';
+      };
+
+      // Carga de Manual
+      manualForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        manualStatus.textContent = "Subiendo manual...";
+        const client = window.supabaseAdmin.client;
+        const formData = new FormData(manualForm);
+        const file = formData.get("archivo");
+
+        try {
+          const ext = file.name.split(".").pop();
+          const path = `manual-${Date.now()}.${ext}`;
+          const { error: uploadError } = await client.storage.from("manuales_plan_maestro").upload(path, file);
+          if (uploadError) throw uploadError;
+
+          const { data: { publicUrl } } = client.storage.from("manuales_plan_maestro").getPublicUrl(path);
+
+          const { error: insertError } = await client.from("plan_maestro_manuales").insert({
+            titulo: formData.get("titulo"),
+            mes: Number(formData.get("mes")),
+            archivo_url: publicUrl,
+            archivo_nombre: file.name
+          });
+          if (insertError) throw insertError;
+
+          manualForm.reset();
+          manualStatus.textContent = "Manual publicado exitosamente.";
+          await loadDPMDashboard();
+        } catch (err) {
+          manualStatus.textContent = err.message || "Error al subir.";
+        }
+      });
+
+      window.deleteManual = async (id) => {
+        if (!confirm("¿Eliminar este manual?")) return;
+        const client = window.supabaseAdmin.client;
+        await client.from("plan_maestro_manuales").delete().eq("id", id);
+        await loadDPMDashboard();
+      };
+
+      (async () => {
+        await window.supabaseAdmin.requireAdminPermission("director plan del maestro");
+        await loadDPMDashboard();
+      })();
+    </script>
+  </body>
+</html>

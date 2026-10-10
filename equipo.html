@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Equipo & Líderes | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html"><i class="fa-solid fa-gauge"></i><span>Dashboard</span></a>
+          <a class="is-active" href="equipo.html"><i class="fa-solid fa-user-group"></i><span>Equipo & Líderes</span></a>
+          <a href="encuentros.html"><i class="fa-solid fa-users-between-lines"></i><span>Encuentros H/M</span></a>
+          <a href="eventos.html"><i class="fa-solid fa-calendar-days"></i><span>Eventos</span></a>
+          <a href="grupos.html"><i class="fa-solid fa-people-group"></i><span>Grupos</span></a>
+          <a href="devocionales.html"><i class="fa-solid fa-book-bible"></i><span>Devocionales</span></a>
+          <a href="perfil.html"><i class="fa-solid fa-user-shield"></i><span>Mi perfil</span></a>
+        </nav>
+        <p class="admin-sidebar-footer">Gestión de Equipo Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Página Conócenos</p>
+            <h1 class="admin-title">Equipo y Liderazgo.</h1>
+            <p class="admin-lead">Administra pastores principales, asociados, directores de área, colaboradores y voluntarios.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- Formulario de Registro / Edición -->
+        <section class="admin-panel">
+          <p class="admin-eyebrow">Registro de Integrantes</p>
+          <h2 id="team-form-title">Agregar Integrante</h2>
+          
+          <form class="admin-form" id="form-team">
+            <input type="hidden" name="id" id="team-id" />
+            <input type="hidden" name="foto_url_actual" id="team-photo-current" />
+
+            <div class="admin-field">
+              <label for="team-name">Nombres y Apellidos</label>
+              <input id="team-name" name="nombre" required placeholder="Ej: Ps. David Gómez" />
+            </div>
+
+            <div class="admin-field">
+              <label for="team-role">Cargo / Función</label>
+              <input id="team-role" name="cargo" required placeholder="Ej: Director Creativo / Pastora de Familias" />
+            </div>
+
+            <div class="admin-field">
+              <label for="team-category">Tipo de Miembro / Categoría</label>
+              <select id="team-category" name="categoria" required>
+                <option value="pastor_principal">Pastor Principal (Aparece en el Spotlight)</option>
+                <option value="pastor_asociado">Pastor Asociado</option>
+                <option value="colaborador">Colaborador Fijo / Director de Área</option>
+                <option value="voluntario">Líder / Voluntario Destacado</option>
+              </select>
+            </div>
+
+            <div class="admin-field">
+              <label for="team-order">Orden de aparición (0 primero)</label>
+              <input type="number" id="team-order" name="orden" value="0" min="0" />
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label for="team-photo">Foto de Perfil (Vertical o Frontal)</label>
+              <input type="file" id="team-photo" name="foto" accept="image/jpeg,image/png,image/webp" />
+              <span class="admin-file-note">Si estás editando y no seleccionas otra foto, se conservará la actual.</span>
+            </div>
+
+            <div class="admin-field">
+              <label for="team-whatsapp">WhatsApp (Opcional)</label>
+              <input id="team-whatsapp" name="contacto_whatsapp" placeholder="3000000000 o https://wa.me/..." />
+            </div>
+
+            <div class="admin-field">
+              <label for="team-instagram">Instagram (Opcional)</label>
+              <input id="team-instagram" name="contacto_instagram" placeholder="https://instagram.com/usuario" />
+            </div>
+
+            <div class="admin-field admin-field-full">
+              <label for="team-email">Correo Electrónico (Opcional)</label>
+              <input id="team-email" name="contacto_email" type="email" placeholder="correo@nazarenocali.org" />
+            </div>
+
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" id="btn-save-team">Guardar Integrante</button>
+              <button class="admin-button" type="button" id="btn-cancel-edit" hidden>Cancelar Edición</button>
+              <span id="team-status" style="font-size:12px; color:var(--admin-violet); font-weight:700;"></span>
+            </div>
+          </form>
+        </section>
+
+        <!-- Listado de Integrantes -->
+        <section class="admin-panel" style="margin-top: 24px;">
+          <p class="admin-eyebrow">Integrantes Registrados</p>
+          <h2>Listado Oficial del Equipo</h2>
+          
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Cargo</th>
+                  <th>Categoría</th>
+                  <th>Orden</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="team-table-body">
+                <tr><td colspan="7" class="admin-empty">Cargando equipo...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const getClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
+      const form = document.querySelector("#form-team");
+      const formTitle = document.querySelector("#team-form-title");
+      const submitBtn = document.querySelector("#btn-save-team");
+      const cancelBtn = document.querySelector("#btn-cancel-edit");
+      const statusText = document.querySelector("#team-status");
+      const tbody = document.querySelector("#team-table-body");
+      let teamData = [];
+
+      const escapeHtml = (val = "") => String(val).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+
+      const categoryLabels = {
+        pastor_principal: "Pastor Principal",
+        pastor_asociado: "Pastor Asociado",
+        colaborador: "Colaborador Fijo",
+        voluntario: "Voluntario / Líder"
+      };
+
+      const loadTeamAdmin = async () => {
+        try {
+          const client = getClient();
+          if (!client) throw new Error("Cliente de Supabase no disponible.");
+
+          const { data, error } = await client
+            .from("nosotros_equipo")
+            .select("*")
+            .order("orden", { ascending: true });
+
+          if (error) throw error;
+          teamData = data || [];
+
+          tbody.innerHTML = teamData.length
+            ? teamData.map(m => `
+              <tr>
+                <td><img src="${m.foto_url || 'Media/logoNegro.png'}" style="width:44px; height:52px; object-fit:cover; border-radius:6px;" alt="" /></td>
+                <td><strong>${escapeHtml(m.nombre)}</strong></td>
+                <td>${escapeHtml(m.cargo)}</td>
+                <td><span class="admin-badge ${m.categoria === 'pastor_principal' ? 'admin-badge-violet' : ''}">${categoryLabels[m.categoria] || m.categoria}</span></td>
+                <td>${m.orden}</td>
+                <td><span class="admin-badge ${m.activo ? 'admin-badge-active' : 'admin-badge-inactive'}">${m.activo ? 'Visible' : 'Oculto'}</span></td>
+                <td style="white-space:nowrap;">
+                  <button class="admin-button" onclick="editMember('${m.id}')">Editar</button>
+                  <button class="admin-button admin-button-danger" onclick="deleteMember('${m.id}')">Eliminar</button>
+                </td>
+              </tr>
+            `).join("")
+            : '<tr><td colspan="7" class="admin-empty">Aún no hay integrantes registrados. Agrega el primero con el formulario de arriba.</td></tr>';
+        } catch (err) {
+          console.error("Error al cargar equipo:", err);
+          tbody.innerHTML = `<tr><td colspan="7" class="admin-empty" style="color:#ab2525; padding:24px;">Error al conectar con la base de datos: ${escapeHtml(err.message)}.<br><small style="color:var(--admin-muted);">Asegúrate de haber ejecutado el script SQL en Supabase.</small></td></tr>`;
+        }
+      };
+
+      const uploadPhoto = async (file) => {
+        if (!file || !file.name) return null;
+        const client = getClient();
+        const ext = file.name.split(".").pop().toLowerCase();
+        const path = `${crypto.randomUUID()}.${ext}`;
+        const { error } = await client.storage.from("equipo").upload(path, file, { cacheControl: "3600", upsert: false });
+        if (error) {
+          console.warn("Storage upload warning:", error);
+          return null;
+        }
+        return client.storage.from("equipo").getPublicUrl(path).data.publicUrl;
+      };
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusText.textContent = "Guardando...";
+        submitBtn.disabled = true;
+
+        try {
+          const client = getClient();
+          const formData = new FormData(form);
+          const editingId = formData.get("id");
+          const file = form.elements.foto.files[0];
+          const uploadedUrl = await uploadPhoto(file);
+          const finalPhoto = uploadedUrl || formData.get("foto_url_actual") || null;
+
+          const record = {
+            nombre: formData.get("nombre"),
+            cargo: formData.get("cargo"),
+            categoria: formData.get("categoria"),
+            orden: Number(formData.get("orden") || 0),
+            foto_url: finalPhoto,
+            contacto_whatsapp: formData.get("contacto_whatsapp") || null,
+            contacto_instagram: formData.get("contacto_instagram") || null,
+            contacto_email: formData.get("contacto_email") || null,
+            activo: true
+          };
+
+          if (editingId) {
+            const { error } = await client.from("nosotros_equipo").update(record).eq("id", editingId);
+            if (error) throw error;
+            statusText.textContent = "Integrante actualizado correctamente.";
+          } else {
+            const { error } = await client.from("nosotros_equipo").insert(record);
+            if (error) throw error;
+            statusText.textContent = "Integrante agregado exitosamente.";
+          }
+
+          resetForm();
+          await loadTeamAdmin();
+        } catch (err) {
+          statusText.textContent = "Error: " + err.message;
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      window.editMember = (id) => {
+        const item = teamData.find(m => m.id === id);
+        if (!item) return;
+
+        form.elements.id.value = item.id;
+        form.elements.nombre.value = item.nombre;
+        form.elements.cargo.value = item.cargo;
+        form.elements.categoria.value = item.categoria || "colaborador";
+        form.elements.orden.value = item.orden || 0;
+        form.elements.foto_url_actual.value = item.foto_url || "";
+        form.elements.contacto_whatsapp.value = item.contacto_whatsapp || "";
+        form.elements.contacto_instagram.value = item.contacto_instagram || "";
+        form.elements.contacto_email.value = item.contacto_email || "";
+
+        formTitle.textContent = "Editar Integrante";
+        submitBtn.textContent = "Actualizar Integrante";
+        cancelBtn.hidden = false;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const resetForm = () => {
+        form.reset();
+        form.elements.id.value = "";
+        form.elements.foto_url_actual.value = "";
+        formTitle.textContent = "Agregar Integrante";
+        submitBtn.textContent = "Guardar Integrante";
+        cancelBtn.hidden = true;
+      };
+
+      cancelBtn.addEventListener("click", resetForm);
+
+      window.deleteMember = async (id) => {
+        if (!confirm("¿Deseas eliminar a esta persona del equipo?")) return;
+        try {
+          const client = getClient();
+          const { error } = await client.from("nosotros_equipo").delete().eq("id", id);
+          if (error) throw error;
+          await loadTeamAdmin();
+        } catch (err) {
+          alert("Error al eliminar: " + err.message);
+        }
+      };
+
+      document.querySelector("[data-sign-out]")?.addEventListener("click", () => window.supabaseAdmin?.signOutAdmin());
+
+      (async () => {
+        try {
+          const access = await window.supabaseAdmin.requireAdminPermission("equipo");
+          if (!access) return;
+          document.querySelector("[data-admin-email]").textContent = access.user.email;
+          await loadTeamAdmin();
+        } catch (err) {
+          console.error("Error de autenticación o permisos:", err);
+          tbody.innerHTML = `<tr><td colspan="7" class="admin-empty" style="color:#ab2525; padding:24px;">${escapeHtml(err.message)}</td></tr>`;
+        }
+      })();
+    </script>
+  </body>
+</html>

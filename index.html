@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Dashboard | Nazareno Cali Admin</title>
+    <link rel="icon" type="image/png" href="Media/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a class="is-active" href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="equipo.html">
+            <i class="fa-solid fa-user-group"></i>
+            <span>Equipo & Líderes</span>
+          </a>
+          <a href="encuentros.html">
+            <i class="fa-solid fa-users-between-lines"></i>
+            <span>Encuentros H/M</span>
+          </a>
+          <a href="eventos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            <span>Eventos</span>
+          </a>
+          <a href="sermones.html" data-permission-link="sermones">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+            <span>Prédicas y Podcasts</span>
+          </a>
+          <a href="plan-maestro.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Plan del Maestro (DPM)</span>
+          </a>
+          <a href="grupos.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg>
+            <span>Grupos</span>
+          </a>
+          <a href="carrusel.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg>
+            <span>Carrusel</span>
+          </a>
+          <a href="devocionales.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg>
+            <span>Devocionales</span>
+          </a>
+          <a href="configuracion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a href="perfil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg>
+            <span>Mi perfil</span>
+          </a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Panel de administración</p>
+            <h1 class="admin-title" data-admin-greeting>Hola.</h1>
+            <p class="admin-lead">Gestiona el contenido, los módulos autorizados y las actividades de la iglesia.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <p class="admin-eyebrow" style="margin-bottom:16px">Visitas al sitio público</p>
+        <section class="admin-stats" aria-label="Estadísticas de visitas" data-visit-stats>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span>
+            <div><p class="admin-stat-label">Hoy</p><p class="admin-stat-value" data-stat-today>—</p></div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>
+            <div><p class="admin-stat-label">Esta semana</p><p class="admin-stat-value" data-stat-week>—</p></div>
+          </div>
+          <div class="admin-stat">
+            <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/></svg></span>
+            <div><p class="admin-stat-label">Este mes</p><p class="admin-stat-value" data-stat-month>—</p></div>
+          </div>
+        </section>
+
+        <p class="admin-eyebrow" style="margin-bottom:16px">Gestión de contenido autorizado</p>
+        
+        <!-- Tarjetas del Dashboard filtradas por permisos -->
+        <section class="admin-cards" aria-label="Accesos de administración">
+          
+          <!-- Equipo & Liderazgo (NUEVA TARJETA) -->
+          <a class="admin-card" data-permission="equipo" href="equipo.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><i class="fa-solid fa-user-group"></i></span>
+              <span class="admin-card-number">01</span>
+            </div>
+            <div><h2>Equipo &<br />liderazgo.</h2><p>Pastores principales, asociados, colaboradores y voluntarios.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Encuentros H/M (NUEVA TARJETA) -->
+          <a class="admin-card" data-permission="encuentros" href="encuentros.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><i class="fa-solid fa-users-between-lines"></i></span>
+              <span class="admin-card-number">02</span>
+            </div>
+            <div><h2>Retiros<br />Encuentros.</h2><p>Inscritos, control de pagos en línea y descarga de listados en Excel.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Eventos -->
+          <a class="admin-card" data-permission="eventos" href="eventos.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>
+              <span class="admin-card-number">03</span>
+            </div>
+            <div><h2>Gestionar<br />eventos.</h2><p>Crea, actualiza o retira eventos de la agenda pública.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <a class="admin-card" data-permission="sermones" href="sermones.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><i class="fa-brands fa-youtube" aria-hidden="true"></i></span>
+              <span class="admin-card-number">10</span>
+            </div>
+            <div><h2>Prédicas y<br />podcasts.</h2><p>Publica videos del canal y destaca la transmisión activa.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Plan del Maestro (DPM) -->
+          <a class="admin-card" data-permission="plan_maestro" href="plan-maestro.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+              <span class="admin-card-number">04</span>
+            </div>
+            <div><h2>Plan del<br />Maestro.</h2><p>Sube manuales mensuales, supervisa las Redes de 12 e informes.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Grupos -->
+          <a class="admin-card" data-permission="grupos" href="grupos.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg></span>
+              <span class="admin-card-number">05</span>
+            </div>
+            <div><h2>Gestionar<br />grupos.</h2><p>Administra horarios, líderes y mapa de los grupos de conexión.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Carrusel -->
+          <a class="admin-card" data-permission="carrusel" href="carrusel.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg></span>
+              <span class="admin-card-number">06</span>
+            </div>
+            <div><h2>Gestionar<br />carrusel.</h2><p>Define qué actividades aparecen este mes en la portada.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Devocionales -->
+          <a class="admin-card" data-permission="devocionales" href="devocionales.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg></span>
+              <span class="admin-card-number">07</span>
+            </div>
+            <div><h2>Programar<br />devocionales.</h2><p>Escribe y publica reflexiones bíblicas y devocionales diarios.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Configuración -->
+          <a class="admin-card" data-permission="configuracion" href="configuracion.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg></span>
+              <span class="admin-card-number">08</span>
+            </div>
+            <div><h2>Configuración<br />del sitio.</h2><p>Actualiza la información general, teléfonos y enlaces de la iglesia.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+
+          <!-- Mi perfil -->
+          <a class="admin-card" href="perfil.html">
+            <div class="admin-card-top">
+              <span class="admin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg></span>
+              <span class="admin-card-number">09</span>
+            </div>
+            <div><h2>Mi<br />perfil.</h2><p>Gestiona tu nombre, contraseña y usuarios autorizados.</p></div>
+            <span class="admin-card-arrow">↗</span>
+          </a>
+        </section>
+
+        <p class="admin-status" data-auth-status role="alert"></p>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const adminClient = window.supabaseAdmin.client;
+
+      const countVisitsSince = async (isoDate) => {
+        const { count, error } = await adminClient
+          .from("site_visits")
+          .select("*", { count: "exact", head: true })
+          .gte("visited_at", isoDate);
+        if (error) throw error;
+        return count ?? 0;
+      };
+
+      const loadVisitStats = async () => {
+        try {
+          const now = new Date();
+          const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          const startOfWeek = new Date(startOfToday);
+          const isoWeekday = (startOfToday.getDay() + 6) % 7;
+          startOfWeek.setDate(startOfToday.getDate() - isoWeekday);
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+          const [today, week, month] = await Promise.all([
+            countVisitsSince(startOfToday.toISOString()),
+            countVisitsSince(startOfWeek.toISOString()),
+            countVisitsSince(startOfMonth.toISOString()),
+          ]);
+          document.querySelector("[data-stat-today]").textContent = today.toLocaleString("es-CO");
+          document.querySelector("[data-stat-week]").textContent = week.toLocaleString("es-CO");
+          document.querySelector("[data-stat-month]").textContent = month.toLocaleString("es-CO");
+        } catch (error) {
+          console.error("No se pudieron cargar las visitas:", error);
+        }
+      };
+
+      (async () => {
+        try {
+          const user = await window.supabaseAdmin.requireAdminSession();
+          if (user) {
+            await loadVisitStats();
+          }
+        } catch (error) {
+          window.supabaseAdmin.showAuthError(document.querySelector("[data-auth-status]"), error);
+        }
+      })();
+    </script>
+  </body>
+</html>

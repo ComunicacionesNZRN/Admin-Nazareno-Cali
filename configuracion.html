@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Configuración | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html">
+          <img src="Media/logoBlanco.png" alt="" />
+          <span data-admin-brand-text>Nazareno Admin</span>
+        </a>
+        <nav class="admin-nav" aria-label="Administración"><a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></a><a href="eventos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg><span>Eventos</span></a><a href="grupos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14.8c2.6.3 4.5 2.3 4.5 5.2"/></svg><span>Grupos</span></a><a href="carrusel.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V9"/></svg><span>Carrusel</span></a><a href="devocionales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1.3-3.7-2-6.5-2C4.7 4.5 4 5 4 5.8v12.4c0 .8.7 1.2 1.5 1.1 2.6-.3 4.6.2 6.5 1.7"/><path d="M12 6.5c1.6-1.3 3.7-2 6.5-2 .8 0 1.5.5 1.5 1.3v12.4c0 .8-.7 1.2-1.5 1.1-2.6-.3-4.6.2-6.5 1.7z"/><line x1="12" y1="6.5" x2="12" y2="21"/></svg><span>Devocionales</span></a><a class="is-active" href="configuracion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.6 5.4l-2.1 2.1M7.5 16.5l-2.1 2.1M18.6 18.6l-2.1-2.1M7.5 7.5 5.4 5.4"/></svg><span>Configuración</span></a><a href="perfil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c1-2.8 3-4 5.5-4s4.5 1.2 5.5 4"/></svg><span>Mi perfil</span></a></nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+      <main class="admin-main">
+        <header class="admin-topbar"><div><p class="admin-eyebrow">03 · Sitio público</p><h1 class="admin-title">Configuración.</h1><p class="admin-lead">Actualiza los datos generales y enlaces que utiliza la iglesia.</p></div><div class="admin-user"><span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span><button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button></div></header>
+        <section class="admin-panel" aria-labelledby="settings-title"><p class="admin-eyebrow">Información general</p><h2 id="settings-title">Datos del sitio</h2><form class="admin-form" data-settings-form><div class="admin-field"><label for="site-name">Nombre de la iglesia</label><input id="site-name" name="nombre_iglesia" data-setting="nombre_iglesia" value="Iglesia del Nazareno Cali" /></div><div class="admin-field"><label for="site-email">Correo de contacto</label><input id="site-email" name="correo_contacto" type="email" data-setting="correo_contacto" /></div><div class="admin-field"><label for="site-phone">Teléfono</label><input id="site-phone" name="telefono" data-setting="telefono" /></div><div class="admin-field"><label for="site-whatsapp">WhatsApp</label><input id="site-whatsapp" name="whatsapp" type="url" data-setting="whatsapp" placeholder="https://wa.link/..." /></div><div class="admin-field admin-field-full"><label for="site-address">Dirección</label><input id="site-address" name="direccion" data-setting="direccion" /></div><div class="admin-field admin-field-full"><label for="site-instagram">Instagram</label><input id="site-instagram" name="instagram" type="url" data-setting="instagram" placeholder="https://instagram.com/..." /></div><div class="admin-form-actions"><button class="admin-button-primary" type="submit" data-save-settings>Guardar configuración</button><span class="admin-file-note">Estos datos podrán utilizarse en el sitio público.</span></div><p class="admin-status" data-settings-status role="status"></p></form></section>
+        <section class="admin-panel" style="margin-top:24px"><p class="admin-eyebrow">Referencia</p><h2>Claves editables</h2><p class="admin-lead">La configuración se guarda como pares de clave y valor para poder ampliar este panel sin modificar la estructura.</p></section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase-client.js"></script><script src="./admin-auth.js"></script>
+    <script>
+      const client = window.supabaseAdmin.client;
+      const form = document.querySelector("[data-settings-form]");
+      const status = document.querySelector("[data-settings-status]");
+      const fields = [...form.querySelectorAll("[data-setting]")];
+      const loadSettings = async () => { const { data, error } = await client.from("site_config").select("clave, valor"); if (error) { status.textContent = error.message; return; } const settings = Object.fromEntries((data || []).map((item) => [item.clave, item.valor])); fields.forEach((field) => { if (settings[field.dataset.setting] !== undefined) field.value = settings[field.dataset.setting]; }); };
+      form.addEventListener("submit", async (event) => { event.preventDefault(); status.textContent = "Guardando..."; try { const user = (await client.auth.getUser()).data.user; const records = fields.map((field) => ({ clave: field.dataset.setting, valor: field.value.trim(), updated_by: user.id, updated_at: new Date().toISOString() })); const { error } = await client.from("site_config").upsert(records, { onConflict: "clave" }); if (error) throw error; status.textContent = "Configuración guardada correctamente."; } catch (error) { status.textContent = error.message || "No fue posible guardar la configuración."; } });
+      (async () => { try { const access = await window.supabaseAdmin.requireAdminPermission("configuracion"); if (!access) return; document.querySelector("[data-admin-email]").textContent = access.user.email; await loadSettings(); } catch (error) { window.supabaseAdmin.showAuthError(status, error); } })();
+      document.querySelector("[data-sign-out]").addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
+    </script>
+  </body>
+</html>

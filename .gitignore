@@ -1,0 +1,12 @@
+# Archivos de sistema y metadatos de macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# Entornos y dependencias
+node_modules/
+.env
+.env.local

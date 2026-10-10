@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Acceso | Nazareno Cali</title>
+    <link rel="icon" type="image/png" href="Media/logoNegro.png" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <main class="login-page">
+      <section class="login-card" aria-labelledby="login-title">
+        <img class="login-logo" src="Media/logoNegro.png" alt="Iglesia del Nazareno Cali" />
+        <p class="admin-eyebrow">Panel privado</p>
+        <h1 id="login-title">Bienvenido.</h1>
+        <p>Accede para administrar los contenidos de Nazareno Cali.</p>
+        <form class="login-form" data-login-form>
+          <div class="admin-field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="username" required /></div>
+          <div class="admin-field"><label for="password">Contraseña</label><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
+          <button class="admin-button-primary" type="submit">Iniciar sesión <span aria-hidden="true">↗</span></button>
+          <p class="admin-status" data-auth-status role="alert"></p>
+        </form>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script>
+      const loginForm = document.querySelector("[data-login-form]");
+      const authStatus = document.querySelector("[data-auth-status]");
+      const loginButton = loginForm.querySelector("button[type=submit]");
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        authStatus.textContent = "Autenticando...";
+        loginButton.disabled = true;
+        const formData = new FormData(loginForm);
+        try {
+          const { error } = await window.supabaseAdmin.client.auth.signInWithPassword({
+            email: formData.get("email"),
+            password: formData.get("password"),
+          });
+          if (error) {
+            console.log("Error de Supabase:", error.message);
+            authStatus.textContent = error.message;
+            return;
+          }
+          const next = new URLSearchParams(window.location.search).get("next");
+          const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "index.html";
+          window.location.replace(safeNext);
+        } catch (error) {
+          console.log("Error de Supabase:", error.message);
+          authStatus.textContent = error.message || "No fue posible iniciar sesión.";
+        } finally {
+          loginButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
