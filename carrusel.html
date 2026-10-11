@@ -27,6 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const getClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
       const form = document.querySelector("[data-carousel-form]");
@@ -98,9 +99,16 @@
       const deleteRow = async (id) => {
         if (!window.confirm("¿Eliminar esta pieza?")) return;
         const client = getClient();
-        const { error } = await client.from("carrusel_conexion").delete().eq("id", id);
-        if (error) { listStatus.textContent = error.message; return; }
-        await loadRows();
+        await window.systemLogs.record({ accion: "Eliminación de pieza en curso", seccion: "carrusel", estado: "en_proceso" });
+        try {
+          const { error } = await client.from("carrusel_conexion").delete().eq("id", id);
+          if (error) throw error;
+          await window.systemLogs.record({ accion: "Pieza del carrusel eliminada", seccion: "carrusel", estado: "exito" });
+          await loadRows();
+        } catch (error) {
+          await window.systemLogs.record({ accion: `Error al eliminar pieza: ${error.message || "Error desconocido"}`, seccion: "carrusel", estado: "error" });
+          listStatus.textContent = error.message;
+        }
       };
 
       form.addEventListener("submit", async (event) => {
@@ -109,6 +117,11 @@
         try {
           const client = getClient();
           const values = Object.fromEntries(new FormData(form));
+          await window.systemLogs.record({
+            accion: values.id ? "Actualización de pieza en curso" : "Creación de pieza en curso",
+            seccion: "carrusel",
+            estado: "en_proceso",
+          });
           const imageUrl = await uploadImage(form.elements.imagen.files[0]);
           const record = {
             titulo: values.titulo,
@@ -127,10 +140,16 @@
           const query = values.id ? client.from("carrusel_conexion").update(record).eq("id", values.id) : client.from("carrusel_conexion").insert(record);
           const { error } = await query;
           if (error) throw error;
+          await window.systemLogs.record({
+            accion: values.id ? "Pieza del carrusel actualizada" : "Pieza del carrusel creada",
+            seccion: "carrusel",
+            estado: "exito",
+          });
           resetForm();
           status.textContent = "Pieza guardada correctamente.";
           await loadRows();
         } catch (error) {
+          await window.systemLogs.record({ accion: `Error al guardar pieza: ${error.message || "Error desconocido"}`, seccion: "carrusel", estado: "error" });
           status.textContent = error.message || "No fue posible guardar la pieza.";
         }
       });

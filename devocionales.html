@@ -201,6 +201,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const form = document.querySelector("[data-devotional-form]");
       const formTitle = document.querySelector("[data-form-title]");
@@ -277,6 +278,7 @@
         let uploadedPath = null;
         submitButton.disabled = true;
         bibleGuideStatus.textContent = "Subiendo y publicando la guía...";
+        await window.systemLogs.record({ accion: "Subida y publicación de guía en curso", seccion: "guias_biblicas", estado: "en_proceso" });
 
         try {
           const monthName = formatGuideMonth(monthValue);
@@ -303,6 +305,7 @@
             p_archivo_path: uploadedPath,
           });
           if (publishError) throw publishError;
+          await window.systemLogs.record({ accion: `Guía publicada: ${monthName}`, seccion: "guias_biblicas", estado: "exito" });
 
           bibleGuideForm.reset();
           bibleGuideStatus.textContent = "Guía publicada correctamente.";
@@ -310,6 +313,7 @@
           await loadBibleGuides();
         } catch (error) {
           if (uploadedPath) await window.supabaseAdmin.client.storage.from("guias-biblicas").remove([uploadedPath]);
+          await window.systemLogs.record({ accion: `Error al publicar guía: ${error.message || "Error desconocido"}`, seccion: "guias_biblicas", estado: "error" });
           bibleGuideStatus.textContent = error.message || "No fue posible publicar la guía.";
         } finally {
           submitButton.disabled = false;
@@ -435,11 +439,14 @@
         if (!window.confirm("¿Seguro que deseas eliminar este devocional?")) return;
         try {
           const client = window.supabaseAdmin.client;
+          await window.systemLogs.record({ accion: "Eliminación de devocional en curso", seccion: "devocionales", estado: "en_proceso" });
           const { error } = await client.from("devocionales").delete().eq("id", id);
           if (error) throw error;
+          await window.systemLogs.record({ accion: "Devocional eliminado", seccion: "devocionales", estado: "exito" });
           listStatus.textContent = "Devocional eliminado.";
           await loadRows();
         } catch (error) {
+          await window.systemLogs.record({ accion: `Error al eliminar devocional: ${error.message || "Error desconocido"}`, seccion: "devocionales", estado: "error" });
           listStatus.textContent = error.message || "No fue posible eliminar.";
         }
       };
@@ -448,6 +455,12 @@
         event.preventDefault();
         submitButton.disabled = true;
         status.textContent = "Guardando...";
+        const isEditing = Boolean(form.elements.id.value);
+        await window.systemLogs.record({
+          accion: isEditing ? "Actualización de devocional en curso" : "Publicación de devocional en curso",
+          seccion: "devocionales",
+          estado: "en_proceso",
+        });
 
         try {
           const client = window.supabaseAdmin.client;
@@ -481,11 +494,17 @@
             if (error) throw error;
             status.textContent = "Devocional guardado correctamente.";
           }
+          await window.systemLogs.record({
+            accion: editingId ? "Devocional actualizado" : "Devocional publicado o programado",
+            seccion: "devocionales",
+            estado: "exito",
+          });
 
           resetForm();
           await loadRows();
         } catch (error) {
           console.error("Error al guardar devocional:", error);
+          await window.systemLogs.record({ accion: `Error al guardar devocional: ${error.message || "Error desconocido"}`, seccion: "devocionales", estado: "error" });
           status.textContent = error.message || "No fue posible guardar el devocional.";
         } finally {
           submitButton.disabled = false;

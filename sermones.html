@@ -111,6 +111,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const mediaAdminClient = window.supabaseAdmin?.client;
       const mediaForm = document.querySelector("[data-media-form]");
@@ -269,6 +270,12 @@
           if (!videoId) throw new Error("Ingresa una URL válida de un video de YouTube.");
 
           const isSermon = values.tipo === "predica";
+          const logSection = isSermon ? "sermones" : "podcasts";
+          await window.systemLogs.record({
+            accion: editingMedia ? "Actualización de publicación en curso" : "Publicación de contenido en curso",
+            seccion: logSection,
+            estado: "en_proceso",
+          });
           const payload = isSermon
             ? {
                 titulo: values.titulo.trim(),
@@ -312,6 +319,11 @@
               : mediaAdminClient.from(table).insert(payload));
           const { error } = await query;
           if (error) throw error;
+          await window.systemLogs.record({
+            accion: editingMedia ? "Publicación actualizada" : isSermon ? "Prédica publicada" : "Podcast publicado",
+            seccion: logSection,
+            estado: "exito",
+          });
 
           const savedMessage = editingMedia ? "Publicación actualizada correctamente." : (isSermon ? "Prédica publicada correctamente." : "Podcast publicado correctamente.");
           editingMedia = null;
@@ -320,6 +332,11 @@
           mediaFormStatus.textContent = savedMessage;
           await loadMediaRows();
         } catch (error) {
+          await window.systemLogs.record({
+            accion: `Error al guardar contenido: ${error.message || "Error desconocido"}`,
+            seccion: mediaType.value === "predica" ? "sermones" : "podcasts",
+            estado: "error",
+          });
           mediaFormStatus.textContent = error.message || "No fue posible guardar el contenido.";
         } finally {
           saveButton.disabled = false;

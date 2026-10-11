@@ -78,19 +78,74 @@
         </header>
 
         <p class="admin-eyebrow" style="margin-bottom:16px">Visitas al sitio público</p>
-        <section class="admin-stats" aria-label="Estadísticas de visitas" data-visit-stats>
+        <section class="admin-stats health-traffic-stats" aria-label="Estadísticas de visitas" data-visit-stats>
           <div class="admin-stat">
             <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span>
-            <div><p class="admin-stat-label">Hoy</p><p class="admin-stat-value" data-stat-today>—</p></div>
+            <div><p class="admin-stat-label">Hoy</p><p class="admin-stat-value" data-stat-today>—</p><p class="health-stat-trend" data-trend-today>Comparando…</p></div>
           </div>
           <div class="admin-stat">
             <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>
-            <div><p class="admin-stat-label">Esta semana</p><p class="admin-stat-value" data-stat-week>—</p></div>
+            <div><p class="admin-stat-label">Esta semana</p><p class="admin-stat-value" data-stat-week>—</p><p class="health-stat-trend" data-trend-week>Comparando…</p></div>
           </div>
           <div class="admin-stat">
             <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/></svg></span>
-            <div><p class="admin-stat-label">Este mes</p><p class="admin-stat-value" data-stat-month>—</p></div>
+            <div><p class="admin-stat-label">Este mes</p><p class="admin-stat-value" data-stat-month>—</p><p class="health-stat-trend" data-trend-month>Comparando…</p></div>
           </div>
+        </section>
+
+        <section class="system-health" aria-labelledby="health-title">
+          <header class="health-heading">
+            <div>
+              <p class="admin-eyebrow">Supervisión de plataforma</p>
+              <h2 id="health-title">Salud del sistema</h2>
+              <p class="health-description">Disponibilidad de lecturas, contenido publicado y actividad reciente del panel.</p>
+            </div>
+            <div class="health-controls">
+              <span class="health-updated" data-health-updated>Esperando comprobación</span>
+              <button class="admin-button" type="button" data-health-refresh aria-label="Actualizar supervisión"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar</button>
+            </div>
+          </header>
+
+          <div class="health-overview" data-health-overview data-state="pending">
+            <span class="health-pulse" aria-hidden="true"></span>
+            <div><strong data-health-overall>Comprobando servicios</strong><span data-health-summary>Las lecturas iniciales están en curso.</span></div>
+            <span class="health-live-label" data-realtime-status><i class="fa-solid fa-signal" aria-hidden="true"></i> Conectando Realtime…</span>
+          </div>
+
+          <div class="health-layout">
+            <section class="health-section" aria-labelledby="services-title">
+              <div class="health-section-heading"><h3 id="services-title">Estado operativo</h3><span>Lecturas recientes</span></div>
+              <div class="health-checks" data-health-checks aria-live="polite">
+                <div class="health-check" data-check="database"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Base de datos Supabase</strong><small>Validando lectura de visitas</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="devotionals"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Guías bíblicas</strong><small>Validando tabla guias_biblicas</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="devotional-content"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Devocionales diarios</strong><small>Validando tabla devocionales</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="sermons"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Prédicas de YouTube</strong><small>Validando última publicación guardada</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="events"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Agenda pública de eventos</strong><small>Validando tabla events</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="event-admin"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Gestión de eventos</strong><small>Validando tabla eventos</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="carousel"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Anuncios y carrusel</strong><small>Validando elementos configurados</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="youtube"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Disponibilidad de YouTube</strong><small>Validando última prédica</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="logs"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Auditoría persistente</strong><small>Validando tabla system_logs</small></span><span class="health-check-state">En curso</span></div>
+                <div class="health-check" data-check="clients" data-state="warning"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Web pública y app móvil</strong><small>Sin heartbeat de los clientes configurado</small></span><span class="health-check-state">Sin telemetría</span></div>
+              </div>
+              <p class="health-footnote">YouTube se valida directamente con su API pública oEmbed; esto confirma que el video es público y devuelve metadatos, no que el propietario permita incrustarlo. Web/App requieren publicar heartbeats desde cada cliente.</p>
+            </section>
+
+            <section class="health-section" aria-labelledby="traffic-source-title">
+              <div class="health-section-heading"><h3 id="traffic-source-title">Origen del tráfico</h3><span>Visitas registradas</span></div>
+              <div class="health-source-empty"><span class="health-source-icon"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></span><div><strong>Origen no disponible</strong><p>La tabla actual no distingue visitas web de app móvil.</p></div></div>
+              <div class="health-source-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Requiere enviar un campo de origen desde cada cliente.</div>
+            </section>
+          </div>
+
+          <section class="health-section health-audit" aria-labelledby="audit-title">
+            <div class="health-section-heading"><div><h3 id="audit-title">Registro de auditoría</h3><p>Últimas operaciones guardadas en Supabase</p></div><span class="health-local-label">Persistente · Realtime</span></div>
+            <div class="health-audit-wrap">
+              <table class="health-audit-table">
+                <thead><tr><th>Hora</th><th>Servicio</th><th>Resultado</th><th>Detalle</th></tr></thead>
+                <tbody data-health-audit><tr><td colspan="4" class="health-audit-empty">Cargando auditoría...</td></tr></tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <p class="admin-eyebrow" style="margin-bottom:16px">Gestión de contenido autorizado</p>
@@ -205,45 +260,286 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const adminClient = window.supabaseAdmin.client;
 
-      const countVisitsSince = async (isoDate) => {
+      const countVisitsBetween = async (start, end) => {
         const { count, error } = await adminClient
           .from("site_visits")
           .select("*", { count: "exact", head: true })
-          .gte("visited_at", isoDate);
+          .gte("visited_at", start.toISOString())
+          .lt("visited_at", end.toISOString());
         if (error) throw error;
         return count ?? 0;
       };
 
-      const loadVisitStats = async () => {
-        try {
-          const now = new Date();
-          const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-          const startOfWeek = new Date(startOfToday);
-          const isoWeekday = (startOfToday.getDay() + 6) % 7;
-          startOfWeek.setDate(startOfToday.getDate() - isoWeekday);
-          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const setTrend = (selector, current, previous) => {
+        const element = document.querySelector(selector);
+        if (!element) return;
+        if (previous === 0) {
+          element.textContent = current === 0 ? "Sin cambio vs. período anterior" : "Nuevo período con actividad";
+          element.dataset.trend = current === 0 ? "flat" : "up";
+          return;
+        }
+        const change = Math.round(((current - previous) / previous) * 100);
+        const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+        element.dataset.trend = direction;
+        element.textContent = `${change > 0 ? "↑" : change < 0 ? "↓" : "→"} ${Math.abs(change)}% vs. período anterior`;
+      };
 
-          const [today, week, month] = await Promise.all([
-            countVisitsSince(startOfToday.toISOString()),
-            countVisitsSince(startOfWeek.toISOString()),
-            countVisitsSince(startOfMonth.toISOString()),
+      const loadVisitStats = async () => {
+        const now = new Date();
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const weekStart = new Date(todayStart);
+        weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const previousMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const periods = [
+          { name: "today", currentStart: todayStart, previousStart: new Date(todayStart.getTime() - 86400000) },
+          { name: "week", currentStart: weekStart, previousStart: new Date(weekStart.getTime() - 7 * 86400000) },
+          { name: "month", currentStart: monthStart, previousStart: previousMonthStart },
+        ];
+
+        const results = await Promise.all(periods.map(async (period) => {
+          const elapsed = now.getTime() - period.currentStart.getTime();
+          const previousEnd = new Date(Math.min(period.previousStart.getTime() + elapsed, period.currentStart.getTime()));
+          const [current, previous] = await Promise.all([
+            countVisitsBetween(period.currentStart, now),
+            countVisitsBetween(period.previousStart, previousEnd),
           ]);
-          document.querySelector("[data-stat-today]").textContent = today.toLocaleString("es-CO");
-          document.querySelector("[data-stat-week]").textContent = week.toLocaleString("es-CO");
-          document.querySelector("[data-stat-month]").textContent = month.toLocaleString("es-CO");
+          return { ...period, current, previous };
+        }));
+
+        results.forEach(({ name, current, previous }) => {
+          document.querySelector(`[data-stat-${name}]`).textContent = current.toLocaleString("es-CO");
+          setTrend(`[data-trend-${name}]`, current, previous);
+        });
+      };
+
+      const renderAuditLogs = (entries) => {
+        const auditBody = document.querySelector("[data-health-audit]");
+        if (!entries.length) {
+          const emptyRow = document.createElement("tr");
+          const emptyCell = document.createElement("td");
+          emptyCell.className = "health-audit-empty";
+          emptyCell.colSpan = 4;
+          emptyCell.textContent = "Todavía no hay operaciones registradas.";
+          emptyRow.append(emptyCell);
+          auditBody.replaceChildren(emptyRow);
+          return;
+        }
+
+        auditBody.replaceChildren(...entries.map((entry) => {
+          const row = document.createElement("tr");
+          const timeCell = document.createElement("td");
+          timeCell.textContent = new Intl.DateTimeFormat("es-CO", { dateStyle: "short", timeStyle: "medium" }).format(new Date(entry.created_at));
+          const serviceCell = document.createElement("td");
+          serviceCell.textContent = entry.seccion;
+          const stateCell = document.createElement("td");
+          const stateLabel = document.createElement("span");
+          stateLabel.className = "health-audit-result";
+          stateLabel.dataset.state = entry.estado === "exito" ? "healthy" : entry.estado === "error" ? "error" : "warning";
+          stateLabel.textContent = entry.estado === "exito" ? "Correcto" : entry.estado === "error" ? "Error" : entry.estado === "en_proceso" ? "En proceso" : "Pendiente";
+          stateCell.append(stateLabel);
+          const detailCell = document.createElement("td");
+          detailCell.textContent = entry.accion;
+          row.append(timeCell, serviceCell, stateCell, detailCell);
+          return row;
+        }));
+      };
+
+      const loadAuditLogs = async () => {
+        const { data, error } = await adminClient
+          .from("system_logs")
+          .select("id, accion, seccion, estado, created_at")
+          .order("created_at", { ascending: false })
+          .limit(25);
+        if (error) {
+          setCheck("logs", "error", error.message || "No se pudo leer system_logs.");
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.className = "health-audit-empty";
+          cell.colSpan = 4;
+          cell.textContent = `Error al leer system_logs: ${error.message || "Verifica la tabla y sus permisos."}`;
+          row.append(cell);
+          document.querySelector("[data-health-audit]").replaceChildren(row);
+          updateHealthOverview();
+          return;
+        }
+        renderAuditLogs(data || []);
+      };
+
+      const updateHealthOverview = () => {
+        const states = [...document.querySelectorAll("[data-check]")].map((check) => check.dataset.state);
+        const errors = states.filter((state) => state === "error").length;
+        const warnings = states.filter((state) => state === "warning").length;
+        const overview = document.querySelector("[data-health-overview]");
+        const headline = document.querySelector("[data-health-overall]");
+        const summary = document.querySelector("[data-health-summary]");
+        const state = errors ? "error" : warnings ? "warning" : "healthy";
+        overview.dataset.state = state;
+        headline.textContent = errors ? "Se requiere atención" : warnings ? "Telemetría incompleta" : "Servicios verificados";
+        summary.textContent = errors
+          ? `${errors} lectura(s) con error${warnings ? ` y ${warnings} pendiente(s)` : ""}.`
+          : warnings ? `${warnings} módulo(s) pendiente(s) o sin datos.` : "Las lecturas de los módulos supervisados responden correctamente.";
+      };
+
+      const setCheck = (key, state, detail) => {
+        const row = document.querySelector(`[data-check="${key}"]`);
+        if (!row) return;
+        row.dataset.state = state;
+        row.querySelector(".health-check-copy small").textContent = detail;
+        row.querySelector(".health-check-state").textContent = state === "healthy" ? "Correcto" : state === "warning" ? "Pendiente" : "Error";
+      };
+
+      const checkTable = async (key, query, emptyDetail, countLabel) => {
+        try {
+          const { data, error, count } = await query;
+          if (error) throw error;
+          const rows = data || [];
+          const total = count ?? rows.length;
+          const state = "healthy";
+          setCheck(key, state, total ? `${countLabel}: ${total.toLocaleString("es-CO")}` : emptyDetail);
+          return rows;
         } catch (error) {
-          console.error("No se pudieron cargar las visitas:", error);
+          setCheck(key, "error", error.message || "No se pudo completar la lectura.");
+          return null;
         }
       };
+
+      const runHealthChecks = async () => {
+        const databaseProbe = checkTable(
+          "database",
+          adminClient.from("site_visits").select("visited_at", { count: "exact", head: true }),
+          "Conexión correcta · sin visitas registradas",
+          "Conexión y lectura correctas",
+          "healthy"
+        );
+        const guidesProbe = checkTable(
+          "devotionals",
+          adminClient.from("guias_biblicas").select("id").limit(1),
+          "No hay guías registradas",
+          "Última guía disponible"
+        );
+        const devotionalContentProbe = checkTable(
+          "devotional-content",
+          adminClient.from("devocionales").select("id", { count: "exact", head: true }),
+          "Tabla devocionales disponible · sin registros",
+          "Devocionales disponibles"
+        );
+        const sermonsProbe = checkTable(
+          "sermons",
+          adminClient.from("sermones").select("id, titulo, fecha, youtube_url, publicado").eq("publicado", true).order("fecha", { ascending: false }).limit(1),
+          "No hay prédicas publicadas",
+          "Prédica publicada"
+        );
+        const eventsProbe = checkTable(
+          "events",
+          adminClient.from("events").select("id", { count: "exact", head: true }),
+          "Tabla events disponible · sin registros",
+          "Eventos disponibles"
+        );
+        const adminEventsProbe = checkTable(
+          "event-admin",
+          adminClient.from("eventos").select("id", { count: "exact", head: true }),
+          "Tabla eventos disponible · sin registros",
+          "Eventos administrables"
+        );
+        const carouselProbe = checkTable(
+          "carousel",
+          adminClient.from("carrusel_conexion").select("id", { count: "exact", head: true }),
+          "Tabla carrusel_conexion disponible · sin registros",
+          "Elementos disponibles"
+        );
+        const auditProbe = checkTable(
+          "logs",
+          adminClient.from("system_logs").select("id", { count: "exact", head: true }),
+          "Tabla system_logs disponible · sin registros",
+          "Registros disponibles"
+        );
+
+        const [, , sermons] = await Promise.all([
+          databaseProbe, guidesProbe, sermonsProbe, eventsProbe, adminEventsProbe, carouselProbe, auditProbe, devotionalContentProbe,
+        ]);
+        if (sermons === null) {
+          setCheck("youtube", "error", "No se pudo leer la última prédica de Supabase.");
+        } else if (!sermons.length || !sermons[0].youtube_url?.trim()) {
+          setCheck("youtube", "error", "No hay URL de prédica para verificar.");
+        } else {
+          const youtubeUrl = sermons[0].youtube_url.trim();
+          try {
+            const response = await fetch(
+              `https://www.youtube.com/oembed?url=${encodeURIComponent(youtubeUrl)}&format=json`
+            );
+            if (response.status === 200) {
+              setCheck("youtube", "healthy", "URL pública disponible · oEmbed respondió HTTP 200.");
+            } else {
+              setCheck("youtube", "error", `YouTube oEmbed respondió HTTP ${response.status}.`);
+            }
+          } catch (error) {
+            setCheck("youtube", "error", error.message || "No se pudo conectar con YouTube oEmbed.");
+          }
+        }
+        await loadAuditLogs();
+        updateHealthOverview();
+      };
+
+      let monitoring = false;
+      const runMonitoring = async () => {
+        if (monitoring) return;
+        monitoring = true;
+        const refreshButton = document.querySelector("[data-health-refresh]");
+        const updatedLabel = document.querySelector("[data-health-updated]");
+        refreshButton.disabled = true;
+        updatedLabel.textContent = "Actualizando…";
+        try {
+          const [visitsResult, healthResult] = await Promise.allSettled([loadVisitStats(), runHealthChecks()]);
+          if (visitsResult.status === "rejected") {
+            throw visitsResult.reason;
+          }
+          if (healthResult.status === "rejected") throw healthResult.reason;
+          const refreshedAt = new Date();
+          updatedLabel.textContent = `Actualizado ${new Intl.DateTimeFormat("es-CO", { timeStyle: "short" }).format(refreshedAt)}`;
+        } catch (error) {
+          console.error("No se pudo completar la supervisión:", error);
+          setCheck("database", "error", error.message || "Falló la lectura de métricas.");
+          updateHealthOverview();
+          updatedLabel.textContent = "No se pudo actualizar";
+        } finally {
+          refreshButton.disabled = false;
+          monitoring = false;
+        }
+      };
+
+      document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
+      window.addEventListener("online", runMonitoring);
 
       (async () => {
         try {
           const user = await window.supabaseAdmin.requireAdminSession();
           if (user) {
-            await loadVisitStats();
+            await runMonitoring();
+            adminClient
+              .channel("admin-system-health-visits")
+              .on("postgres_changes", { event: "INSERT", schema: "public", table: "site_visits" }, () => runMonitoring())
+              .subscribe((status) => {
+                const realtimeStatus = document.querySelector("[data-realtime-status]");
+                if (status === "SUBSCRIBED") realtimeStatus.innerHTML = '<i class="fa-solid fa-signal" aria-hidden="true"></i> Realtime conectado';
+                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                  console.warn("Realtime no disponible; continúa el sondeo periódico.");
+                  realtimeStatus.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+                }
+              });
+            adminClient
+              .channel("admin-system-health-logs")
+              .on("postgres_changes", { event: "INSERT", schema: "public", table: "system_logs" }, loadAuditLogs)
+              .subscribe((status) => {
+                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                  document.querySelector("[data-realtime-status]").innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+                }
+              });
+            window.setInterval(runMonitoring, 60000);
           }
         } catch (error) {
           window.supabaseAdmin.showAuthError(document.querySelector("[data-auth-status]"), error);

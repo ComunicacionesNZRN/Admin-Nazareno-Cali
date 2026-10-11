@@ -185,6 +185,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const eventsList = document.querySelector("[data-events-list]");
       const eventForm = document.querySelector("[data-event-form]");
@@ -334,6 +335,11 @@
         event.preventDefault();
         eventStatus.textContent = "Guardando...";
         submitButton.disabled = true;
+        await window.systemLogs.record({
+          accion: eventForm.elements.namedItem("id")?.value ? "Actualización de evento en curso" : "Creación de evento en curso",
+          seccion: "eventos",
+          estado: "en_proceso",
+        });
 
         try {
           const client = window.supabaseAdmin.client;
@@ -407,6 +413,11 @@
             .from("events")
             .upsert(publicRecord, { onConflict: "id" });
           if (publicEventError) throw publicEventError;
+          await window.systemLogs.record({
+            accion: editingId ? "Evento actualizado y sincronizado" : "Evento creado y sincronizado",
+            seccion: "eventos",
+            estado: "exito",
+          });
 
           eventStatus.textContent = editingId
             ? "Evento actualizado correctamente."
@@ -416,6 +427,11 @@
           await loadEvents();
         } catch (error) {
           console.error("Error al guardar:", error);
+          await window.systemLogs.record({
+            accion: `Error al guardar evento: ${error.message || "Error desconocido"}`,
+            seccion: "eventos",
+            estado: "error",
+          });
           eventStatus.textContent = error.message || "No fue posible guardar el evento.";
         } finally {
           submitButton.disabled = false;
@@ -428,15 +444,18 @@
         if (!window.confirm("¿Seguro que deseas eliminar este evento?")) return;
         try {
           const client = window.supabaseAdmin.client;
+          await window.systemLogs.record({ accion: "Eliminación de evento en curso", seccion: "eventos", estado: "en_proceso" });
           const { error } = await client.from("eventos").delete().eq("id", id);
           if (error) throw error;
 
           const { error: publicEventError } = await client.from("events").delete().eq("id", id);
           if (publicEventError) throw publicEventError;
+          await window.systemLogs.record({ accion: "Evento eliminado y sincronizado", seccion: "eventos", estado: "exito" });
 
           listStatus.textContent = "Evento eliminado.";
           await loadEvents();
         } catch (error) {
+          await window.systemLogs.record({ accion: `Error al eliminar evento: ${error.message || "Error desconocido"}`, seccion: "eventos", estado: "error" });
           listStatus.textContent = error.message || "No fue posible eliminar el evento.";
         }
       };
