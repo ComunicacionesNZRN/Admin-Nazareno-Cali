@@ -131,9 +131,18 @@
             </section>
 
             <section class="health-section" aria-labelledby="traffic-source-title">
-              <div class="health-section-heading"><h3 id="traffic-source-title">Origen del tráfico</h3><span>Visitas registradas</span></div>
-              <div class="health-source-empty"><span class="health-source-icon"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></span><div><strong>Origen no disponible</strong><p>La tabla actual no distingue visitas web de app móvil.</p></div></div>
-              <div class="health-source-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Requiere enviar un campo de origen desde cada cliente.</div>
+              <div class="health-section-heading"><h3 id="traffic-source-title">Origen del tráfico</h3><span>Últimos 30 días</span></div>
+              <div class="health-traffic-content" data-traffic-content hidden>
+                <div class="health-source-stats" aria-label="Vistas por origen">
+                  <div class="health-source-stat"><span><i class="fa-solid fa-globe" aria-hidden="true"></i> Web</span><strong data-origin-count="web">0</strong></div>
+                  <div class="health-source-stat"><span><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> App móvil</span><strong data-origin-count="app_movil">0</strong></div>
+                </div>
+                <div class="health-top-pages-wrap">
+                  <h4>Páginas más vistas</h4>
+                  <ol class="health-top-pages" data-top-pages></ol>
+                </div>
+              </div>
+              <p class="health-source-note" data-traffic-status aria-live="polite">Cargando vistas...</p>
             </section>
           </div>
 
@@ -317,6 +326,90 @@
         });
       };
 
+      const renderTrafficInsights = (visits) => {
+        const totals = { web: 0, app_movil: 0 };
+        const pages = new Map();
+        visits.forEach(({ origen, pagina }) => {
+          if (Object.hasOwn(totals, origen)) totals[origen] += 1;
+          const pageName = pagina?.trim() || "sin nombre";
+          pages.set(pageName, (pages.get(pageName) || 0) + 1);
+        });
+
+        Object.entries(totals).forEach(([origen, count]) => {
+          document.querySelector(`[data-origin-count="${origen}"]`).textContent = count.toLocaleString("es-CO");
+        });
+
+        const topPages = [...pages.entries()].sort((left, right) => right[1] - left[1]).slice(0, 5);
+        const list = document.querySelector("[data-top-pages]");
+        if (!topPages.length) {
+          const emptyItem = document.createElement("li");
+          emptyItem.className = "health-top-pages-empty";
+          emptyItem.textContent = "Sin vistas registradas en este período.";
+          list.replaceChildren(emptyItem);
+          return;
+        }
+
+        const maxViews = topPages[0][1];
+        list.replaceChildren(...topPages.map(([pageName, count]) => {
+          const item = document.createElement("li");
+          item.className = "health-top-page";
+          const meta = document.createElement("div");
+          meta.className = "health-top-page-meta";
+          const name = document.createElement("span");
+          name.textContent = pageName;
+          const views = document.createElement("strong");
+          views.textContent = count.toLocaleString("es-CO");
+          views.setAttribute("aria-label", `${count.toLocaleString("es-CO")} vistas`);
+          meta.append(name, views);
+          const bar = document.createElement("span");
+          bar.className = "health-top-page-bar";
+          bar.setAttribute("aria-hidden", "true");
+          const fill = document.createElement("span");
+          fill.style.width = `${Math.max(8, Math.round((count / maxViews) * 100))}%`;
+          bar.append(fill);
+          item.append(meta, bar);
+          return item;
+        }));
+      };
+
+      const loadTrafficInsights = async () => {
+        const content = document.querySelector("[data-traffic-content]");
+        const status = document.querySelector("[data-traffic-status]");
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);
+        const pageSize = 1000;
+        const visits = [];
+        let offset = 0;
+
+        try {
+          let batch;
+          do {
+            const { data, error } = await adminClient
+              .from("visitas")
+              .select("id, origen, pagina")
+              .gte("created_at", startDate.toISOString())
+              .order("id", { ascending: true })
+              .range(offset, offset + pageSize - 1);
+            if (error) throw error;
+            batch = data || [];
+            visits.push(...batch);
+            offset += batch.length;
+          } while (batch.length === pageSize);
+
+          renderTrafficInsights(visits);
+          content.hidden = false;
+          status.textContent = visits.length
+            ? `${visits.length.toLocaleString("es-CO")} vistas registradas.`
+            : "Sin vistas registradas en los últimos 30 días.";
+          status.dataset.state = "healthy";
+        } catch (error) {
+          console.error("No se pudieron cargar las vistas por origen:", error);
+          content.hidden = true;
+          status.textContent = `No se pudieron cargar las vistas: ${error.message || "Verifica los permisos de lectura de la tabla visitas."}`;
+          status.dataset.state = "error";
+        }
+      };
+
       const renderAuditLogs = (entries) => {
         const auditBody = document.querySelector("[data-health-audit]");
         if (!entries.length) {
@@ -494,10 +587,11 @@
         refreshButton.disabled = true;
         updatedLabel.textContent = "Actualizando…";
         try {
-          const [visitsResult, healthResult] = await Promise.allSettled([loadVisitStats(), runHealthChecks()]);
+          const [visitsResult, trafficResult, healthResult] = await Promise.allSettled([loadVisitStats(), loadTrafficInsights(), runHealthChecks()]);
           if (visitsResult.status === "rejected") {
             throw visitsResult.reason;
           }
+          if (trafficResult.status === "rejected") throw trafficResult.reason;
           if (healthResult.status === "rejected") throw healthResult.reason;
           const refreshedAt = new Date();
           updatedLabel.textContent = `Actualizado ${new Intl.DateTimeFormat("es-CO", { timeStyle: "short" }).format(refreshedAt)}`;
@@ -529,6 +623,14 @@
                 if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
                   console.warn("Realtime no disponible; continúa el sondeo periódico.");
                   realtimeStatus.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+                }
+              });
+            adminClient
+              .channel("admin-traffic-insights")
+              .on("postgres_changes", { event: "INSERT", schema: "public", table: "visitas" }, () => loadTrafficInsights())
+              .subscribe((status) => {
+                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                  console.warn("Realtime de visitas no disponible; se actualizará cada minuto.");
                 }
               });
             adminClient
