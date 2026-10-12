@@ -467,6 +467,11 @@
           activeUser = access.user;
           document.querySelector("[data-admin-email]").textContent = activeUser.email;
           await loadEvents();
+          if (new URLSearchParams(window.location.search).get("accion") === "nuevo") {
+            resetForm();
+            eventForm.scrollIntoView({ behavior: "smooth", block: "start" });
+            eventForm.elements.titulo.focus({ preventScroll: true });
+          }
         } catch (error) {
           window.supabaseAdmin.showAuthError(listStatus, error);
         }

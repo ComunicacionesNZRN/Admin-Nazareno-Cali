@@ -42,6 +42,9 @@ button, input, select { font: inherit; }
 .admin-button-primary { background: var(--admin-violet); color: #fff; }
 .admin-button-danger { background: #9e2e39; color: #fff; }
 .admin-button:disabled { cursor: wait; opacity: .55; }
+.dashboard-quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: -22px 0 34px; }
+.dashboard-quick-actions a { min-height: 44px; }
+.dashboard-quick-actions [hidden] { display: none; }
 .admin-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .admin-card { min-height: 260px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border: 1px solid var(--admin-line); border-radius: 14px; transition: transform .2s, box-shadow .2s; }
 .admin-card:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(20,20,20,.1); }

@@ -306,6 +306,10 @@
       group.hidden = ![...group.querySelectorAll("a")].some((link) => link.style.display !== "none");
     });
 
+    document.querySelectorAll("[data-permission-action]").forEach((action) => {
+      action.hidden = !hasPermission(action.dataset.permissionAction, user, profile);
+    });
+
     // 5. Filtrar tarjetas del Dashboard
     const dashboardCards = document.querySelectorAll(".admin-card[data-permission]");
     dashboardCards.forEach((card) => {

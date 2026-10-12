@@ -521,6 +521,11 @@
           updatePreview();
           await loadRows();
           await loadBibleGuides();
+          if (new URLSearchParams(window.location.search).get("accion") === "nuevo") {
+            resetForm();
+            form.scrollIntoView({ behavior: "smooth", block: "start" });
+            form.elements.titulo.focus({ preventScroll: true });
+          }
         } catch (error) {
           window.supabaseAdmin.showAuthError(listStatus, error);
         }

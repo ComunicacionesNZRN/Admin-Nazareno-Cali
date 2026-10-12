@@ -352,6 +352,10 @@
           authorizedUser = access.user;
           document.querySelector("[data-admin-email]").textContent = access.user.email;
           await loadMediaRows();
+          if (new URLSearchParams(window.location.search).get("accion") === "nuevo") {
+            mediaForm.scrollIntoView({ behavior: "smooth", block: "start" });
+            mediaForm.elements.titulo.focus({ preventScroll: true });
+          }
         } catch (error) {
           window.supabaseAdmin.showAuthError(mediaFormStatus, error);
           mediaForm.querySelectorAll("input, select, button").forEach((field) => { field.disabled = true; });
