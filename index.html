@@ -76,21 +76,22 @@
             <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
           </div>
         </header>
+        <p class="admin-lead" data-dashboard-module-prompt hidden>Usa las pestañas asignadas del menú para administrar tus módulos.</p>
 
-        <nav class="dashboard-quick-actions" aria-label="Acciones rápidas">
+        <nav class="dashboard-quick-actions" data-dashboard-owner-only aria-label="Acciones rápidas">
           <a class="admin-button-primary" data-permission-action="eventos" href="eventos.html?accion=nuevo"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo evento</a>
           <a class="admin-button-primary" data-permission-action="devocionales" href="devocionales.html?accion=nuevo"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo devocional</a>
           <a class="admin-button-primary" data-permission-action="sermones" href="sermones.html?accion=nuevo"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nueva prédica</a>
         </nav>
 
-        <section class="dashboard-pending" aria-labelledby="pending-title" data-permission-section="eventos,devocionales,sermones">
+        <section class="dashboard-pending" data-dashboard-owner-only aria-labelledby="pending-title" data-permission-section="eventos,devocionales,sermones">
           <header><div><p class="admin-eyebrow">Seguimiento</p><h2 id="pending-title">Pendientes</h2></div></header>
           <ul data-pending-list aria-live="polite"><li class="dashboard-pending-loading">Cargando pendientes...</li></ul>
           <button class="admin-button" type="button" data-pending-retry hidden>Reintentar</button>
         </section>
 
-        <p class="admin-eyebrow" style="margin-bottom:16px">Visitas al sitio público</p>
-        <section class="admin-stats health-traffic-stats" aria-label="Estadísticas de visitas" data-visit-stats>
+        <p class="admin-eyebrow" data-dashboard-owner-only style="margin-bottom:16px">Visitas al sitio público</p>
+        <section class="admin-stats health-traffic-stats" data-dashboard-owner-only aria-label="Estadísticas de visitas" data-visit-stats>
           <div class="admin-stat">
             <span class="admin-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span>
             <div><p class="admin-stat-label">Hoy</p><p class="admin-stat-value" data-stat-today>—</p><p class="health-stat-trend" data-trend-today>Comparando…</p></div>
@@ -105,7 +106,7 @@
           </div>
         </section>
 
-        <section class="system-health" aria-labelledby="health-title">
+        <section class="system-health" data-dashboard-owner-only aria-labelledby="health-title">
           <header class="health-heading">
             <div>
               <p class="admin-eyebrow">Supervisión de plataforma</p>
@@ -174,10 +175,10 @@
           </section>
         </section>
 
-        <p class="admin-eyebrow" style="margin-bottom:16px">Gestión de contenido autorizado</p>
+        <p class="admin-eyebrow" data-dashboard-owner-only style="margin-bottom:16px">Gestión de contenido autorizado</p>
         
         <!-- Tarjetas del Dashboard filtradas por permisos -->
-        <section class="admin-cards" aria-label="Accesos de administración">
+        <section class="admin-cards" data-dashboard-owner-only aria-label="Accesos de administración">
           
           <!-- Equipo & Liderazgo (NUEVA TARJETA) -->
           <a class="admin-card" data-permission="equipo" href="equipo.html">
@@ -794,6 +795,8 @@
 
           window.supabaseAdmin.applyPermissionsUI(session.user, profile);
           document.body.dataset.dashboardAuth = "ready";
+          if (!window.supabaseAdmin.isDashboardOwner(session.user)) return;
+
           await loadPendingAlerts();
           await runMonitoring();
           adminClient
@@ -817,6 +820,13 @@
             });
           await subscribeAuditLogs();
           window.setInterval(runMonitoring, 60000);
+          document.querySelector("[data-pending-retry]").addEventListener("click", loadPendingAlerts);
+          document.querySelector("[data-audit-period]").addEventListener("change", async () => {
+            await loadAuditLogs();
+            await subscribeAuditLogs();
+          });
+          document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
+          window.addEventListener("online", runMonitoring);
         } catch (error) {
           console.error("No se pudo validar el acceso al dashboard:", error);
           document.body.dataset.dashboardAuth = "checking";
@@ -824,13 +834,6 @@
         }
       };
 
-      document.querySelector("[data-pending-retry]").addEventListener("click", loadPendingAlerts);
-      document.querySelector("[data-audit-period]").addEventListener("change", async () => {
-        await loadAuditLogs();
-        await subscribeAuditLogs();
-      });
-      document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
-      window.addEventListener("online", runMonitoring);
       startDashboard();
     </script>
   </body>

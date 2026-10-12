@@ -137,6 +137,8 @@
       emails.includes(SUPERADMIN_EMAIL);
   };
 
+  const isDashboardOwner = (user) => String(user?.email || "").trim().toLowerCase() === SUPERADMIN_EMAIL;
+
   const normalizePermission = (permission) => String(permission || "")
     .trim()
     .toLowerCase()
@@ -289,6 +291,13 @@
       greetingEl.textContent = displayName ? `Hola, ${displayName}.` : "Hola.";
     }
 
+    const dashboardOwner = isDashboardOwner(user);
+    document.querySelectorAll("[data-dashboard-owner-only]").forEach((section) => {
+      section.hidden = !dashboardOwner;
+    });
+    const modulePrompt = document.querySelector("[data-dashboard-module-prompt]");
+    if (modulePrompt) modulePrompt.hidden = dashboardOwner;
+
     // 3. Texto del rol en el sidebar
     const brandEl = document.querySelector(".admin-brand span, [data-admin-brand-text]");
     if (brandEl) {
@@ -343,6 +352,7 @@
     getCurrentUser,
     getAdminProfile,
     isSuperAdmin,
+    isDashboardOwner,
     applyPermissionsUI,
     requireAdminSession,
     requireAdminPermission,
