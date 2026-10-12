@@ -164,7 +164,7 @@
           </div>
 
           <section class="health-section health-audit" aria-labelledby="audit-title">
-            <div class="health-section-heading"><div><h3 id="audit-title">Registro de auditoría</h3><p>Últimas operaciones guardadas en Supabase</p></div><span class="health-local-label">Persistente · Realtime</span></div>
+            <div class="health-section-heading"><div><h3 id="audit-title">Registro de auditoría</h3><p>Últimas operaciones guardadas en Supabase</p></div><div class="health-audit-controls"><label for="audit-period">Período</label><select id="audit-period" data-audit-period aria-label="Filtrar auditoría por período"><option value="today" selected>Hoy</option><option value="7days">Últimos 7 días</option><option value="30days">Últimos 30 días</option></select><span class="health-local-label">Persistente · Realtime</span></div></div>
             <div class="health-audit-wrap">
               <table class="health-audit-table">
                 <thead><tr><th>Hora</th><th>Servicio</th><th>Resultado</th><th>Detalle</th></tr></thead>
@@ -578,10 +578,44 @@
         }
       };
 
+      const getAuditRange = () => {
+        const period = document.querySelector("[data-audit-period]").value;
+        const end = new Date();
+        const start = new Date(end);
+        if (period === "today") {
+          start.setHours(0, 0, 0, 0);
+        } else {
+          start.setDate(start.getDate() - (period === "7days" ? 7 : 30));
+        }
+        return { start, end };
+      };
+
+      let auditChannel = null;
+      const subscribeAuditLogs = async () => {
+        if (auditChannel) await adminClient.removeChannel(auditChannel);
+        const { start, end } = getAuditRange();
+        auditChannel = adminClient
+          .channel("admin-system-health-logs")
+          .on("postgres_changes", {
+            event: "INSERT",
+            schema: "public",
+            table: "system_logs",
+            filter: `created_at=gte.${start.toISOString()},created_at=lt.${end.toISOString()}`,
+          }, loadAuditLogs)
+          .subscribe((status) => {
+            if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+              document.querySelector("[data-realtime-status]").innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+            }
+          });
+      };
+
       const loadAuditLogs = async () => {
+        const { start, end } = getAuditRange();
         const { data, error } = await adminClient
           .from("system_logs")
           .select("id, accion, seccion, estado, created_at")
+          .gte("created_at", start.toISOString())
+          .lt("created_at", end.toISOString())
           .order("created_at", { ascending: false })
           .limit(25);
         if (error) {
@@ -781,14 +815,7 @@
                 console.warn("Realtime de visitas no disponible; se actualizará cada minuto.");
               }
             });
-          adminClient
-            .channel("admin-system-health-logs")
-            .on("postgres_changes", { event: "INSERT", schema: "public", table: "system_logs" }, loadAuditLogs)
-            .subscribe((status) => {
-              if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
-                document.querySelector("[data-realtime-status]").innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
-              }
-            });
+          await subscribeAuditLogs();
           window.setInterval(runMonitoring, 60000);
         } catch (error) {
           console.error("No se pudo validar el acceso al dashboard:", error);
@@ -798,6 +825,10 @@
       };
 
       document.querySelector("[data-pending-retry]").addEventListener("click", loadPendingAlerts);
+      document.querySelector("[data-audit-period]").addEventListener("change", async () => {
+        await loadAuditLogs();
+        await subscribeAuditLogs();
+      });
       document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
       window.addEventListener("online", runMonitoring);
       startDashboard();

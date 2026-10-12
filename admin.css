@@ -157,6 +157,9 @@ button, input, select { font: inherit; }
 .health-audit { padding-bottom: 8px; }
 .health-audit .health-section-heading { align-items: center; }
 .health-audit .health-section-heading p { margin: 4px 0 0; color: var(--admin-muted); font-size: 10px; }
+.health-audit-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.health-audit-controls label { color: var(--admin-muted); font-size: 10px; font-weight: 700; }
+.health-audit-controls select { min-height: 38px; padding: 8px 28px 8px 10px; border: 1px solid var(--admin-line); border-radius: 6px; background: #fff; color: var(--admin-ink); font: inherit; font-size: 10px; }
 .health-local-label { max-width: 190px; }
 .health-audit-wrap { overflow-x: auto; }
 .health-audit-table { width: 100%; min-width: 520px; border-collapse: collapse; text-align: left; }
