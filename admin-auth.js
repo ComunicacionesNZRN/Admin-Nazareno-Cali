@@ -309,6 +309,13 @@
     document.querySelectorAll("[data-permission-action]").forEach((action) => {
       action.hidden = !hasPermission(action.dataset.permissionAction, user, profile);
     });
+    document.querySelectorAll("[data-permission-section]").forEach((section) => {
+      const permissions = section.dataset.permissionSection.split(",");
+      section.hidden = permissions.every((permission) => {
+        const actions = [...document.querySelectorAll(`[data-permission-action="${permission}"]`)];
+        return !actions.length || actions.every((action) => action.hidden);
+      });
+    });
 
     // 5. Filtrar tarjetas del Dashboard
     const dashboardCards = document.querySelectorAll(".admin-card[data-permission]");

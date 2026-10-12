@@ -83,6 +83,12 @@
           <a class="admin-button-primary" data-permission-action="sermones" href="sermones.html?accion=nuevo"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nueva prédica</a>
         </nav>
 
+        <section class="dashboard-pending" aria-labelledby="pending-title" data-permission-section="eventos,devocionales,sermones">
+          <header><div><p class="admin-eyebrow">Seguimiento</p><h2 id="pending-title">Pendientes</h2></div></header>
+          <ul data-pending-list aria-live="polite"><li class="dashboard-pending-loading">Cargando pendientes...</li></ul>
+          <button class="admin-button" type="button" data-pending-retry hidden>Reintentar</button>
+        </section>
+
         <p class="admin-eyebrow" style="margin-bottom:16px">Visitas al sitio público</p>
         <section class="admin-stats health-traffic-stats" aria-label="Estadísticas de visitas" data-visit-stats>
           <div class="admin-stat">
@@ -472,6 +478,106 @@
         }));
       };
 
+      const localDateString = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+
+      const loadPendingAlerts = async () => {
+        const list = document.querySelector("[data-pending-list]");
+        const retry = document.querySelector("[data-pending-retry]");
+        retry.hidden = true;
+        list.replaceChildren(Object.assign(document.createElement("li"), { textContent: "Cargando pendientes..." }));
+
+        try {
+          const now = new Date();
+          const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const tomorrowEnd = new Date(tomorrow);
+          tomorrowEnd.setDate(tomorrowEnd.getDate() + 1);
+          const weekStart = new Date(today);
+          weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+          const nextWeekStart = new Date(weekStart);
+          nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+
+          const canAccessModule = (permission) => {
+            const action = document.querySelector(`[data-permission-action="${permission}"]`);
+            return Boolean(action && !action.hidden);
+          };
+
+          // La alerta sigue la cadencia solicitada: un devocional diario y al menos una prédica semanal.
+          // Consultar solo módulos permitidos evita presentar un falso "Todo al día".
+          const [eventsResult, devotionalsResult, sermonsResult] = await Promise.all([
+            canAccessModule("eventos")
+              ? adminClient.from("eventos").select("id, titulo, fecha, estado").lt("fecha", localDateString(today)).in("estado", ["proximo", "agotado"]).order("fecha", { ascending: true })
+              : { data: [], error: null },
+            canAccessModule("devocionales")
+              ? adminClient.from("devocionales").select("id, titulo, publicar_at, publicado").gte("publicar_at", tomorrow.toISOString()).lt("publicar_at", tomorrowEnd.toISOString())
+              : { data: [], error: null },
+            canAccessModule("sermones")
+              ? adminClient.from("sermones").select("id").gte("fecha", localDateString(weekStart)).lt("fecha", localDateString(nextWeekStart)).limit(1)
+              : { data: [], error: null },
+          ]);
+          const failedQuery = [eventsResult, devotionalsResult, sermonsResult].find((result) => result.error);
+          if (failedQuery) throw failedQuery.error;
+
+          const alerts = [];
+          (eventsResult.data || []).forEach((event) => alerts.push({
+            label: `Evento vencido sin cerrar: ${event.titulo}`,
+            href: `eventos.html?id=${encodeURIComponent(event.id)}`,
+            permission: "eventos",
+          }));
+
+          const tomorrowDevotionals = devotionalsResult.data || [];
+          const publishedTomorrow = tomorrowDevotionals.some((item) => item.publicado);
+          if (!publishedTomorrow) {
+            const draft = tomorrowDevotionals.find((item) => !item.publicado);
+            alerts.push({
+              label: draft ? `Devocional de mañana pendiente de publicar: ${draft.titulo}` : "No hay devocional publicado para mañana",
+              href: draft ? `devocionales.html?id=${encodeURIComponent(draft.id)}` : "devocionales.html?accion=nuevo",
+              permission: "devocionales",
+            });
+          }
+
+          if (!(sermonsResult.data || []).length) {
+            alerts.push({ label: "No hay prédica registrada esta semana", href: "sermones.html?accion=nuevo", permission: "sermones" });
+          }
+
+          const visibleAlerts = alerts.filter((alert) => {
+            const permission = alert.permission;
+            const links = [...document.querySelectorAll("[data-permission-action]")];
+            const action = links.find((element) => element.dataset.permissionAction === permission);
+            return action && !action.hidden;
+          });
+          if (!visibleAlerts.length) {
+            const item = document.createElement("li");
+            item.className = "dashboard-pending-clear";
+            item.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Todo al día</span>';
+            list.replaceChildren(item);
+            return;
+          }
+
+          list.replaceChildren(...visibleAlerts.map((alert) => {
+            const item = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = alert.href;
+            link.textContent = alert.label;
+            const icon = document.createElement("i");
+            icon.className = "fa-solid fa-arrow-up-right-from-square";
+            icon.setAttribute("aria-hidden", "true");
+            item.append(link, icon);
+            return item;
+          }));
+        } catch (error) {
+          console.error("No se pudieron cargar los pendientes:", error);
+          list.replaceChildren(Object.assign(document.createElement("li"), { textContent: "No se pudieron cargar los pendientes." }));
+          retry.hidden = false;
+        }
+      };
+
       const loadAuditLogs = async () => {
         const { data, error } = await adminClient
           .from("system_logs")
@@ -654,6 +760,7 @@
 
           window.supabaseAdmin.applyPermissionsUI(session.user, profile);
           document.body.dataset.dashboardAuth = "ready";
+          await loadPendingAlerts();
           await runMonitoring();
           adminClient
             .channel("admin-system-health-visits")
@@ -690,6 +797,7 @@
         }
       };
 
+      document.querySelector("[data-pending-retry]").addEventListener("click", loadPendingAlerts);
       document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
       window.addEventListener("online", runMonitoring);
       startDashboard();

@@ -521,7 +521,12 @@
           updatePreview();
           await loadRows();
           await loadBibleGuides();
-          if (new URLSearchParams(window.location.search).get("accion") === "nuevo") {
+          const params = new URLSearchParams(window.location.search);
+          const devotionalId = params.get("id");
+          if (devotionalId) {
+            const devotional = rows.find((item) => String(item.id) === devotionalId);
+            if (devotional) fillForm(devotional);
+          } else if (params.get("accion") === "nuevo") {
             resetForm();
             form.scrollIntoView({ behavior: "smooth", block: "start" });
             form.elements.titulo.focus({ preventScroll: true });

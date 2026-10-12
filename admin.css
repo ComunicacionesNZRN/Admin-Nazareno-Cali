@@ -45,6 +45,18 @@ button, input, select { font: inherit; }
 .dashboard-quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: -22px 0 34px; }
 .dashboard-quick-actions a { min-height: 44px; }
 .dashboard-quick-actions [hidden] { display: none; }
+.dashboard-pending { margin: 0 0 34px; padding: 20px; border-radius: 8px; background: var(--admin-ink); color: #fff; }
+.dashboard-pending header { display: flex; justify-content: space-between; }
+.dashboard-pending .admin-eyebrow { margin-bottom: 6px; color: #f2a218; }
+.dashboard-pending h2 { margin: 0; font: 700 22px/1.2 var(--admin-display); }
+.dashboard-pending ul { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.dashboard-pending li { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 42px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 6px; color: rgba(255,255,255,.78); font-size: 11px; line-height: 1.5; }
+.dashboard-pending li a { color: #fff; text-decoration: underline; text-decoration-color: #f2a218; text-underline-offset: 3px; }
+.dashboard-pending li > i { flex: 0 0 auto; color: #f2a218; }
+.dashboard-pending .dashboard-pending-clear { justify-content: flex-start; border-color: rgba(22,131,74,.5); color: #fff; }
+.dashboard-pending-clear > i { color: #57ce85 !important; }
+.dashboard-pending .admin-button { margin-top: 12px; }
+.dashboard-pending [hidden] { display: none; }
 .admin-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .admin-card { min-height: 260px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border: 1px solid var(--admin-line); border-radius: 14px; transition: transform .2s, box-shadow .2s; }
 .admin-card:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(20,20,20,.1); }
