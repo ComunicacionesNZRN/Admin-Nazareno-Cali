@@ -255,8 +255,8 @@
     // 2. Saludo personalizado
     const greetingEl = document.querySelector("[data-admin-greeting]");
     if (greetingEl) {
-      const displayName = profile.nombre?.trim() || user.email?.split("@")[0] || "Administrador";
-      greetingEl.innerHTML = `Hola, ${escapeHtml(displayName)}.`;
+      const displayName = profile.nombre?.trim() || user.email?.trim();
+      greetingEl.textContent = displayName ? `Hola, ${displayName}.` : "Hola.";
     }
 
     // 3. Texto del rol en el sidebar
