@@ -2,16 +2,31 @@
   const SUPERADMIN_EMAIL = "comunicaciones@nazarenocali.org";
   const ADMIN_NAVIGATION = [
     { href: "index.html", label: "Dashboard", icon: "fa-solid fa-gauge" },
-    { href: "equipo.html", label: "Equipo & Líderes", icon: "fa-solid fa-user-group", permission: "equipo" },
-    { href: "encuentros.html", label: "Encuentros H/M", icon: "fa-solid fa-users-between-lines", permission: "encuentros" },
-    { href: "eventos.html", label: "Eventos", icon: "fa-solid fa-calendar-days", permission: "eventos" },
-    { href: "sermones.html", label: "Prédicas y Podcasts", icon: "fa-brands fa-youtube", permission: "sermones" },
-    { href: "plan-maestro.html", label: "Plan del Maestro (DPM)", icon: "fa-solid fa-book-open", permission: "plan_maestro" },
-    { href: "grupos.html", label: "Grupos", icon: "fa-solid fa-people-group", permission: "grupos" },
-    { href: "carrusel.html", label: "Carrusel", icon: "fa-regular fa-images", permission: "carrusel" },
-    { href: "devocionales.html", label: "Devocionales", icon: "fa-solid fa-book-bible", permission: "devocionales" },
-    { href: "configuracion.html", label: "Configuración", icon: "fa-solid fa-gear", permission: "configuracion" },
-    { href: "perfil.html", label: "Mi perfil", icon: "fa-solid fa-user-shield" }
+    {
+      label: "Contenido",
+      items: [
+        { href: "sermones.html", label: "Prédicas y Podcasts", icon: "fa-brands fa-youtube", permission: "sermones" },
+        { href: "devocionales.html", label: "Devocionales", icon: "fa-solid fa-book-bible", permission: "devocionales" },
+        { href: "carrusel.html", label: "Carrusel", icon: "fa-regular fa-images", permission: "carrusel" },
+        { href: "plan-maestro.html", label: "Plan del Maestro (DPM)", icon: "fa-solid fa-book-open", permission: "plan_maestro" }
+      ]
+    },
+    {
+      label: "Comunidad",
+      items: [
+        { href: "equipo.html", label: "Equipo & Líderes", icon: "fa-solid fa-user-group", permission: "equipo" },
+        { href: "encuentros.html", label: "Encuentros H/M", icon: "fa-solid fa-users-between-lines", permission: "encuentros" },
+        { href: "grupos.html", label: "Grupos", icon: "fa-solid fa-people-group", permission: "grupos" }
+      ]
+    },
+    { label: "Agenda", items: [{ href: "eventos.html", label: "Eventos", icon: "fa-solid fa-calendar-days", permission: "eventos" }] },
+    {
+      label: "Cuenta",
+      items: [
+        { href: "configuracion.html", label: "Configuración", icon: "fa-solid fa-gear", permission: "configuracion" },
+        { href: "perfil.html", label: "Mi perfil", icon: "fa-solid fa-user-shield" }
+      ]
+    }
   ];
 
   const initializeAdminNavigation = () => {
@@ -19,7 +34,7 @@
     if (!nav) return;
 
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    nav.replaceChildren(...ADMIN_NAVIGATION.map((item) => {
+    const createLink = (item) => {
       const link = document.createElement("a");
       link.href = item.href;
       link.classList.toggle("is-active", currentPage === item.href);
@@ -33,6 +48,21 @@
       label.textContent = item.label;
       link.append(icon, label);
       return link;
+    };
+
+    nav.replaceChildren(...ADMIN_NAVIGATION.map((item) => {
+      if (!item.items) return createLink(item);
+
+      const group = document.createElement("details");
+      group.className = "admin-nav-group";
+      const summary = document.createElement("summary");
+      summary.textContent = item.label;
+      const links = document.createElement("div");
+      links.className = "admin-nav-group-links";
+      item.items.forEach((child) => links.append(createLink(child)));
+      group.append(summary, links);
+      group.open = item.items.some((child) => currentPage === child.href);
+      return group;
     }));
   };
 
@@ -271,6 +301,9 @@
     navLinks.forEach((link) => {
       const permission = link.dataset.permissionLink;
       link.style.display = !permission || hasPermission(permission, user, profile) ? "" : "none";
+    });
+    document.querySelectorAll(".admin-nav-group").forEach((group) => {
+      group.hidden = ![...group.querySelectorAll("a")].some((link) => link.style.display !== "none");
     });
 
     // 5. Filtrar tarjetas del Dashboard
