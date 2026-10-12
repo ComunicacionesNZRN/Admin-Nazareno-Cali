@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="admin.css" />
   </head>
-  <body data-admin-protected="true">
+  <body data-admin-protected="true" data-dashboard-auth="checking">
     <div class="admin-shell">
       <aside class="admin-sidebar">
         <a class="admin-brand" href="index.html">
@@ -298,6 +298,7 @@
       };
 
       const loadVisitStats = async () => {
+        try {
         const now = new Date();
         const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         const weekStart = new Date(todayStart);
@@ -324,6 +325,15 @@
           document.querySelector(`[data-stat-${name}]`).textContent = current.toLocaleString("es-CO");
           setTrend(`[data-trend-${name}]`, current, previous);
         });
+        } catch (error) {
+          ["today", "week", "month"].forEach((name) => {
+            document.querySelector(`[data-stat-${name}]`).textContent = "Error";
+            const trend = document.querySelector(`[data-trend-${name}]`);
+            trend.textContent = "No se pudo cargar. Usa Actualizar para reintentar.";
+            trend.dataset.trend = "error";
+          });
+          throw error;
+        }
       };
 
       const renderTrafficInsights = (visits) => {
@@ -606,47 +616,63 @@
         }
       };
 
+      const startDashboard = async () => {
+        try {
+          const { data: { session }, error } = await adminClient.auth.getSession();
+          if (error) throw error;
+          if (!session?.user) {
+            window.location.replace("login.html");
+            return;
+          }
+
+          const profile = await window.supabaseAdmin.getAdminProfile(session.user);
+          if (!profile || profile.activo === false) {
+            await adminClient.auth.signOut();
+            window.location.replace("login.html");
+            return;
+          }
+
+          window.supabaseAdmin.applyPermissionsUI(session.user, profile);
+          document.body.dataset.dashboardAuth = "ready";
+          await runMonitoring();
+          adminClient
+            .channel("admin-system-health-visits")
+            .on("postgres_changes", { event: "INSERT", schema: "public", table: "site_visits" }, () => runMonitoring())
+            .subscribe((status) => {
+              const realtimeStatus = document.querySelector("[data-realtime-status]");
+              if (status === "SUBSCRIBED") realtimeStatus.innerHTML = '<i class="fa-solid fa-signal" aria-hidden="true"></i> Realtime conectado';
+              if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                console.warn("Realtime no disponible; continúa el sondeo periódico.");
+                realtimeStatus.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+              }
+            });
+          adminClient
+            .channel("admin-traffic-insights")
+            .on("postgres_changes", { event: "INSERT", schema: "public", table: "visitas" }, () => loadTrafficInsights())
+            .subscribe((status) => {
+              if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                console.warn("Realtime de visitas no disponible; se actualizará cada minuto.");
+              }
+            });
+          adminClient
+            .channel("admin-system-health-logs")
+            .on("postgres_changes", { event: "INSERT", schema: "public", table: "system_logs" }, loadAuditLogs)
+            .subscribe((status) => {
+              if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+                document.querySelector("[data-realtime-status]").innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
+              }
+            });
+          window.setInterval(runMonitoring, 60000);
+        } catch (error) {
+          console.error("No se pudo validar el acceso al dashboard:", error);
+          document.body.dataset.dashboardAuth = "checking";
+          window.location.replace("login.html");
+        }
+      };
+
       document.querySelector("[data-health-refresh]").addEventListener("click", runMonitoring);
       window.addEventListener("online", runMonitoring);
-
-      (async () => {
-        try {
-          const user = await window.supabaseAdmin.requireAdminSession();
-          if (user) {
-            await runMonitoring();
-            adminClient
-              .channel("admin-system-health-visits")
-              .on("postgres_changes", { event: "INSERT", schema: "public", table: "site_visits" }, () => runMonitoring())
-              .subscribe((status) => {
-                const realtimeStatus = document.querySelector("[data-realtime-status]");
-                if (status === "SUBSCRIBED") realtimeStatus.innerHTML = '<i class="fa-solid fa-signal" aria-hidden="true"></i> Realtime conectado';
-                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
-                  console.warn("Realtime no disponible; continúa el sondeo periódico.");
-                  realtimeStatus.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
-                }
-              });
-            adminClient
-              .channel("admin-traffic-insights")
-              .on("postgres_changes", { event: "INSERT", schema: "public", table: "visitas" }, () => loadTrafficInsights())
-              .subscribe((status) => {
-                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
-                  console.warn("Realtime de visitas no disponible; se actualizará cada minuto.");
-                }
-              });
-            adminClient
-              .channel("admin-system-health-logs")
-              .on("postgres_changes", { event: "INSERT", schema: "public", table: "system_logs" }, loadAuditLogs)
-              .subscribe((status) => {
-                if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
-                  document.querySelector("[data-realtime-status]").innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> Sondeo cada minuto';
-                }
-              });
-            window.setInterval(runMonitoring, 60000);
-          }
-        } catch (error) {
-          window.supabaseAdmin.showAuthError(document.querySelector("[data-auth-status]"), error);
-        }
-      })();
+      startDashboard();
     </script>
   </body>
 </html>

@@ -139,6 +139,7 @@ button, input, select { font: inherit; }
 .health-audit-result[data-state="warning"]::before { background: #c18a00; }
 .health-audit-result[data-state="error"]::before { background: #c43d42; }
 .health-audit-empty { color: var(--admin-muted); text-align: center; }
+body[data-dashboard-auth="checking"] .admin-shell { visibility: hidden; }
 .login-page { display: grid; min-height: 100vh; place-items: center; padding: 24px; }
 .login-card { width: min(100%, 430px); padding: 42px; background: #fff; border: 1px solid var(--admin-line); border-radius: 16px; box-shadow: 0 20px 60px rgba(20,20,20,.08); }
 .login-card h1 { margin: 28px 0 12px; font: 700 54px/.95 var(--admin-display); letter-spacing: -2px; }

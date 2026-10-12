@@ -299,6 +299,7 @@
     getCurrentUser,
     getAdminProfile,
     isSuperAdmin,
+    applyPermissionsUI,
     requireAdminSession,
     requireAdminPermission,
     formatRole,
