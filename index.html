@@ -283,18 +283,18 @@
         return count ?? 0;
       };
 
-      const setTrend = (selector, current, previous) => {
+      const setTrend = (selector, current, previous, referencePeriod) => {
         const element = document.querySelector(selector);
         if (!element) return;
         if (previous === 0) {
-          element.textContent = current === 0 ? "Sin cambio vs. período anterior" : "Nuevo período con actividad";
-          element.dataset.trend = current === 0 ? "flat" : "up";
+          element.textContent = `Sin datos previos para comparar vs. ${referencePeriod}`;
+          element.dataset.trend = "flat";
           return;
         }
         const change = Math.round(((current - previous) / previous) * 100);
         const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
         element.dataset.trend = direction;
-        element.textContent = `${change > 0 ? "↑" : change < 0 ? "↓" : "→"} ${Math.abs(change)}% vs. período anterior`;
+        element.textContent = `${change >= 0 ? "+" : ""}${change}% vs. ${referencePeriod}`;
       };
 
       const loadVisitStats = async () => {
@@ -313,6 +313,7 @@
 
         const results = await Promise.all(periods.map(async (period) => {
           const elapsed = now.getTime() - period.currentStart.getTime();
+          // Incomplete periods compare against an equally long window in the prior period.
           const previousEnd = new Date(Math.min(period.previousStart.getTime() + elapsed, period.currentStart.getTime()));
           const [current, previous] = await Promise.all([
             countVisitsBetween(period.currentStart, now),
@@ -323,7 +324,8 @@
 
         results.forEach(({ name, current, previous }) => {
           document.querySelector(`[data-stat-${name}]`).textContent = current.toLocaleString("es-CO");
-          setTrend(`[data-trend-${name}]`, current, previous);
+          const referencePeriod = { today: "ayer", week: "la semana anterior", month: "el mes anterior" }[name];
+          setTrend(`[data-trend-${name}]`, current, previous, referencePeriod);
         });
         } catch (error) {
           ["today", "week", "month"].forEach((name) => {
