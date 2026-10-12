@@ -132,6 +132,11 @@
 
             <section class="health-section" aria-labelledby="traffic-source-title">
               <div class="health-section-heading"><h3 id="traffic-source-title">Origen del tráfico</h3><span>Últimos 30 días</span></div>
+              <div class="health-traffic-empty" data-traffic-empty hidden role="status" aria-live="polite">
+                <i class="fa-solid fa-chart-simple" aria-hidden="true"></i>
+                <strong>Aún no hay datos de tráfico en este período</strong>
+                <span>Los datos de visitas aparecerán aquí cuando haya actividad registrada.</span>
+              </div>
               <div class="health-traffic-content" data-traffic-content hidden>
                 <div class="health-source-stats" aria-label="Vistas por origen">
                   <div class="health-source-stat"><span><i class="fa-solid fa-globe" aria-hidden="true"></i> Web</span><strong data-origin-count="web">0</strong></div>
@@ -351,6 +356,11 @@
           document.querySelector(`[data-origin-count="${origen}"]`).textContent = count.toLocaleString("es-CO");
         });
 
+        const hasTraffic = Object.values(totals).some((count) => count > 0);
+        document.querySelector("[data-traffic-empty]").hidden = hasTraffic;
+        document.querySelector("[data-traffic-content]").hidden = !hasTraffic;
+        if (!hasTraffic) return false;
+
         const topPages = [...pages.entries()].sort((left, right) => right[1] - left[1]).slice(0, 5);
         const list = document.querySelector("[data-top-pages]");
         if (!topPages.length) {
@@ -358,7 +368,7 @@
           emptyItem.className = "health-top-pages-empty";
           emptyItem.textContent = "Sin vistas registradas en este período.";
           list.replaceChildren(emptyItem);
-          return;
+          return true;
         }
 
         const maxViews = topPages[0][1];
@@ -382,6 +392,7 @@
           item.append(meta, bar);
           return item;
         }));
+        return true;
       };
 
       const loadTrafficInsights = async () => {
@@ -408,15 +419,16 @@
             offset += batch.length;
           } while (batch.length === pageSize);
 
-          renderTrafficInsights(visits);
-          content.hidden = false;
-          status.textContent = visits.length
+          const hasTraffic = renderTrafficInsights(visits);
+          content.hidden = !hasTraffic;
+          status.textContent = hasTraffic
             ? `${visits.length.toLocaleString("es-CO")} vistas registradas.`
-            : "Sin vistas registradas en los últimos 30 días.";
+            : "Sin datos de tráfico en los últimos 30 días.";
           status.dataset.state = "healthy";
         } catch (error) {
           console.error("No se pudieron cargar las vistas por origen:", error);
           content.hidden = true;
+          document.querySelector("[data-traffic-empty]").hidden = true;
           status.textContent = `No se pudieron cargar las vistas: ${error.message || "Verifica los permisos de lectura de la tabla visitas."}`;
           status.dataset.state = "error";
         }
