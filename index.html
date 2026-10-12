@@ -139,7 +139,7 @@
                 <div class="health-check" data-check="logs"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Auditoría persistente</strong><small>Validando tabla system_logs</small></span><span class="health-check-state">En curso</span></div>
                 <div class="health-check" data-check="clients" data-state="warning"><span class="health-dot" aria-hidden="true"></span><span class="health-check-copy"><strong>Web pública y app móvil</strong><small>Sin heartbeat de los clientes configurado</small></span><span class="health-check-state">Sin telemetría</span></div>
               </div>
-              <p class="health-footnote">YouTube se valida directamente con su API pública oEmbed; esto confirma que el video es público y devuelve metadatos, no que el propietario permita incrustarlo. Web/App requieren publicar heartbeats desde cada cliente.</p>
+              <p class="health-footnote">YouTube se valida con oEmbed: confirma que el video es público, no que se permita incrustarlo. Para habilitar la telemetría, configura Web y app para enviar periódicamente una señal al backend que confirme que siguen activas. Este repositorio aún no incluye una guía ni un script de heartbeat.</p>
             </section>
 
             <section class="health-section" aria-labelledby="traffic-source-title">
