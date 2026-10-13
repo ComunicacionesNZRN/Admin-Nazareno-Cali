@@ -502,10 +502,9 @@
           tomorrow.setDate(tomorrow.getDate() + 1);
           const tomorrowEnd = new Date(tomorrow);
           tomorrowEnd.setDate(tomorrowEnd.getDate() + 1);
-          const weekStart = new Date(today);
-          weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
-          const nextWeekStart = new Date(weekStart);
-          nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+          const sermonStart = new Date(today);
+          sermonStart.setDate(sermonStart.getDate() - 6);
+          const sermonEnd = new Date(tomorrow);
 
           const canAccessModule = (permission) => {
             const action = document.querySelector(`[data-permission-action="${permission}"]`);
@@ -522,7 +521,7 @@
               ? adminClient.from("devocionales").select("id, titulo, publicar_at, publicado").gte("publicar_at", tomorrow.toISOString()).lt("publicar_at", tomorrowEnd.toISOString())
               : { data: [], error: null },
             canAccessModule("sermones")
-              ? adminClient.from("sermones").select("id").gte("fecha", localDateString(weekStart)).lt("fecha", localDateString(nextWeekStart)).limit(1)
+              ? adminClient.from("sermones").select("id").eq("publicado", true).gte("fecha", localDateString(sermonStart)).lt("fecha", localDateString(sermonEnd)).limit(1)
               : { data: [], error: null },
           ]);
           const failedQuery = [eventsResult, devotionalsResult, sermonsResult].find((result) => result.error);
@@ -553,7 +552,7 @@
           if (!(sermonsResult.data || []).length) {
             alerts.push({
               title: "Prédica de la semana",
-              detail: "No hay una prédica registrada esta semana.",
+              detail: "No hay una prédica publicada en los últimos 7 días.",
               href: "sermones.html?accion=nuevo",
               permission: "sermones",
               icon: "fa-brands fa-youtube",
@@ -856,8 +855,18 @@
                 console.warn("Realtime de visitas no disponible; se actualizará cada minuto.");
               }
             });
+          adminClient
+            .channel("admin-pending-sermons")
+            .on("postgres_changes", { event: "*", schema: "public", table: "sermones" }, loadPendingAlerts)
+            .subscribe();
           await subscribeAuditLogs();
-          window.setInterval(runMonitoring, 60000);
+          window.setInterval(() => {
+            runMonitoring();
+            loadPendingAlerts();
+          }, 60000);
+          window.addEventListener("pageshow", (event) => {
+            if (event.persisted) loadPendingAlerts();
+          });
           document.querySelector("[data-pending-retry]").addEventListener("click", loadPendingAlerts);
           document.querySelector("[data-audit-period]").addEventListener("change", async () => {
             await loadAuditLogs();
