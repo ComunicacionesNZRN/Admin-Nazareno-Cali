@@ -490,7 +490,10 @@
         const list = document.querySelector("[data-pending-list]");
         const retry = document.querySelector("[data-pending-retry]");
         retry.hidden = true;
-        list.replaceChildren(Object.assign(document.createElement("li"), { textContent: "Cargando pendientes..." }));
+        const loading = document.createElement("li");
+        loading.className = "dashboard-pending-message";
+        loading.textContent = "Cargando pendientes...";
+        list.replaceChildren(loading);
 
         try {
           const now = new Date();
@@ -527,9 +530,11 @@
 
           const alerts = [];
           (eventsResult.data || []).forEach((event) => alerts.push({
-            label: `Evento vencido sin cerrar: ${event.titulo}`,
+            title: event.titulo || "Evento vencido",
+            detail: "Este evento ya pasó y sigue abierto.",
             href: `eventos.html?id=${encodeURIComponent(event.id)}`,
             permission: "eventos",
+            icon: "fa-solid fa-calendar-xmark",
           }));
 
           const tomorrowDevotionals = devotionalsResult.data || [];
@@ -537,14 +542,22 @@
           if (!publishedTomorrow) {
             const draft = tomorrowDevotionals.find((item) => !item.publicado);
             alerts.push({
-              label: draft ? `Devocional de mañana pendiente de publicar: ${draft.titulo}` : "No hay devocional publicado para mañana",
+              title: "Devocional de mañana",
+              detail: draft ? `Pendiente de publicar: ${draft.titulo}` : "No hay un devocional publicado para mañana.",
               href: draft ? `devocionales.html?id=${encodeURIComponent(draft.id)}` : "devocionales.html?accion=nuevo",
               permission: "devocionales",
+              icon: "fa-solid fa-book-open",
             });
           }
 
           if (!(sermonsResult.data || []).length) {
-            alerts.push({ label: "No hay prédica registrada esta semana", href: "sermones.html?accion=nuevo", permission: "sermones" });
+            alerts.push({
+              title: "Prédica de la semana",
+              detail: "No hay una prédica registrada esta semana.",
+              href: "sermones.html?accion=nuevo",
+              permission: "sermones",
+              icon: "fa-brands fa-youtube",
+            });
           }
 
           const visibleAlerts = alerts.filter((alert) => {
@@ -555,26 +568,51 @@
           });
           if (!visibleAlerts.length) {
             const item = document.createElement("li");
-            item.className = "dashboard-pending-clear";
-            item.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Todo al día</span>';
+            item.className = "dashboard-pending-message dashboard-pending-clear";
+            const icon = document.createElement("i");
+            icon.className = "fa-solid fa-circle-check";
+            icon.setAttribute("aria-hidden", "true");
+            const message = document.createElement("span");
+            message.textContent = "Todo al día";
+            item.append(icon, message);
             list.replaceChildren(item);
             return;
           }
 
           list.replaceChildren(...visibleAlerts.map((alert) => {
             const item = document.createElement("li");
+            item.className = "dashboard-pending-item";
+            const iconWrap = document.createElement("span");
+            iconWrap.className = "dashboard-pending-icon";
+            iconWrap.setAttribute("aria-hidden", "true");
+            const activityIcon = document.createElement("i");
+            activityIcon.className = alert.icon;
+            iconWrap.append(activityIcon);
+            const copy = document.createElement("div");
+            copy.className = "dashboard-pending-copy";
+            const title = document.createElement("strong");
+            title.textContent = alert.title;
+            const detail = document.createElement("span");
+            detail.textContent = alert.detail;
+            copy.append(title, detail);
             const link = document.createElement("a");
+            link.className = "admin-button-primary dashboard-pending-resolve";
             link.href = alert.href;
-            link.textContent = alert.label;
+            link.setAttribute("aria-label", `Resolver: ${alert.title}`);
+            link.append(document.createTextNode("Resolver "));
             const icon = document.createElement("i");
-            icon.className = "fa-solid fa-arrow-up-right-from-square";
+            icon.className = "fa-solid fa-arrow-right";
             icon.setAttribute("aria-hidden", "true");
-            item.append(link, icon);
+            link.append(icon);
+            item.append(iconWrap, copy, link);
             return item;
           }));
         } catch (error) {
           console.error("No se pudieron cargar los pendientes:", error);
-          list.replaceChildren(Object.assign(document.createElement("li"), { textContent: "No se pudieron cargar los pendientes." }));
+          const message = document.createElement("li");
+          message.className = "dashboard-pending-message";
+          message.textContent = "No se pudieron cargar los pendientes.";
+          list.replaceChildren(message);
           retry.hidden = false;
         }
       };
