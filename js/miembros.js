@@ -98,7 +98,7 @@
     form.elements.rol.value = member.rol || "colaborador";
     form.elements.password.required = false;
     form.elements.password.value = "";
-    form.elements.password.placeholder = "Dejar en blanco";
+    form.elements.password.placeholder = "Dejar en blanco para no cambiarla";
     PERMISSIONS.forEach((permission) => { form.elements[permission].checked = Boolean(member.permisos?.[permission]); });
     formTitle.textContent = "Editar miembro";
     submitButton.textContent = "Actualizar miembro";
@@ -146,7 +146,23 @@
         }).eq("usuario_id", editingUserId);
         if (error) throw error;
         window.systemLogs.record({ accion: "Miembro actualizado", seccion: "miembros", estado: "exito" });
-        formStatus.textContent = "Miembro actualizado correctamente.";
+
+        const newPassword = String(data.get("password") || "");
+        if (newPassword) {
+          if (newPassword.length < 8) throw new Error("Perfil guardado, pero la contraseña debe tener al menos 8 caracteres.");
+          formStatus.textContent = "Perfil guardado. Cambiando contraseña...";
+          const { data: result, error: fnError } = await window.supabaseAdmin.client.functions.invoke("admin-set-password", {
+            body: { user_id: editingUserId, password: newPassword }
+          });
+          if (fnError || result?.error) {
+            let message = result?.error;
+            try { message = message || (await fnError?.context?.json())?.error; } catch { /* sin cuerpo */ }
+            throw new Error(`Perfil guardado, pero no se cambió la contraseña: ${message || fnError?.message || "error desconocido"}`);
+          }
+          formStatus.textContent = "Miembro y contraseña actualizados correctamente.";
+        } else {
+          formStatus.textContent = "Miembro actualizado correctamente.";
+        }
       } else {
         const client = window.supabaseAdmin.client;
         const isolatedClient = window.supabase.createClient(client.supabaseUrl, client.supabaseKey, {
