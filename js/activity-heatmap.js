@@ -29,7 +29,9 @@
       window.addEventListener("resize", scrollToRecent);
     } catch (error) {
       console.error("No se pudo cargar el mapa de actividad:", error);
-      status.textContent = "No fue posible cargar la actividad del panel.";
+      const totalElement = section.querySelector("[data-heatmap-total]");
+      if (totalElement) totalElement.textContent = "Actividad no disponible";
+      status.textContent = `No fue posible cargar la actividad: ${error?.message || error?.code || error}`;
     }
   };
 
