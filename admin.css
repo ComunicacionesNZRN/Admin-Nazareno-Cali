@@ -36,16 +36,17 @@ button, input, select { font: inherit; }
 .dashboard-quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: -22px 0 34px; }
 .dashboard-quick-actions a { min-height: 44px; }
 .dashboard-quick-actions [hidden] { display: none; }
-.dashboard-pending { margin: 0 0 34px; padding: 20px; border-radius: 8px; background: var(--admin-ink); color: #fff; }
+.dashboard-pending { margin: 0 0 34px; padding: 20px; border: 1px solid var(--admin-line); border-radius: 14px; background: #fff; color: var(--admin-ink); }
 .dashboard-pending header { display: flex; justify-content: space-between; }
-.dashboard-pending .admin-eyebrow { margin-bottom: 6px; color: #f2a218; }
+.dashboard-pending .admin-eyebrow { margin-bottom: 6px; }
 .dashboard-pending h2 { margin: 0; font: 700 22px/1.2 var(--admin-display); }
 .dashboard-pending ul { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
-.dashboard-pending li { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 42px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 6px; color: rgba(255,255,255,.78); font-size: 11px; line-height: 1.5; }
-.dashboard-pending li a { color: #fff; text-decoration: underline; text-decoration-color: #f2a218; text-underline-offset: 3px; }
+.dashboard-pending li { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 42px; padding: 10px 12px; border: 1px solid rgba(20,20,20,.1); border-radius: 6px; background: var(--admin-paper); color: var(--admin-ink); font-size: 11px; line-height: 1.5; }
+.dashboard-pending li a { color: var(--admin-violet); text-decoration: underline; text-decoration-color: rgba(82,48,218,.45); text-underline-offset: 3px; }
+.dashboard-pending li a:hover { text-decoration-color: currentColor; }
 .dashboard-pending li > i { flex: 0 0 auto; color: #f2a218; }
-.dashboard-pending .dashboard-pending-clear { justify-content: flex-start; border-color: rgba(22,131,74,.5); color: #fff; }
-.dashboard-pending-clear > i { color: #57ce85 !important; }
+.dashboard-pending .dashboard-pending-clear { justify-content: flex-start; border-color: #b4dfc4; background: #eff9f2; color: #145b34; }
+.dashboard-pending-clear > i { color: #16834a !important; }
 .dashboard-pending .admin-button { margin-top: 12px; }
 .dashboard-pending [hidden] { display: none; }
 .admin-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
