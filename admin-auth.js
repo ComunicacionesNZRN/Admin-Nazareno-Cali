@@ -1,5 +1,7 @@
 (() => {
   const SUPERADMIN_EMAIL = "comunicaciones@nazarenocali.org";
+  const ADMIN_IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+  const ADMIN_LAST_ACTIVITY_KEY = "nazareno-admin-last-activity";
   const ADMIN_NAVIGATION = [
     { href: "index.html", label: "Dashboard", icon: "fa-solid fa-gauge" },
     { href: "equipo.html", label: "Equipo & Líderes", icon: "fa-solid fa-user-group", permission: "equipo" },
@@ -95,6 +97,27 @@
   initializeMobileAdminMenu();
 
   const getSupabaseClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
+
+  const getLastActivityTimestamp = () => {
+    try {
+      return Number(localStorage.getItem(ADMIN_LAST_ACTIVITY_KEY)) || 0;
+    } catch {
+      return 0;
+    }
+  };
+
+  const saveLastActivityTimestamp = (timestamp = Date.now()) => {
+    try {
+      localStorage.setItem(ADMIN_LAST_ACTIVITY_KEY, String(timestamp));
+    } catch {
+      // La aplicación también mantiene el timeout de la pestaña actual.
+    }
+  };
+
+  const isAdminSessionExpired = () => {
+    const lastActivity = getLastActivityTimestamp();
+    return lastActivity > 0 && Date.now() - lastActivity >= ADMIN_IDLE_TIMEOUT_MS;
+  };
 
   const normalizeRole = (role) => String(role || "")
     .trim()
@@ -201,6 +224,10 @@
   const requireAdminSession = async () => {
     const client = getSupabaseClient();
     if (!client) throw new Error("Cliente de Supabase no inicializado.");
+    if (isAdminSessionExpired()) {
+      await signOutAdmin();
+      return null;
+    }
 
     const { data: { session }, error } = await client.auth.getSession();
     if (error || !session) {
@@ -224,6 +251,10 @@
   const requireAdminPermission = async (permission) => {
     const client = getSupabaseClient();
     if (!client) throw new Error("Cliente no disponible.");
+    if (isAdminSessionExpired()) {
+      await signOutAdmin();
+      return null;
+    }
 
     const { data: { session } } = await client.auth.getSession();
     if (!session) {
@@ -305,11 +336,117 @@
   const escapeHtml = (val = "") =>
     String(val).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
 
+  let signOutPromise;
   const signOutAdmin = async () => {
-    const client = getSupabaseClient();
-    if (client) await client.auth.signOut();
-    window.location.replace("login.html");
+    if (signOutPromise) return signOutPromise;
+    signOutPromise = (async () => {
+      const client = getSupabaseClient();
+      if (client) {
+        const { error } = await client.auth.signOut({ scope: "local" });
+        if (error) throw error;
+      }
+      try {
+        localStorage.removeItem(ADMIN_LAST_ACTIVITY_KEY);
+      } catch {
+        // La sesión local de Supabase se cierra aunque el almacenamiento no esté disponible.
+      }
+      window.location.replace("login.html");
+    })();
+    try {
+      await signOutPromise;
+    } finally {
+      signOutPromise = null;
+    }
   };
+
+  const initializeIdleSessionTimeout = () => {
+    if (document.body.dataset.adminProtected !== "true") return;
+
+    const now = Date.now();
+    let lastActivityAt = getLastActivityTimestamp();
+    if (!lastActivityAt) {
+      lastActivityAt = now;
+      saveLastActivityTimestamp(now);
+    }
+    if (now - lastActivityAt >= ADMIN_IDLE_TIMEOUT_MS) {
+      signOutAdmin().catch((error) => console.error("No se pudo cerrar la sesión inactiva:", error));
+      return;
+    }
+
+    let lastPersistedAt = lastActivityAt;
+    let timeoutId;
+    let isEndingSession = false;
+
+    const endSession = () => {
+      if (isEndingSession) return;
+      isEndingSession = true;
+      clearTimeout(timeoutId);
+      signOutAdmin().catch((error) => console.error("No se pudo cerrar la sesión inactiva:", error));
+    };
+
+    const checkIdleTime = () => {
+      lastActivityAt = Math.max(lastActivityAt, getLastActivityTimestamp());
+      const remaining = ADMIN_IDLE_TIMEOUT_MS - (Date.now() - lastActivityAt);
+      if (remaining <= 0) {
+        endSession();
+        return;
+      }
+      timeoutId = window.setTimeout(checkIdleTime, remaining);
+    };
+
+    const markActivity = () => {
+      if (isEndingSession) return;
+      const now = Date.now();
+      lastActivityAt = Math.max(lastActivityAt, getLastActivityTimestamp());
+      if (now - lastActivityAt >= ADMIN_IDLE_TIMEOUT_MS) {
+        endSession();
+        return;
+      }
+      lastActivityAt = now;
+      if (lastActivityAt - lastPersistedAt >= 10000) {
+        lastPersistedAt = lastActivityAt;
+        saveLastActivityTimestamp(lastActivityAt);
+      }
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(checkIdleTime, ADMIN_IDLE_TIMEOUT_MS);
+    };
+
+    ["pointerdown", "pointermove", "keydown", "scroll", "touchstart", "click"].forEach((eventName) => {
+      window.addEventListener(eventName, markActivity, { passive: true });
+    });
+
+    window.addEventListener("storage", (event) => {
+      if (event.key !== ADMIN_LAST_ACTIVITY_KEY) return;
+      if (event.newValue === null) {
+        endSession();
+        return;
+      }
+      const sharedActivity = Number(event.newValue) || 0;
+      if (sharedActivity > lastActivityAt) {
+        lastActivityAt = sharedActivity;
+        clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(checkIdleTime, Math.max(0, ADMIN_IDLE_TIMEOUT_MS - (Date.now() - lastActivityAt)));
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") checkIdleTime();
+    });
+
+    checkIdleTime();
+  };
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest?.("[data-sign-out]");
+    if (!button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    button.disabled = true;
+    signOutAdmin().catch((error) => {
+      button.disabled = false;
+      showAuthError(document.querySelector("[data-auth-status]"), error);
+    });
+  }, true);
 
   const showAuthError = (element, error) => {
     if (element) element.textContent = error?.message || "Ocurrió un error.";
@@ -324,8 +461,12 @@
     applyPermissionsUI,
     requireAdminSession,
     requireAdminPermission,
+    isAdminSessionExpired,
+    markAdminActivity: saveLastActivityTimestamp,
     formatRole,
     signOutAdmin,
     showAuthError
   };
+
+  initializeIdleSessionTimeout();
 })();

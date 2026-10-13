@@ -135,6 +135,7 @@
             authStatus.textContent = error.message;
             return;
           }
+          window.supabaseAdmin.markAdminActivity();
           const next = new URLSearchParams(window.location.search).get("next");
           const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "index.html";
           window.location.replace(safeNext);

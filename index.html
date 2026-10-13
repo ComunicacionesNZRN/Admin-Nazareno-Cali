@@ -816,6 +816,10 @@
 
       const startDashboard = async () => {
         try {
+          if (window.supabaseAdmin.isAdminSessionExpired()) {
+            await window.supabaseAdmin.signOutAdmin();
+            return;
+          }
           const { data: { session }, error } = await adminClient.auth.getSession();
           if (error) throw error;
           if (!session?.user) {
