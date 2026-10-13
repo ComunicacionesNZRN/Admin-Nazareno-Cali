@@ -106,6 +106,26 @@
           </div>
         </section>
 
+        <section class="activity-heatmap" data-dashboard-owner-only data-activity-heatmap hidden aria-labelledby="activity-heatmap-title">
+          <header class="heatmap-heading">
+            <div>
+              <p class="admin-eyebrow">Movimiento del panel</p>
+              <h2 id="activity-heatmap-title" data-heatmap-total>0 acciones en el último año</h2>
+            </div>
+            <span class="heatmap-period">Últimos 12 meses</span>
+          </header>
+          <div class="heatmap-scroll" data-heatmap-scroll tabindex="0" aria-label="Actividad diaria del panel durante el último año">
+            <div class="heatmap-layout">
+              <div class="heatmap-weekdays" data-heatmap-weekdays aria-hidden="true"></div>
+              <div class="heatmap-grid" data-heatmap-body role="grid" aria-label="Actividad por día"></div>
+            </div>
+          </div>
+          <footer class="heatmap-footer">
+            <p class="heatmap-status" data-heatmap-status role="status" aria-live="polite">Cargando actividad…</p>
+            <div class="heatmap-legend" aria-label="Menos actividad a más actividad"><span>Menos</span><i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><span>Más</span></div>
+          </footer>
+        </section>
+
         <section class="system-health" data-dashboard-owner-only aria-labelledby="health-title">
           <header class="health-heading">
             <div>
@@ -288,6 +308,7 @@
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
     <script src="js/system-logs.js"></script>
+    <script src="js/activity-heatmap.js"></script>
     <script>
       const adminClient = window.supabaseAdmin.client;
 
@@ -835,6 +856,7 @@
           }
 
           window.supabaseAdmin.applyPermissionsUI(session.user, profile);
+          window.supabaseAdmin.startPresenceHeartbeat();
           document.body.dataset.dashboardAuth = "ready";
           if (!window.supabaseAdmin.isDashboardOwner(session.user)) return;
 

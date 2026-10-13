@@ -133,6 +133,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const getClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
       const form = document.querySelector("#form-team");
@@ -228,10 +229,12 @@
           if (editingId) {
             const { error } = await client.from("nosotros_equipo").update(record).eq("id", editingId);
             if (error) throw error;
+            window.systemLogs.record({ accion: "Integrante del equipo actualizado", seccion: "Equipo", estado: "exito" });
             statusText.textContent = "Integrante actualizado correctamente.";
           } else {
             const { error } = await client.from("nosotros_equipo").insert(record);
             if (error) throw error;
+            window.systemLogs.record({ accion: "Integrante del equipo agregado", seccion: "Equipo", estado: "exito" });
             statusText.textContent = "Integrante agregado exitosamente.";
           }
 
@@ -281,6 +284,7 @@
           const client = getClient();
           const { error } = await client.from("nosotros_equipo").delete().eq("id", id);
           if (error) throw error;
+          window.systemLogs.record({ accion: "Integrante del equipo eliminado", seccion: "Equipo", estado: "exito" });
           await loadTeamAdmin();
         } catch (err) {
           alert("Error al eliminar: " + err.message);

@@ -154,6 +154,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const form = document.querySelector("[data-group-form]");
       const formHeading = document.querySelector("[data-form-title]");
@@ -314,6 +315,7 @@
           const client = window.supabaseAdmin.client;
           const { error } = await client.from("grupos_conexion").delete().eq("id", id);
           if (error) throw error;
+          window.systemLogs.record({ accion: "Grupo eliminado", seccion: "Grupos", estado: "exito" });
           listStatus.textContent = "Grupo eliminado.";
           await loadGroups();
         } catch (error) {
@@ -349,12 +351,14 @@
           if (id) {
             const { error } = await client.from("grupos_conexion").update(record).eq("id", id);
             if (error) throw error;
+            window.systemLogs.record({ accion: "Grupo actualizado", seccion: "Grupos", estado: "exito" });
             status.textContent = "Grupo actualizado correctamente.";
           } else {
             const user = (await client.auth.getUser()).data.user;
             record.created_by = user?.id || null;
             const { error } = await client.from("grupos_conexion").insert(record);
             if (error) throw error;
+            window.systemLogs.record({ accion: "Grupo creado", seccion: "Grupos", estado: "exito" });
             status.textContent = "Grupo guardado correctamente.";
           }
 

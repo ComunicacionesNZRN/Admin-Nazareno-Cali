@@ -120,6 +120,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       let activeUserGroup = null;
       const manualBox = document.querySelector("[data-current-manual-box]");
@@ -188,6 +189,7 @@
           });
           if (error) throw error;
 
+          window.systemLogs.record({ accion: "Informe de grupo enviado", seccion: "Mi grupo", estado: "exito" });
           reportForm.reset();
           reportStatus.textContent = "Informe entregado exitosamente al Director.";
         } catch (err) {
@@ -203,13 +205,18 @@
 
         if (!activeUserGroup) return alert("No tienes un grupo asignado.");
 
-        await client.from("grupos_integrantes").insert({
+        const { error } = await client.from("grupos_integrantes").insert({
           grupo_id: activeUserGroup.id,
           nombre_completo: formData.get("nombre_completo"),
           telefono: formData.get("telefono"),
           estado: "activo"
         });
+        if (error) {
+          alert(error.message || "No fue posible agregar al integrante.");
+          return;
+        }
 
+        window.systemLogs.record({ accion: "Integrante agregado al grupo", seccion: "Mi grupo", estado: "exito" });
         memberForm.reset();
         await loadLeaderPortal();
       });
@@ -217,7 +224,12 @@
       window.toggleMember = async (id, currentStatus) => {
         const client = window.supabaseAdmin.client;
         const newStatus = currentStatus === "activo" ? "inactivo" : "activo";
-        await client.from("grupos_integrantes").update({ estado: newStatus }).eq("id", id);
+        const { error } = await client.from("grupos_integrantes").update({ estado: newStatus }).eq("id", id);
+        if (error) {
+          alert(error.message || "No fue posible cambiar el estado del integrante.");
+          return;
+        }
+        window.systemLogs.record({ accion: `Integrante del grupo ${newStatus === "activo" ? "reactivado" : "retirado"}`, seccion: "Mi grupo", estado: "exito" });
         await loadLeaderPortal();
       };
 

@@ -150,6 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const client = window.supabaseAdmin.client;
       let rowsData = [];
@@ -211,6 +212,7 @@
           renderEncounterSettings();
           return false;
         }
+        window.systemLogs.record({ accion: "Configuración e imágenes de encuentros actualizadas", seccion: "Encuentros", estado: "exito" });
         encounterSettings[tipo] = {
           ...payload,
           galeria_urls: Array.isArray(payload.galeria_urls) ? payload.galeria_urls : []
@@ -368,7 +370,12 @@
       };
 
       window.cambiarEstado = async (id, estado) => {
-        await client.from("encuentros_inscripciones").update({ estado_pago: estado }).eq("id", id);
+        const { error } = await client.from("encuentros_inscripciones").update({ estado_pago: estado }).eq("id", id);
+        if (error) {
+          window.alert(error.message || "No fue posible cambiar el estado del pago.");
+          return;
+        }
+        window.systemLogs.record({ accion: `Estado de pago actualizado a ${estado}`, seccion: "Encuentros", estado: "exito" });
         await loadInscripciones();
       };
 
@@ -432,6 +439,7 @@
         if (error) {
           configStatus.textContent = "Error: " + error.message;
         } else {
+          window.systemLogs.record({ accion: "Configuración del encuentro actualizada", seccion: "Encuentros", estado: "exito" });
           configStatus.textContent = "Configuración actualizada correctamente.";
         }
       });

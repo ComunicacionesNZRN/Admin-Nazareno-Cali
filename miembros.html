@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Miembros | Nazareno Admin</title>
+    <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body data-admin-protected="true">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html"><img src="Media/logoBlanco.png" alt="" /><span data-admin-brand-text>Nazareno Admin</span></a>
+        <nav class="admin-nav" aria-label="Administración">
+          <a href="index.html"><i class="fa-solid fa-gauge" aria-hidden="true"></i><span>Dashboard</span></a>
+          <a href="eventos.html"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Eventos</span></a>
+          <a href="plan-maestro.html"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>Plan del Maestro (DPM)</span></a>
+          <a href="grupos.html"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Grupos</span></a>
+          <a href="carrusel.html"><i class="fa-regular fa-images" aria-hidden="true"></i><span>Carrusel</span></a>
+          <a href="devocionales.html"><i class="fa-solid fa-book-bible" aria-hidden="true"></i><span>Devocionales</span></a>
+          <a href="configuracion.html"><i class="fa-solid fa-gear" aria-hidden="true"></i><span>Configuración</span></a>
+          <a class="is-active" href="miembros.html" data-dashboard-owner-only hidden><i class="fa-solid fa-users" aria-hidden="true"></i><span>Miembros</span></a>
+          <a href="perfil.html"><i class="fa-solid fa-user-shield" aria-hidden="true"></i><span>Mi perfil</span></a>
+        </nav>
+        <p class="admin-sidebar-footer">Contenido privado de Iglesia del Nazareno Cali.</p>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-eyebrow">Administración de accesos</p>
+            <h1 class="admin-title">Miembros.</h1>
+            <p class="admin-lead">Gestiona cuentas, roles y permisos del equipo administrativo.</p>
+          </div>
+          <div class="admin-user">
+            <span>Sesión activa<br /><strong data-admin-email>Cargando...</strong></span>
+            <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
+          </div>
+        </header>
+
+        <section class="admin-panel members-list-panel" aria-labelledby="members-list-title">
+          <header class="members-heading">
+            <div><p class="admin-eyebrow">Equipo autorizado</p><h2 id="members-list-title">Miembros del panel</h2></div>
+            <span class="members-count" data-members-count>— miembros</span>
+          </header>
+          <p class="admin-status members-status" data-members-status role="status" aria-live="polite">Cargando miembros...</p>
+          <div class="admin-table-wrap members-table-wrap">
+            <table class="admin-table members-table">
+              <thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Última conexión</th><th>Acciones</th></tr></thead>
+              <tbody data-members-list><tr><td colspan="5" class="admin-empty">Cargando miembros...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="admin-panel members-form-panel" aria-labelledby="member-form-title">
+          <p class="admin-eyebrow">Accesos y permisos</p>
+          <h2 id="member-form-title" data-member-form-title>Agregar miembro</h2>
+          <p class="admin-lead">Crea una cuenta y define sus permisos de acceso al panel.</p>
+          <form class="admin-form" data-collaborator-form>
+            <input type="hidden" name="collab_id" />
+            <div class="admin-field"><label for="member-email">Correo electrónico</label><input id="member-email" name="email" type="email" required autocomplete="email" placeholder="correo@ejemplo.com" /></div>
+            <div class="admin-field"><label for="member-name">Nombre completo</label><input id="member-name" name="nombre" required placeholder="Nombre del miembro" /></div>
+            <div class="admin-field"><label for="member-role">Rol asignado</label><select id="member-role" name="rol" required><option value="colaborador">Líder / Colaborador</option><option value="director plan del maestro">Director Plan del Maestro</option><option value="director creativo">Director Creativo</option><option value="director de producción">Director de Producción</option><option value="maestro">Maestro</option></select></div>
+            <div class="admin-field"><label for="member-password">Contraseña temporal</label><input id="member-password" name="password" type="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo 8 caracteres" /></div>
+            <fieldset class="admin-field admin-field-full members-permissions">
+              <legend>Permisos de módulos disponibles</legend>
+              <div class="admin-permissions-grid">
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Eventos</span></span><span class="admin-switch"><input type="checkbox" name="eventos" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-brands fa-youtube" aria-hidden="true"></i><span>Prédicas y Podcasts</span></span><span class="admin-switch"><input type="checkbox" name="sermones" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Grupos</span></span><span class="admin-switch"><input type="checkbox" name="grupos" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>Plan Maestro (DPM)</span></span><span class="admin-switch"><input type="checkbox" name="plan_maestro" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-users-between-lines" aria-hidden="true"></i><span>Encuentros H/M</span></span><span class="admin-switch"><input type="checkbox" name="encuentros" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-water" aria-hidden="true"></i><span>Bautismos</span></span><span class="admin-switch"><input type="checkbox" name="bautismos" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-regular fa-images" aria-hidden="true"></i><span>Carrusel</span></span><span class="admin-switch"><input type="checkbox" name="carrusel" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-book-bible" aria-hidden="true"></i><span>Devocionales</span></span><span class="admin-switch"><input type="checkbox" name="devocionales" /><span class="admin-switch-slider"></span></span></label>
+                <label class="admin-permission-card"><span class="admin-permission-info"><i class="fa-solid fa-gear" aria-hidden="true"></i><span>Configuración</span></span><span class="admin-switch"><input type="checkbox" name="configuracion" /><span class="admin-switch-slider"></span></span></label>
+              </div>
+            </fieldset>
+            <div class="admin-form-actions">
+              <button class="admin-button-primary" type="submit" data-submit-member>Guardar miembro</button>
+              <button class="admin-button" type="button" data-cancel-member-edit hidden>Cancelar edición</button>
+            </div>
+            <p class="admin-status" data-member-form-status role="status"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
+    <script src="js/miembros.js"></script>
+  </body>
+</html>

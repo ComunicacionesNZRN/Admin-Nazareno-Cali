@@ -148,6 +148,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="./admin-auth.js"></script>
+    <script src="js/system-logs.js"></script>
     <script>
       const manualForm = document.querySelector("[data-manual-form]");
       const manualStatus = document.querySelector("[data-manual-status]");
@@ -229,6 +230,7 @@
           });
           if (insertError) throw insertError;
 
+          window.systemLogs.record({ accion: "Manual publicado", seccion: "Plan del Maestro", estado: "exito" });
           manualForm.reset();
           manualStatus.textContent = "Manual publicado exitosamente.";
           await loadDPMDashboard();
@@ -240,7 +242,12 @@
       window.deleteManual = async (id) => {
         if (!confirm("¿Eliminar este manual?")) return;
         const client = window.supabaseAdmin.client;
-        await client.from("plan_maestro_manuales").delete().eq("id", id);
+        const { error } = await client.from("plan_maestro_manuales").delete().eq("id", id);
+        if (error) {
+          alert(error.message || "No fue posible eliminar el manual.");
+          return;
+        }
+        window.systemLogs.record({ accion: "Manual eliminado", seccion: "Plan del Maestro", estado: "exito" });
         await loadDPMDashboard();
       };
 

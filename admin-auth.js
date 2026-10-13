@@ -13,6 +13,7 @@
     { href: "carrusel.html", label: "Carrusel", icon: "fa-regular fa-images", permission: "carrusel" },
     { href: "devocionales.html", label: "Devocionales", icon: "fa-solid fa-book-bible", permission: "devocionales" },
     { href: "configuracion.html", label: "Configuración", icon: "fa-solid fa-gear", permission: "configuracion" },
+    { href: "miembros.html", label: "Miembros", icon: "fa-solid fa-users", ownerOnly: true },
     { href: "perfil.html", label: "Mi perfil", icon: "fa-solid fa-user-shield" }
   ];
 
@@ -27,6 +28,10 @@
       link.classList.toggle("is-active", currentPage === item.href);
       if (currentPage === item.href) link.setAttribute("aria-current", "page");
       if (item.permission) link.dataset.permissionLink = item.permission;
+      if (item.ownerOnly) {
+        link.dataset.dashboardOwnerOnly = "";
+        link.hidden = true;
+      }
 
       const icon = document.createElement("i");
       icon.className = item.icon || "fa-solid fa-circle";
@@ -97,6 +102,33 @@
   initializeMobileAdminMenu();
 
   const getSupabaseClient = () => window.supabaseAdmin?.client || window._supabase || window.supabaseClient;
+
+  let presenceInterval = null;
+  let presenceVisibilityListenerAdded = false;
+  const sendPresence = async () => {
+    if (document.visibilityState !== "visible") return;
+    const client = getSupabaseClient();
+    if (!client) return;
+    try {
+      const { error } = await client.rpc("marcar_conexion");
+      if (error) console.warn("No se pudo actualizar la última conexión:", error.message);
+    } catch (error) {
+      console.warn("No se pudo actualizar la última conexión:", error);
+    }
+  };
+
+  const startPresenceHeartbeat = () => {
+    if (!presenceInterval) {
+      void sendPresence();
+      presenceInterval = window.setInterval(sendPresence, 60_000);
+    }
+    if (!presenceVisibilityListenerAdded) {
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") void sendPresence();
+      });
+      presenceVisibilityListenerAdded = true;
+    }
+  };
 
   const getLastActivityTimestamp = () => {
     try {
@@ -245,6 +277,7 @@
     }
 
     applyPermissionsUI(user, profile);
+    startPresenceHeartbeat();
     return user;
   };
 
@@ -271,6 +304,7 @@
 
     // Aplicar UI inmediatamente en la página activa
     applyPermissionsUI(user, profile);
+    startPresenceHeartbeat();
 
     if (hasPermission(permission, user, profile)) return { user, profile };
 
@@ -461,6 +495,7 @@
     applyPermissionsUI,
     requireAdminSession,
     requireAdminPermission,
+    startPresenceHeartbeat,
     isAdminSessionExpired,
     markAdminActivity: saveLastActivityTimestamp,
     formatRole,

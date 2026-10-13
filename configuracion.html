@@ -24,14 +24,14 @@
         <section class="admin-panel" style="margin-top:24px"><p class="admin-eyebrow">Referencia</p><h2>Claves editables</h2><p class="admin-lead">La configuración se guarda como pares de clave y valor para poder ampliar este panel sin modificar la estructura.</p></section>
       </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase-client.js"></script><script src="./admin-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase-client.js"></script><script src="./admin-auth.js"></script><script src="js/system-logs.js"></script>
     <script>
       const client = window.supabaseAdmin.client;
       const form = document.querySelector("[data-settings-form]");
       const status = document.querySelector("[data-settings-status]");
       const fields = [...form.querySelectorAll("[data-setting]")];
       const loadSettings = async () => { const { data, error } = await client.from("site_config").select("clave, valor"); if (error) { status.textContent = error.message; return; } const settings = Object.fromEntries((data || []).map((item) => [item.clave, item.valor])); fields.forEach((field) => { if (settings[field.dataset.setting] !== undefined) field.value = settings[field.dataset.setting]; }); };
-      form.addEventListener("submit", async (event) => { event.preventDefault(); status.textContent = "Guardando..."; try { const user = (await client.auth.getUser()).data.user; const records = fields.map((field) => ({ clave: field.dataset.setting, valor: field.value.trim(), updated_by: user.id, updated_at: new Date().toISOString() })); const { error } = await client.from("site_config").upsert(records, { onConflict: "clave" }); if (error) throw error; status.textContent = "Configuración guardada correctamente."; } catch (error) { status.textContent = error.message || "No fue posible guardar la configuración."; } });
+      form.addEventListener("submit", async (event) => { event.preventDefault(); status.textContent = "Guardando..."; try { const user = (await client.auth.getUser()).data.user; const records = fields.map((field) => ({ clave: field.dataset.setting, valor: field.value.trim(), updated_by: user.id, updated_at: new Date().toISOString() })); const { error } = await client.from("site_config").upsert(records, { onConflict: "clave" }); if (error) throw error; window.systemLogs.record({ accion: "Configuración del sitio actualizada", seccion: "Configuración", estado: "exito" }); status.textContent = "Configuración guardada correctamente."; } catch (error) { status.textContent = error.message || "No fue posible guardar la configuración."; } });
       (async () => { try { const access = await window.supabaseAdmin.requireAdminPermission("configuracion"); if (!access) return; document.querySelector("[data-admin-email]").textContent = access.user.email; await loadSettings(); } catch (error) { window.supabaseAdmin.showAuthError(status, error); } })();
       document.querySelector("[data-sign-out]").addEventListener("click", () => window.supabaseAdmin.signOutAdmin());
     </script>
