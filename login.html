@@ -2,25 +2,78 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8f6f0" />
     <title>Acceso | Nazareno Cali</title>
     <link rel="icon" type="image/png" href="Media/logoNegro.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="admin.css" />
   </head>
-  <body>
+  <body class="login-body">
     <main class="login-page">
-      <section class="login-card" aria-labelledby="login-title">
-        <img class="login-logo" src="Media/logoNegro.png" alt="Iglesia del Nazareno Cali" />
-        <p class="admin-eyebrow">Panel privado</p>
-        <h1 id="login-title">Bienvenido.</h1>
-        <p>Accede para administrar los contenidos de Nazareno Cali.</p>
-        <form class="login-form" data-login-form>
-          <div class="admin-field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="username" required /></div>
-          <div class="admin-field"><label for="password">Contraseña</label><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
-          <button class="admin-button-primary" type="submit">Iniciar sesión <span aria-hidden="true">↗</span></button>
-          <p class="admin-status" data-auth-status role="alert"></p>
-        </form>
+      <section class="login-panel" aria-labelledby="login-title">
+        <div class="login-content">
+          <a class="login-brand" href="../index.html" aria-label="Iglesia del Nazareno Cali, inicio">
+            <img class="login-logo" src="Media/logoNegro.png" alt="" />
+            <span>Iglesia del Nazareno <strong>Cali</strong></span>
+          </a>
+
+          <div class="login-intro">
+            <p class="login-eyebrow"><span></span> Portal de administración</p>
+            <h1 id="login-title">Qué bueno<br />tenerte de vuelta.</h1>
+            <p class="login-description">Ingresa a tu espacio para cuidar y compartir lo que Dios está haciendo en nuestra comunidad.</p>
+          </div>
+
+          <form class="login-form" data-login-form>
+            <div class="login-field">
+              <label for="email">Correo electrónico</label>
+              <div class="login-input-wrap">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>
+                <input id="email" name="email" type="email" autocomplete="username" placeholder="nombre@nazarenocali.org" required />
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label for="password">Contraseña</label>
+              <div class="login-input-wrap">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/></svg>
+                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required />
+                <button class="login-password-toggle" type="button" data-password-toggle aria-label="Mostrar contraseña" aria-pressed="false">
+                  <svg class="icon-eye" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                  <svg class="icon-eye-off" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m3 3 18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6.1 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7M6.2 6.3C3.8 8 2.5 12 2.5 12s3.4 6 9.5 6a10 10 0 0 0 3-.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="login-options">
+              <label class="login-remember"><input type="checkbox" name="remember" data-remember-email /><span class="login-checkbox" aria-hidden="true"></span>Recordarme</label>
+              <button class="login-recovery" type="button" data-password-recovery>¿Olvidaste tu contraseña?</button>
+            </div>
+
+            <button class="login-submit" type="submit"><span>Iniciar sesión</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+            <p class="login-status" data-auth-status role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="login-secure"><span class="login-secure-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg></span><span><strong>Acceso protegido</strong><small>Conexión segura y privada</small></span></div>
+          <p class="login-footer">© 2026 Iglesia del Nazareno Cali</p>
+        </div>
       </section>
+
+      <aside class="login-visual" aria-label="Comunidad de la Iglesia del Nazareno Cali">
+        <div class="login-visual-shade"></div>
+        <div class="login-visual-top"><span class="login-live-dot"></span> UNA COMUNIDAD, MUCHAS HISTORIAS</div>
+        <div class="login-visual-copy">
+          <p class="login-visual-kicker">Fe que nos mueve</p>
+          <h2>Juntos hacemos<br />visible la esperanza.</h2>
+          <p>Un lugar para servir, crecer y compartir el amor de Jesús en Cali.</p>
+        </div>
+        <div class="login-visual-bottom">
+          <div class="login-quote"><span class="login-quote-mark">“</span><p>Una iglesia para todos,<br />con el corazón en la ciudad.</p><span class="login-quote-caption">NAZARENO CALI <i></i></span></div>
+          <div class="login-metric"><span class="login-metric-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 10v-2a4 4 0 0 0-3-3.9m-1-12.1a4 4 0 0 1 0 7.8"/></svg></span><strong>Una familia</strong><span>creciendo en fe</span></div>
+        </div>
+      </aside>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
@@ -29,11 +82,49 @@
       const loginForm = document.querySelector("[data-login-form]");
       const authStatus = document.querySelector("[data-auth-status]");
       const loginButton = loginForm.querySelector("button[type=submit]");
+      const emailInput = loginForm.querySelector("#email");
+      const passwordInput = loginForm.querySelector("#password");
+      const rememberEmail = loginForm.querySelector("[data-remember-email]");
+      const rememberedEmail = localStorage.getItem("nazareno-admin-email");
+      if (rememberedEmail) {
+        emailInput.value = rememberedEmail;
+        rememberEmail.checked = true;
+      }
+
+      document.querySelector("[data-password-toggle]").addEventListener("click", (event) => {
+        const button = event.currentTarget;
+        const isVisible = passwordInput.type === "text";
+        passwordInput.type = isVisible ? "password" : "text";
+        button.setAttribute("aria-pressed", String(!isVisible));
+        button.setAttribute("aria-label", isVisible ? "Mostrar contraseña" : "Ocultar contraseña");
+      });
+
+      document.querySelector("[data-password-recovery]").addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+          authStatus.textContent = "Escribe tu correo electrónico para enviarte el enlace de recuperación.";
+          emailInput.focus();
+          return;
+        }
+        authStatus.textContent = "Enviando enlace de recuperación...";
+        try {
+          const { error } = await window.supabaseAdmin.client.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}${window.location.pathname}`,
+          });
+          authStatus.textContent = error ? error.message : "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.";
+        } catch (error) {
+          authStatus.textContent = error.message || "No fue posible enviar el enlace de recuperación.";
+        }
+      });
+
       loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         authStatus.textContent = "Autenticando...";
         loginButton.disabled = true;
+        loginButton.querySelector("span").textContent = "Verificando acceso...";
         const formData = new FormData(loginForm);
+        if (rememberEmail.checked) localStorage.setItem("nazareno-admin-email", emailInput.value.trim());
+        else localStorage.removeItem("nazareno-admin-email");
         try {
           const { error } = await window.supabaseAdmin.client.auth.signInWithPassword({
             email: formData.get("email"),
@@ -52,6 +143,7 @@
           authStatus.textContent = error.message || "No fue posible iniciar sesión.";
         } finally {
           loginButton.disabled = false;
+          loginButton.querySelector("span").textContent = "Iniciar sesión";
         }
       });
     </script>
