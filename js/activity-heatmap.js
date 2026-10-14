@@ -33,8 +33,10 @@
   const pad = (n) => String(n).padStart(2, "0");
   const toIsoDay = (d) => `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
 
-  const levelOf = (count, busy) =>
-    count <= 0 ? 0 : busy <= 0 ? 4 : 1 + Math.min(3, Math.floor((count / busy) * 4));
+  const levelOf = (count, max) => {
+    if (!(count > 0) || !(max > 0)) return 0;
+    return Math.max(1, Math.min(4, Math.ceil((count / max) * 4)));
+  };
 
   const barHeight = (count, max, scale = 1) =>
     count > 0 && max > 0 ? 0.4 + Math.pow(count / max, 0.85) * 7.2 * scale : 0.2;
@@ -99,12 +101,12 @@
       });
     }
     const nz = cells.map((c) => c.count).filter((c) => c > 0).sort((a, b) => a - b);
-    const busy = nz.length ? nz[Math.floor(0.95 * (nz.length - 1))] : 0;
-    for (const c of cells) c.level = levelOf(c.count, busy);
+    const max = nz.length ? nz[nz.length - 1] : 0;
+    for (const c of cells) c.level = levelOf(c.count, max);
     return {
       cells,
       weeks: cells.length ? cells[cells.length - 1].week + 1 : 0,
-      max: nz.length ? nz[nz.length - 1] : 0,
+      max,
     };
   };
 
