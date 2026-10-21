@@ -80,6 +80,10 @@
               <input id="group-leader" name="lider" placeholder="Nombre del líder" />
             </div>
             <div class="admin-field">
+              <label for="group-leader-email">Correo del líder (cuenta del panel)</label>
+              <input id="group-leader-email" name="lider_email" type="email" placeholder="lider@correo.com" />
+            </div>
+            <div class="admin-field">
               <label for="group-day">Día</label>
               <input id="group-day" name="dia" placeholder="Ej: Miércoles" />
             </div>
@@ -232,6 +236,7 @@
         form.elements.id.value = group.id;
         form.elements.nombre.value = group.nombre || group.nombre_grupo || "";
         form.elements.lider.value = group.lider || "";
+        form.elements.lider_email.value = group.lider_email || "";
         form.elements.dia.value = group.dia || "";
         form.elements.hora.value = group.hora || "";
         form.elements.zona.value = group.zona || "";
@@ -337,6 +342,7 @@
           nombre: nombreVal,
           nombre_grupo: nombreVal,
           lider: formData.get("lider") || null,
+          lider_email: String(formData.get("lider_email") || "").trim().toLowerCase() || null,
           dia: formData.get("dia") || null,
           hora: formData.get("hora") || null,
           zona: formData.get("zona") || null,

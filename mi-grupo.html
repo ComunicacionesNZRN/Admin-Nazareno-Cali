@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="Media/logoBlanco.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="admin.css" />
+    <style>[data-report-form] :disabled, [data-member-form] :disabled { opacity: .5; cursor: not-allowed; } [data-group-message].admin-status { color: #b42318; font-weight: 600; }</style>
   </head>
   <body data-admin-protected="true">
     <div class="admin-shell">
@@ -44,6 +45,15 @@
             <button class="admin-button admin-button-danger" type="button" data-sign-out>Cerrar sesión</button>
           </div>
         </header>
+
+        <section class="admin-panel" data-group-box style="margin-bottom:24px;">
+          <p class="admin-eyebrow">Tu grupo</p>
+          <p class="admin-empty" data-group-message>Buscando tu grupo...</p>
+          <div class="admin-field" data-group-picker style="display:none;">
+            <label for="group-select">Elige el grupo con el que vas a trabajar</label>
+            <select id="group-select" data-group-select></select>
+          </div>
+        </section>
 
         <!-- 1. Descarga del Manual del Mes Actual -->
         <section class="admin-panel" style="border-left: 4px solid var(--admin-violet);">
@@ -129,15 +139,61 @@
       const memberForm = document.querySelector("[data-member-form]");
       const membersList = document.querySelector("[data-members-list]");
 
+      const groupMessage = document.querySelector("[data-group-message]");
+      const groupPicker = document.querySelector("[data-group-picker]");
+      const groupSelect = document.querySelector("[data-group-select]");
+      let leaderGroups = [];
+
+      const escapeHtml = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+      const setFormsEnabled = (enabled) => {
+        [reportForm, memberForm].forEach((f) => f.querySelectorAll("input, textarea, button").forEach((el) => { el.disabled = !enabled; }));
+      };
+
+      const showGroupState = () => {
+        if (!activeUserGroup) {
+          groupMessage.textContent = "Aún no tienes un grupo asignado. Habla con el Director del Plan del Maestro.";
+          groupMessage.className = "admin-status";
+          groupPicker.style.display = "none";
+          setFormsEnabled(false);
+          membersList.innerHTML = '<tr><td colspan="4" class="admin-empty">Sin grupo asignado.</td></tr>';
+          return;
+        }
+        groupMessage.className = "";
+        groupMessage.innerHTML = `Estás trabajando con <strong>${escapeHtml(activeUserGroup.nombre || activeUserGroup.nombre_grupo || "tu grupo")}</strong>.`;
+        groupPicker.style.display = leaderGroups.length < 2 ? "none" : "";
+        setFormsEnabled(true);
+      };
+
+      groupSelect.addEventListener("change", async () => {
+        activeUserGroup = leaderGroups.find((g) => String(g.id) === groupSelect.value) || null;
+        await loadMembers();
+      });
+
       const loadLeaderPortal = async () => {
         const client = window.supabaseAdmin.client;
         const user = (await client.auth.getUser()).data.user;
+        const email = String(user?.email || "").trim().toLowerCase();
 
-        // 1. Obtener el grupo asignado al líder (o el primero disponible)
-        const { data: group } = await client.from("grupos_conexion").select("*").limit(1).maybeSingle();
-        activeUserGroup = group;
+        // 1. Grupos donde el usuario es líder (grupos_conexion.lider_email)
+        if (!leaderGroups.length && email) {
+          const { data: groups, error } = await client
+            .from("grupos_conexion")
+            .select("*")
+            .ilike("lider_email", email)
+            .order("nombre", { ascending: true });
+          if (error) {
+            console.error(error);
+            groupMessage.textContent = "No pudimos cargar tu grupo. Intenta recargar la página.";
+          }
+          leaderGroups = groups || [];
+          groupSelect.innerHTML = leaderGroups.map((g) => `<option value="${escapeHtml(g.id)}">${escapeHtml(g.nombre || g.nombre_grupo || "Grupo")}</option>`).join("");
+          if (!activeUserGroup || !leaderGroups.some((g) => g.id === activeUserGroup.id)) activeUserGroup = leaderGroups[0] || null;
+          if (activeUserGroup) groupSelect.value = String(activeUserGroup.id);
+        }
+        showGroupState();
 
-        // 2. Obtener Manual del mes
+      // 2. Obtener Manual del mes
         const currentMonth = new Date().getMonth() + 1;
         const { data: manual } = await client.from("plan_maestro_manuales").select("*").eq("mes", currentMonth).maybeSingle();
 
@@ -155,14 +211,18 @@
           manualBox.innerHTML = '<p class="admin-empty">El Director del Plan del Maestro aún no ha subido el manual de este mes.</p>';
         }
 
-        // 3. Cargar Integrantes
+        await loadMembers();
+      };
+
+      const loadMembers = async () => {
+        const client = window.supabaseAdmin.client;
         if (activeUserGroup) {
           const { data: members } = await client.from("grupos_integrantes").select("*").eq("grupo_id", activeUserGroup.id);
           membersList.innerHTML = members?.length
             ? members.map((m) => `
               <tr>
-                <td><strong>${m.nombre_completo}</strong></td>
-                <td>${m.telefono || "—"}</td>
+                <td><strong>${escapeHtml(m.nombre_completo)}</strong></td>
+                <td>${escapeHtml(m.telefono || "—")}</td>
                 <td><span class="admin-badge ${m.estado === 'activo' ? 'admin-badge-active' : 'admin-badge-inactive'}">${m.estado}</span></td>
                 <td><button class="admin-button admin-button-danger" onclick="toggleMember('${m.id}', '${m.estado}')">${m.estado === 'activo' ? 'Retirar' : 'Reactivar'}</button></td>
               </tr>
@@ -174,13 +234,17 @@
       // Guardar Informe
       reportForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (!activeUserGroup?.id) {
+          reportStatus.textContent = "No puedes enviar el informe porque no tienes un grupo asignado.";
+          return;
+        }
         reportStatus.textContent = "Enviando informe...";
         const client = window.supabaseAdmin.client;
         const formData = new FormData(reportForm);
 
         try {
           const { error } = await client.from("grupos_reportes").insert({
-            grupo_id: activeUserGroup?.id || null,
+            grupo_id: activeUserGroup.id,
             fecha_reunion: formData.get("fecha_reunion"),
             tema_impartido: formData.get("tema_impartido"),
             asistencia_miembros: Number(formData.get("asistencia_miembros")),
@@ -203,7 +267,10 @@
         const client = window.supabaseAdmin.client;
         const formData = new FormData(memberForm);
 
-        if (!activeUserGroup) return alert("No tienes un grupo asignado.");
+        if (!activeUserGroup?.id) {
+          showGroupState();
+          return;
+        }
 
         const { error } = await client.from("grupos_integrantes").insert({
           grupo_id: activeUserGroup.id,
