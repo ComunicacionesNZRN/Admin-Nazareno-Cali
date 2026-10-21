@@ -180,7 +180,7 @@
           const { data: groups, error } = await client
             .from("grupos_conexion")
             .select("*")
-            .ilike("lider_email", email)
+            .eq("lider_email", email)
             .order("nombre", { ascending: true });
           if (error) {
             console.error(error);
