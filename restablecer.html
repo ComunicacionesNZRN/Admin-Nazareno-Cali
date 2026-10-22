@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8f6f0" />
+    <title>Nueva contraseña | Nazareno Cali</title>
+    <link rel="icon" type="image/png" href="Media/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="login-body">
+    <main class="login-page">
+      <section class="login-panel" aria-labelledby="login-title">
+        <div class="login-content">
+          <a class="login-brand" href="../index.html" aria-label="Iglesia del Nazareno Cali, inicio">
+            <img class="login-logo" src="Media/logoNegro.png" alt="" />
+            <span>Iglesia del Nazareno <strong>Cali</strong></span>
+          </a>
+
+          <div class="login-intro">
+            <p class="login-eyebrow"><span></span> Portal de administración</p>
+            <h1 id="login-title">Crea tu<br />nueva contraseña.</h1>
+            <p class="login-description">Elige una contraseña de al menos 8 caracteres. Después podrás entrar con ella al panel.</p>
+          </div>
+
+          <form class="login-form" data-reset-form hidden>
+            <div class="login-field">
+              <label for="new-password">Nueva contraseña</label>
+              <div class="login-input-wrap"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/></svg><input id="new-password" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" minlength="8" required /></div>
+            </div>
+            <div class="login-field">
+              <label for="confirm-password">Confirmar contraseña</label>
+              <div class="login-input-wrap"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/></svg><input id="confirm-password" type="password" autocomplete="new-password" placeholder="Repite la contraseña" minlength="8" required /></div>
+            </div>
+            <button class="login-submit" type="submit"><span>Guardar contraseña</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+          </form>
+          <p class="login-status" data-reset-status role="status" aria-live="polite">Verificando el enlace de recuperación...</p>
+          <a class="login-recovery" href="login.html" data-back-login>Volver al inicio de sesión</a>
+
+
+          <div class="login-secure"><span class="login-secure-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg></span><span><strong>Acceso protegido</strong><small>Conexión segura y privada</small></span></div>
+          <p class="login-footer">© 2026 Iglesia del Nazareno Cali</p>
+        </div>
+      </section>
+
+      <aside class="login-visual" aria-label="Comunidad de la Iglesia del Nazareno Cali">
+        <div class="login-visual-shade"></div>
+        <div class="login-visual-top"><span class="login-live-dot"></span> UNA COMUNIDAD, MUCHAS HISTORIAS</div>
+        <div class="login-visual-copy">
+          <p class="login-visual-kicker">Fe que nos mueve</p>
+          <h2>Juntos hacemos<br />visible la esperanza.</h2>
+          <p>Un lugar para servir, crecer y compartir el amor de Jesús en Cali.</p>
+        </div>
+        <div class="login-visual-bottom">
+          <div class="login-quote"><span class="login-quote-mark">“</span><p>Una iglesia para todos,<br />con el corazón en la ciudad.</p><span class="login-quote-caption">NAZARENO CALI <i></i></span></div>
+          <div class="login-metric"><span class="login-metric-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 10v-2a4 4 0 0 0-3-3.9m-1-12.1a4 4 0 0 1 0 7.8"/></svg></span><strong>Una familia</strong><span>creciendo en fe</span></div>
+        </div>
+      </aside>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script>
+      const form = document.querySelector("[data-reset-form]");
+      const statusEl = document.querySelector("[data-reset-status]");
+      const btn = form.querySelector("button[type=submit]");
+      const client = window.supabaseAdmin.client;
+      let ready = false;
+      const show = (msg, ok = false) => { statusEl.textContent = msg; statusEl.classList.toggle("is-success", ok); };
+      const enable = () => { if (ready) return; ready = true; form.hidden = false; show(""); form.querySelector("#new-password").focus(); };
+
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const query = new URLSearchParams(window.location.search);
+      if (hash.get("error") || query.get("error")) {
+        show("El enlace no es válido o ya expiró. Pide uno nuevo desde “¿Olvidaste tu contraseña?”.");
+      } else {
+        client.auth.onAuthStateChange((event, session) => {
+          if (event === "PASSWORD_RECOVERY" || (session && hash.get("type") === "recovery")) enable();
+        });
+        const code = query.get("code");
+        (code ? client.auth.exchangeCodeForSession(code) : client.auth.getSession()).then(({ data, error }) => {
+          if (data?.session && (code || hash.get("type") === "recovery")) enable();
+          setTimeout(() => { if (!ready) show(error ? "El enlace no es válido o ya expiró. Pide uno nuevo desde “¿Olvidaste tu contraseña?”." : "Abre esta página desde el enlace que te llegó al correo."); }, 1500);
+        });
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const password = form.querySelector("#new-password").value;
+        const confirm = form.querySelector("#confirm-password").value;
+        if (password.length < 8) return show("La contraseña debe tener al menos 8 caracteres.");
+        if (password !== confirm) return show("Las contraseñas no coinciden.");
+        btn.disabled = true;
+        show("Guardando tu nueva contraseña...");
+        try {
+          const { error } = await client.auth.updateUser({ password });
+          if (error) {
+            const m = error.message || "";
+            show(/different|same/i.test(m) ? "La nueva contraseña debe ser distinta a la anterior." : /weak|short|least/i.test(m) ? "La contraseña es muy débil. Usa una más larga o con más variedad." : /session|expired|jwt/i.test(m) ? "El enlace expiró. Pide uno nuevo desde “¿Olvidaste tu contraseña?”." : "No fue posible guardar la contraseña. Intenta de nuevo.");
+            return;
+          }
+          await client.auth.signOut();
+          form.hidden = true;
+          show("Listo, ya puedes entrar con tu nueva contraseña.", true);
+        } catch {
+          show("No fue posible guardar la contraseña. Revisa tu conexión.");
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
