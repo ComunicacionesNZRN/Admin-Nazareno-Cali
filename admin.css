@@ -271,6 +271,10 @@ body[data-dashboard-auth="checking"] .admin-shell { visibility: hidden; }
 .login-submit svg { width: 17px; height: 17px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .login-status { min-height: 18px; margin: -8px 0 0; color: #a33338; font: 500 11px/1.5 "Sora", sans-serif; }
 .login-status:empty { min-height: 0; margin: -14px 0 0; }
+.login-status.is-success { color: #2f6b3a; }
+[data-reset-form][hidden] { display: none; }
+[data-reset-status] { margin: 14px 0 0; }
+[data-back-login] { display: inline-block; margin-top: 14px; text-decoration: none; }
 .login-secure { display: flex; align-items: center; gap: 10px; margin-top: 18px; animation: login-rise .72s .24s cubic-bezier(.2,.75,.25,1) both; }
 .login-secure-icon { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(82,48,218,.12); border-radius: 8px; background: rgba(82,48,218,.055); }
 .login-secure-icon svg { stroke: #5230da; }

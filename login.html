@@ -106,14 +106,17 @@
           emailInput.focus();
           return;
         }
+        authStatus.classList.remove("is-success");
         authStatus.textContent = "Enviando enlace de recuperación...";
         try {
           const { error } = await window.supabaseAdmin.client.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}${window.location.pathname}`,
+            redirectTo: "https://comunicacionesnzrn.github.io/Admin-Nazareno-Cali/restablecer.html",
           });
-          authStatus.textContent = error ? error.message : "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.";
+          authStatus.classList.toggle("is-success", !error);
+          authStatus.textContent = error ? (/rate|seconds/i.test(error.message) ? "Espera un momento antes de pedir otro enlace." : "No fue posible enviar el enlace de recuperación. Intenta de nuevo.") : "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.";
         } catch (error) {
-          authStatus.textContent = error.message || "No fue posible enviar el enlace de recuperación.";
+          authStatus.classList.remove("is-success");
+          authStatus.textContent = "No fue posible enviar el enlace de recuperación. Revisa tu conexión.";
         }
       });
 
